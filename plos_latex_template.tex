@@ -141,7 +141,6 @@
 
 % Use the PLoS provided BiBTeX style
 \bibliographystyle{plos2015}
-
 % Remove brackets from numbering in List of References
 \makeatletter
 \renewcommand{\@biblabel}[1]{\quad#1.}
@@ -241,12 +240,60 @@ Simulations, task, and combination
 
 % Use "Eq" instead of "Equation" for equation citations.
 \section*{Introduction}
+\subsection{Concepts To Cover}
+\begin{enumerate}
+	\item Big Idea
+  \begin{enumerate}
+    \item Evaluate beta series correlations between brain regions during a task.
+  \end{enumerate}
+	\item Topics
+	\begin{enumerate}
+    \item Definition of a trial
+    \item General Linear Model
+    \item Block versus rapid event related designs
+    \item BOLD variability
+    \item BOLD Response/BOLD correlations
+    \item Beta Series Correlations and PsychoPhysiological Interactions
+    \item Different methods to estimate beta series correlations: Least-Squares All and Least-Squares Separate
+  \end{enumerate}
+	\item Gap
+  \begin{enumerate}
+    \item combination of simulation/real data to compare/validate methods
+  \end{enumerate}
+\end{enumerate}
+
+\subsection{Introduction}
+What are the available methods to measure which brain regions correlate during a task with functional Magnetic Resonance Imaging (fMRI)?
+The two most popular methods appear to be Psychophysiological Interactions (PPI) and Beta Series Correlations (BSC).
+However, the efficacy of PPI and BSC depends on the experimental design.
+Many experimental designs place trials belonging to different conditions close to each other
+to capture the psychological process of interest.
+For example, if a task measured surprise, placing all the surprising stimuli together
+invalidates the concept one is attempting to measure.
+These rapid event-related experimental designs with intermixed conditions (?) are difficult to analyze.
+The difficulty comes from the sluggish Blood Oxygen Level Dependent (BOLD) response.
+Multiple trials overlap as they occur faster than the time it takes the BOLD response to return to baseline.
+This overlap creates ambiguity whether the changing BOLD response is due to the trial of interest or surrounding trials.
+Previous work has found PPI is less powerful than BSC to detect condition differences using rapid event-related designs.
+Thus, only variants of BS will be considered.
+While previous studies have investigated variants of BS, they either only focused on multivariate pattern analysis
+or only performed simulations.
+We will focus on BSC using both simulations and real data to compare and validate methods,
+expanding and improving previous work.
+Specifically, we will compare two strategies to generate BS's: "Least-Squares All" (LSA) and "Least-Squares Separate" (LSS).
+LSA has a regressor for each individual trial in the General Linear Model (GLM).
 % Lorem ipsum dolor sit~\cite{bib1} amet, consectetur adipiscing elit. Curabitur eget porta erat. Morbi consectetur est vel gravida pretium. Suspendisse ut dui eu ante cursus gravida non sed sem. Nullam Eq~(\ref{eq:schemeP}) sapien tellus, commodo id velit id, eleifend volutpat quam. Phasellus mauris velit, dapibus finibus elementum vel, pulvinar non tellus. Nunc pellentesque pretium diam, quis maximus dolor faucibus id.~\cite{bib2} Nunc convallis sodales ante, ut ullamcorper est egestas vitae. Nam sit amet enim ultrices, ultrices elit pulvinar, volutpat risus.
 \subsection{Understanding brain organization}
+\begin{enumerate}
+  \item evolving relationship between resting state and task fmri
+  \item connectivity in task fmri is measured in different ways
+  \item linear addition of task activation on top of low frequency oscillations
+  \item other view that oscillations change in complex ways
+  \item could be variances in bold response independent of the low frequency oscillations
+\end{enumerate}
 
-\subsection{Brain organization during a task}
-
-\subsection{What's missing}
+\subsection{How to measure brain organization}
+- methods include: psychophysiological interactions and beta series correlations
 
 \subsection{comparison of LSS and LSA methods}
 % \begin{eqnarray}
@@ -256,18 +303,244 @@ Simulations, task, and combination
 
 \section*{Materials and methods}
 \subsection*{Beta Series Correlation Simulations}
+- Time Repetition = 2
+- duration of experiment = variable
+- intertrial interval = 2 - 8 seconds (exponential sampling)
+- response scaled peak response is 1
+- glover HRF
+% https://github.com/brainiak/brainiak/blob/dc12929a99529a69da3c3242e9c9fd31c308fbb0/brainiak/utils/fmrisim.py#L722
+- the height of the voxel HRF responses was drawn from a multivariate normal distribution with mean 1 and standard deviation of 1.
+% https://github.com/jdkent/betaSeriesSimulations/blob/2fc45bcbc6873d395432d01359ba492b6f3b1458/beta_sim/interfaces/fmrisim.py#L204
+% https://github.com/jdkent/betaSeriesSimulations/blob/2fc45bcbc6873d395432d01359ba492b6f3b1458/beta_sim/interfaces/fmrisim.py#L170
+% - noise was added through:
+%     - snr: 40
+%     - sfnr: 60
+%     - task_sigma $1: Size of the variance of task specific noise
+%     - drift_sigma 1: Size of the variance of drift noise
+%     - auto_reg_sigma 0.5: Size of the variance of autoregressive
+%         noise. This is an ARMA process where the AR and MA components can be
+%         separately specified.
+%     - physiological_sigma 1: Size of the variance of physiological
+%         noise
+%     - auto_reg_rho [0.5]: The coefficients of the autoregressive
+%         components you are modeling
+%     - ma_rho [0.0]:The coefficients of the moving average components you
+%         are modeling
+- voxels correlated at set correlation values (0.1, 0.2, 0.3)
+- betas fit by least squares
+- N=10000 (at a given noise level)
+- start and end of sessions were not ignored (optimal experimental design)
+- highpass filter: 1/128 hz
+
+
 - varying inter-trial-interval
 - varying noise level
 - varying number of trials
 
 \subsection*{Task Switching Validation}
+- 61 participants
+- 65+ age
+- education status
+- task: task switching, 5 blocks
+- single task (odd/even) (high/low) (30 trials each block)
+- 3 mixed blocks (48 repeat/ 40 switch trials)
+- 6 30 second rest blocks
+- participants had 4 practice trials immediately before beginning
+- participants practiced the task out of scanner.
+- iti average 3.5 seconds with exponential distribution
+- TR: 2 seconds, te: 30 ms
+
+\subsection{Preparing fMRI}
+Results included in this manuscript come from preprocessing performed
+using \emph{fMRIPrep} 1.5.7 (\cite{fmriprep1}; \cite{fmriprep2}; RRID:SCR\_016216),
+which is based on \emph{Nipype} 1.4.0
+(\cite{nipype1}; \cite{nipype2}; RRID:SCR\_002502).
+
+\begin{description}
+\item[Anatomical data preprocessing]
+The T1-weighted (T1w) image was corrected for intensity non-uniformity
+(INU) with \texttt{N4BiasFieldCorrection} \cite{n4}, distributed with
+ANTs 2.2.0 \cite[RRID:SCR\_004757]{ants}, and used as T1w-reference
+throughout the workflow. The T1w-reference was then skull-stripped with
+a \emph{Nipype} implementation of the \texttt{antsBrainExtraction.sh}
+workflow (from ANTs), using OASIS30ANTs as target template. Brain tissue
+segmentation of cerebrospinal fluid (CSF), white-matter (WM) and
+gray-matter (GM) was performed on the brain-extracted T1w using
+\texttt{fast} \cite{fsl_fast} [FSL 5.0.9, RRID:SCR\_002823,][]. Brain
+surfaces were reconstructed using \texttt{recon-all} \cite{fs_reconall},
+[FreeSurfer 6.0.1, RRID:SCR\_001847,][] and the brain mask estimated
+previously was refined with a custom variation of the method to
+reconcile ANTs-derived and FreeSurfer-derived segmentations of the
+cortical gray-matter of Mindboggle
+\cite[RRID:SCR\_002438,]{mindboggle}. Volume-based spatial
+normalization to two standard spaces (MNI152NLin2009cAsym,
+MNI152NLin6Asym) was performed through nonlinear registration with
+\texttt{antsRegistration} (ANTs 2.2.0), using brain-extracted versions
+of both T1w reference and the T1w template. The following templates were
+selected for spatial normalization: \emph{ICBM 152 Nonlinear
+Asymmetrical template version 2009c} {[}\cite{mni152nlin2009casym},
+RRID:SCR\_008796; TemplateFlow ID: MNI152NLin2009cAsym{]}, \emph{FSL's
+MNI ICBM 152 non-linear 6th Generation Asymmetric Average Brain
+Stereotaxic Registration Model} {[}\cite{mni152nlin6asym},
+RRID:SCR\_002823; TemplateFlow ID: MNI152NLin6Asym{]}.
+\item[Functional data preprocessing]
+For each of the 4 BOLD runs found per subject (across all tasks and
+sessions), the following preprocessing was performed. First, a reference
+volume and its skull-stripped version were generated using a custom
+methodology of \emph{fMRIPrep}. Susceptibility distortion correction
+(SDC) was omitted. The BOLD reference was then co-registered to the T1w
+reference using \texttt{bbregister} (FreeSurfer) which implements
+boundary-based registration \cite{bbr}. Co-registration was configured
+with six degrees of freedom. Head-motion parameters with respect to the
+BOLD reference (transformation matrices, and six corresponding rotation
+and translation parameters) are estimated before any spatiotemporal
+filtering using \texttt{mcflirt} \cite[FSL 5.0.9,]{mcflirt}. BOLD
+runs were slice-time corrected using \texttt{3dTshift} from AFNI
+20160207 \cite[RRID:SCR\_005927]{afni}. The BOLD time-series, were
+resampled to surfaces on the following spaces: \emph{fsaverage5}. The
+BOLD time-series (including slice-timing correction when applied) were
+resampled onto their original, native space by applying the transforms
+to correct for head-motion. These resampled BOLD time-series will be
+referred to as \emph{preprocessed BOLD in original space}, or just
+\emph{preprocessed BOLD}. The BOLD time-series were resampled into
+several standard spaces, correspondingly generating the following
+\emph{spatially-normalized, preprocessed BOLD runs}:
+MNI152NLin2009cAsym, MNI152NLin6Asym. First, a reference volume and its
+skull-stripped version were generated using a custom methodology of
+\emph{fMRIPrep}. Automatic removal of motion artifacts using independent
+component analysis \cite[ICA-AROMA,]{aroma} was performed on the
+\emph{preprocessed BOLD on MNI space} time-series after removal of
+non-steady state volumes and spatial smoothing with an isotropic,
+Gaussian kernel of 6mm FWHM (full-width half-maximum). Corresponding
+``non-aggresively'' denoised runs were produced after such smoothing.
+Additionally, the ``aggressive'' noise-regressors were collected and
+placed in the corresponding confounds file. Several confounding
+time-series were calculated based on the \emph{preprocessed BOLD}:
+framewise displacement (FD), DVARS and three region-wise global signals.
+FD and DVARS are calculated for each functional run, both using their
+implementations in \emph{Nipype} \cite[following the definitions
+by]{power_fd_dvars}. The three global signals are extracted within the
+CSF, the WM, and the whole-brain masks. Additionally, a set of
+physiological regressors were extracted to allow for component-based
+noise correction \cite[\emph{CompCor},]{compcor}. Principal
+components are estimated after high-pass filtering the
+\emph{preprocessed BOLD} time-series (using a discrete cosine filter
+with 128s cut-off) for the two \emph{CompCor} variants: temporal
+(tCompCor) and anatomical (aCompCor). tCompCor components are then
+calculated from the top 5\% variable voxels within a mask covering the
+subcortical regions. This subcortical mask is obtained by heavily
+eroding the brain mask, which ensures it does not include cortical GM
+regions. For aCompCor, components are calculated within the intersection
+of the aforementioned mask and the union of CSF and WM masks calculated
+in T1w space, after their projection to the native space of each
+functional run (using the inverse BOLD-to-T1w transformation).
+Components are also calculated separately within the WM and CSF masks.
+For each CompCor decomposition, the \emph{k} components with the largest
+singular values are retained, such that the retained components' time
+series are sufficient to explain 50 percent of variance across the
+nuisance mask (CSF, WM, combined, or temporal). The remaining components
+are dropped from consideration. The head-motion estimates calculated in
+the correction step were also placed within the corresponding confounds
+file. The confound time series derived from head motion estimates and
+global signals were expanded with the inclusion of temporal derivatives
+and quadratic terms for each \cite{confounds_satterthwaite_2013}.
+Frames that exceeded a threshold of 0.5 mm FD or 1.5 standardised DVARS
+were annotated as motion outliers. All resamplings can be performed with
+\emph{a single interpolation step} by composing all the pertinent
+transformations (i.e.~head-motion transform matrices, susceptibility
+distortion correction when available, and co-registrations to anatomical
+and output spaces). Gridded (volumetric) resamplings were performed
+using \texttt{antsApplyTransforms} (ANTs), configured with Lanczos
+interpolation to minimize the smoothing effects of other kernels
+\cite{lanczos}. Non-gridded (surface) resamplings were performed using
+\texttt{mri\_vol2surf} (FreeSurfer).
+\end{description}
+
+Many internal operations of \emph{fMRIPrep} use \emph{Nilearn} 0.6.1
+\cite[RRID:SCR\_001362]{nilearn}, mostly within the functional
+processing workflow. For more details of the pipeline, see
+\href{https://fmriprep.readthedocs.io/en/latest/workflows.html}{the
+section corresponding to workflows in \emph{fMRIPrep}'s documentation}.
+
+\subsection{BetaSeries Correlations}
+
+Results included in this manuscript come from modeling performed using
+\emph{NiBetaSeries} 0.4.3 \cite{Kent2018}, which is based on
+\emph{Nipype} 1.4.2 \cite{Gorgolewski2011, Gorgolewski2018}.
+
+\hypertarget{beta-series-modeling}{%
+\subsubsection{Beta Series Modeling}\label{beta-series-modeling}}
+
+Least squares- separate (LSS) models were generated for each event in
+the task following the method described in \cite{Turner2012a}, using
+Nistats 0.0.1b1.\\
+Prior to modeling, preprocessed data were masked,and mean-scaled over
+time. For each trial, preprocessed data were subjected to a general
+linear model in which the trial was modeled with its own regressor, while
+all other trials from that condition were modeled in a second regressor,
+and other conditions were modeled in their own regressors. Each
+condition regressor was convolved with a \cite[glover hemodynamic response
+function]{Glover1999}.\\
+In addition to condition regressors, average white matter signal, average csf signal,
+cosine basis set high pass regressors, the initial four non stead state volumes,
+\cite[friston 24]{Friston1996}, and motion outliers were included
+in the model. AR(1) prewhitening was applied in each model to account
+for temporal autocorrelation.
+
+After fitting each model, the parameter estimate (i.e., beta) map
+associated with the target trial's regressor was retained and
+concatenated into a 4D image with all other trials from the same
+condition, resulting in a set of N 4D images where N refers to the
+number of conditions in the task. The number of volumes in each 4D image
+represents the number of trials in that condition.
+
+\hypertarget{atlas-connectivity-analysis}{%
+\subsubsection{Atlas Connectivity
+Analysis}\label{atlas-connectivity-analysis}}
+
+The beta series 4D image for each condition in the task was subjected to
+an ROI-to-ROI connectivity analysis to produce a condition-specific
+correlation matrix.
+Two atlases were used to generate ROI-to-ROI connectivity matrices.
+The \cite[Schaefer Atlas (400 parcels, 17 networks)]{Schaefer2017} was
+used to comprehensively cover the cortex, and a custom atlas representing
+statistically significant clusters of voxels that responded across all trial types
+in task switching.
+
+The correlation coefficient estimator used for this
+step was empirical covariance, as implemented in Nilearn 0.4.2
+\cite{Abraham2014}. Correlation coefficients were converted to
+normally-distributed z-values using Fisher's r-to-z conversion
+\cite{Fisher1915}. Figures for the correlation matrices were generated
+with Matplotlib 2.2.5 \cite{Hunter2007} and MNE-Python 0.18.2
+\cite{Gramfort2013, Gramfort2014}.
+
+\hypertarget{software-dependencies}{%
+\subsubsection{Software Dependencies}\label{software-dependencies}}
+
+Additional libraries used in the NiBetaSeries workflow include
+\emph{Pybids} 0.9.5 \cite{Yarkoni2019}, \emph{Niworkflows} 1.0.4,
+\emph{Nibabel} 2.4.1, \emph{Pandas} 0.24.2 \cite{McKinney2010}, and
+\emph{Numpy} 1.18.1 \cite{VanDerWalt2011, Oliphant2006}.
+
+
 - traditional analysis/roi generation
+- also using a parcellation (schaefer)
 
 \subsection*{Task Switching Beta Series Correlation Simulations}
 - use real task (Task Switch) to validate the simulations
+- generate contrast noise ratios for each image in the real dataset
+    - vary contrast noise ratios at 25th, 50th, and 75th percentiles
+- simulate beta series
+- issues:
+    - the cnr does not exactly match the comparisons I will be performing
+        - e.g., the cnr is based on an average of all trial types,
+          while the contrasts on real data will be done for specific trial types
 
-\subsection*{Task Switching Beta Series Correlations}
-- beta series/atlas generation
+
+
+\subsection*{Task Switching Beta Series Correlation Analysis}
+
 % For figure citations, please use "Fig" instead of "Figure".
 % Nulla mi mi, Fig~\ref{fig1} venenatis sed ipsum varius, volutpat euismod diam. Proin rutrum vel massa non gravida. Quisque tempor sem et dignissim rutrum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi at justo vitae nulla elementum commodo eu id massa. In vitae diam ac augue semper tincidunt eu ut eros. Fusce fringilla erat porttitor lectus cursus, \nameref{S1_Video} vel sagittis arcu lobortis. Aliquam in enim semper, aliquam massa id, cursus neque. Praesent faucibus semper libero.
 
@@ -285,6 +558,8 @@ Simulations, task, and combination
 
 \subsection*{Task Switching Validation}
 % Nulla mi mi, venenatis sed ipsum varius, Table~\ref{table1} volutpat euismod diam. Proin rutrum vel massa non gravida. Quisque tempor sem et dignissim rutrum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi at justo vitae nulla elementum commodo eu id massa. In vitae diam ac augue semper tincidunt eu ut eros. Fusce fringilla erat porttitor lectus cursus, vel sagittis arcu lobortis. Aliquam in enim semper, aliquam massa id, cursus neque. Praesent faucibus semper libero.
+- traditional substraction does not reveal differences (with full atlas)
+- will see whether subtraction with task activation atlas has the same result
 
 \subsection*{Task Switching Beta Series Correlation Simulations}
 
@@ -376,6 +651,7 @@ Simulations, task, and combination
 
 \nolinenumbers
 
+\bibliography{plos}
 % Either type in your references using
 % \begin{thebibliography}{}
 % \bibitem{}
@@ -389,27 +665,27 @@ Simulations, task, and combination
 % here. See http://journals.plos.org/plosone/s/latex for 
 % step-by-step instructions.
 % 
-\begin{thebibliography}{10}
+% \begin{thebibliography}{10}
 
-\bibitem{bib1}
-Conant GC, Wolfe KH.
-\newblock {{T}urning a hobby into a job: how duplicated genes find new
-  functions}.
-\newblock Nat Rev Genet. 2008 Dec;9(12):938--950.
+% \bibitem{bib1}
+% Conant GC, Wolfe KH.
+% \newblock {{T}urning a hobby into a job: how duplicated genes find new
+%   functions}.
+% \newblock Nat Rev Genet. 2008 Dec;9(12):938--950.
 
-\bibitem{bib2}
-Ohno S.
-\newblock Evolution by gene duplication.
-\newblock London: George Alien \& Unwin Ltd. Berlin, Heidelberg and New York:
-  Springer-Verlag.; 1970.
+% \bibitem{bib2}
+% Ohno S.
+% \newblock Evolution by gene duplication.
+% \newblock London: George Alien \& Unwin Ltd. Berlin, Heidelberg and New York:
+%   Springer-Verlag.; 1970.
 
-\bibitem{bib3}
-Magwire MM, Bayer F, Webster CL, Cao C, Jiggins FM.
-\newblock {{S}uccessive increases in the resistance of {D}rosophila to viral
-  infection through a transposon insertion followed by a {D}uplication}.
-\newblock PLoS Genet. 2011 Oct;7(10):e1002337.
+% \bibitem{bib3}
+% Magwire MM, Bayer F, Webster CL, Cao C, Jiggins FM.
+% \newblock {{S}uccessive increases in the resistance of {D}rosophila to viral
+%   infection through a transposon insertion followed by a {D}uplication}.
+% \newblock PLoS Genet. 2011 Oct;7(10):e1002337.
 
-\end{thebibliography}
+% \end{thebibliography}
 
 
 
