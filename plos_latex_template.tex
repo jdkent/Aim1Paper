@@ -338,9 +338,9 @@ LSA has a regressor for each individual trial in the General Linear Model (GLM).
 - varying number of trials
 
 \subsection*{Task Switching Validation}
-- 61 participants
-- 65+ age
-- education status
+- 61 participants (31 females)
+- 65+ age: 71.754098 mean, 4.766745 std
+- education: 17.065574 mean, 2.657498 std
 - task: task switching, 5 blocks
 - single task (odd/even) (high/low) (30 trials each block)
 - 3 mixed blocks (48 repeat/ 40 switch trials)
@@ -523,10 +523,21 @@ Additional libraries used in the NiBetaSeries workflow include
 \emph{Nibabel} 2.4.1, \emph{Pandas} 0.24.2 \cite{McKinney2010}, and
 \emph{Numpy} 1.18.1 \cite{VanDerWalt2011, Oliphant2006}.
 
-
-- traditional analysis/roi generation
-- also using a parcellation (schaefer)
-
+\subsection*{Traditional Task Switch Analysis/Atlas Generation}
+\begin{enumerate}
+  \item use similar confounds (replaced friston 24 with framewise displacement
+        (may wish to use framewise displacement with betaseries as well?)
+  \item used smoothing kernel of 6mm
+  \item generated contrasts for each trial type relative to baseline,
+        an overall contrast, and "switch-repeat" (should include "repeat-single" as well?)
+  \item second level contrast from all the first level contrasts.
+\end{enumerate}
+\subsection*{contrast noise ratio calculation}
+\begin{enumerate}
+  \item use finite impulse responses (FIR), observing the amplitude 6 second post onset
+  \item take 90th percentile of significant responses
+  \item use the extracted cnr from the data to inform cnr for simulations (25th percentile, 50th percentile, 75 percentile)
+\end{enumerate}
 \subsection*{Task Switching Beta Series Correlation Simulations}
 - use real task (Task Switch) to validate the simulations
 - generate contrast noise ratios for each image in the real dataset
@@ -555,6 +566,11 @@ Additional libraries used in the NiBetaSeries workflow include
 \section*{Results}
 
 \subsection*{Beta Series Correlation Simulations}
+
+\begin{enumerate}
+  \item power analysis (is the null effect maintained?)/ can we detect a 0.1 difference?
+  \item is the signal biased? (e.g. systematic over or under estimation)
+\end{enumerate}
 
 \subsection*{Task Switching Validation}
 % Nulla mi mi, venenatis sed ipsum varius, Table~\ref{table1} volutpat euismod diam. Proin rutrum vel massa non gravida. Quisque tempor sem et dignissim rutrum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi at justo vitae nulla elementum commodo eu id massa. In vitae diam ac augue semper tincidunt eu ut eros. Fusce fringilla erat porttitor lectus cursus, vel sagittis arcu lobortis. Aliquam in enim semper, aliquam massa id, cursus neque. Praesent faucibus semper libero.
