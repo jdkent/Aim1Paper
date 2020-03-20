@@ -1,3 +1,73 @@
+@article{Durnez2018,
+abstract = {A recent stream of alarmist publications has questioned the validity of published neuroimaging findings. As a consequence, fMRI teams worldwide have been encouraged to increase their sample sizes to reach higher power and thus increase the positive predictive value of their findings. However, an often-overlooked factor influencing power is the experimental design: by choosing the appropriate experimental design, the statistical power of a study can be increased within subjects. By optimizing the order and timing of the stimuli, power can be gained at no extra cost. To facilitate design optimization, we created a python package and web-based tool called Neurodesign to maximize the detection power or estimation efficiency within subjects, while controlling for psychological factors such as the predictability of the design. We implemented both a simulation-based optimisation, as well as an optimisation using the genetic algorithm, introduced by Wager and Nichols (2003) and further improved by Kao et al. (2009), to optimize the experimental design. The toolbox Neurodesign allows more complex experimental setups than existing toolboxes, while the GUI provides a more user-friendly experience. The toolbox is accessible online at www.neuropowertools.org.},
+author = {Durnez, Joke and Blair, Ross and Poldrack, Russell A},
+doi = {10.1101/119594},
+journal = {bioRxiv},
+month = {jan},
+pages = {119594},
+title = {{Neurodesign: Optimal Experimental Designs for Task fMRI}},
+url = {http://biorxiv.org/content/early/2018/03/18/119594.abstract},
+year = {2018}
+}
+
+@article{Glover1999,
+abstract = {The temporal characteristics of the BOLD response in sensorimotor and auditory cortices were measured in subjects performing finger tapping while listening to metronome pacing tones. A repeated trial paradigm was used with stimulus durations of 167 ms to 16 s and intertrial times of 30 s. Both cortical systems were found to be nonlinear in that the response to a long stimulus could not be predicted by convolving the 1-s response with a rectangular function. In the short-time regime, the amplitude of the response varied only slowly with stimulus duration. It was found that this character was predicted with a modification to Buxton's balloon model. Wiener deconvolution was used to deblur the response to concatenated short episodes of finger tapping at different temporal separations and at rates from 1 to 4 Hz. While the measured response curves were distorted by overlap between the individual episodes, the deconvolved response at each rate was found to agree well with separate scans at each of the individual rates. Thus, although the impulse response cannot predict the response to fully overlapping stimuli, linear deconvolution is effective when the stimuli are separated by at least 4 s. The deconvolution filter must be measured for each subject using a short-stimulus paradigm. It is concluded that deconvolution may be effective in diminishing the hemodynamically imposed temporal blurring and may have potential applications in quantitating responses in event-related fMRI.},
+author = {Glover, Gary H.},
+doi = {10.1006/nimg.1998.0419},
+file = {:media/Data/Downloads/1-s2.0-S1053811998904190-main.pdf:pdf},
+issn = {10538119},
+journal = {NeuroImage},
+number = {4},
+pages = {416--429},
+pmid = {10191170},
+title = {{Deconvolution of impulse response in event-related BOLD fMRI}},
+volume = {9},
+year = {1999}
+}
+
+@article{Welvaert2011,
+abstract = {Studies that validate statistical methods for functional magnetic resonance imaging (fMRI) data often use simulated data to ensure that the ground truth is known. However, simulated fMRI data are almost always generated using in-house procedures because a well-accepted simulation method is lacking. In this article we describe the R package neuRosim, which is a collection of data generation functions for neuroimaging data. We will demonstrate the possibilities to generate data from simple time series to complete 4D images and the possibilities for the user to create her own data generation method.},
+author = {Welvaert, Marijke and Rosseel, Yves and Durnez, Joke and Moerkerke, Beatrijs and Verdoolaege, Geert},
+file = {:media/Data/Downloads/v44i10 (3).pdf:pdf},
+journal = {Journal of Statistical Software},
+keywords = {data generation,fmri,simulation},
+mendeley-groups = {Prospectus},
+number = {10},
+title = {{neuRosim: An R Package for Generating fMRI Data}},
+volume = {44},
+year = {2011}
+}
+
+@article{Welvaert2013a,
+abstract = {Signal-to-noise ratio, the ratio between signal and noise, is a quantity that has been well established for MRI data but is still subject of ongoing debate and confusion when it comes to fMRI data. fMRI data are characterised by small activation fluctuations in a background of noise. Depending on how the signal of interest and the noise are identified, signal-to-noise ratio for fMRI data is reported by using many different definitions. Since each definition comes with a different scale, interpreting and comparing signal-to-noise ratio values for fMRI data can be a very challenging job. In this paper, we provide an overview of existing definitions. Further, the relationship with activation detection power is investigated. Reference tables and conversion formulae are provided to facilitate comparability between fMRI studies.},
+author = {Welvaert, Marijke and Rosseel, Yves},
+doi = {10.1371/journal.pone.0077089},
+file = {:media/Data/Downloads/journal.pone.0077089.PDF:PDF},
+issn = {19326203},
+journal = {PLoS ONE},
+number = {11},
+title = {{On the definition of signal-to-noise ratio and contrast-to-noise ratio for fMRI data}},
+volume = {8},
+year = {2013}
+}
+
+@article{Ellis2020,
+abstract = {
+With advances in methods for collecting and analyzing fMRI data, there is a concurrent need to understand how to reliably evaluate and optimally use these methods. Simulations of fMRI data can aid in both the evaluation of complex designs and the analysis of data. We present fmrisim, a new Python package for standardized, realistic simulation of fMRI data. This package is part of BrainIAK: a recently released open-source Python toolbox for advanced neuroimaging analyses. We describe how to use fmrisim to extract noise properties from real fMRI data and then create a synthetic dataset with matched noise properties and a user-specified signal. We validate the noise generated by fmrisim to show that it can approximate the noise properties of real data. We further show how fmrisim can help researchers find the optimal design in terms of power. The fmrisim package holds promise for improving the design of fMRI experiments, which may facilitate both the pre-registration of such experiments as well as the analysis of fMRI data.
+},
+author = {Ellis, Cameron T and Baldassano, Christopher and Schapiro, Anna C and Cai, Ming Bo and Cohen, Jonathan D},
+doi = {10.7717/peerj.8564},
+issn = {2167-8359},
+journal = {PeerJ},
+keywords = { Multivariate design, Power analysis, Reproducibility, Simulation,fMRI},
+month = {feb},
+pages = {e8564},
+title = {{Facilitating open-science with realistic fMRI simulation: validation and application}},
+url = {https://doi.org/10.7717/peerj.8564},
+volume = {8},
+year = {2020}
+}
+
 @article{fmriprep1,
     author = {Esteban, Oscar and Markiewicz, Christopher and Blair, Ross W and Moodie, Craig and Isik, Ayse Ilkay and Erramuzpe Aliaga, Asier and Kent, James and Goncalves, Mathias and DuPre, Elizabeth and Snyder, Madeleine and Oya, Hiroyuki and Ghosh, Satrajit and Wright, Jessey and Durnez, Joke and Poldrack, Russell and Gorgolewski, Krzysztof Jacek},
     title = {{fMRIPrep}: a robust preprocessing pipeline for functional {MRI}},
@@ -617,17 +687,6 @@ organization = {Austin, TX}
    Number="3",
    Pages="346--355",
    Month="Mar"
-}
-
-@Article{Glover1999,
-   Author="Glover, G. H. ",
-   Title="{{D}econvolution of impulse response in event-related {B}{O}{L}{D} f{M}{R}{I}}",
-   Journal="Neuroimage",
-   Year="1999",
-   Volume="9",
-   Number="4",
-   Pages="416--429",
-   Month="Apr"
 }
 
 @article{Schaefer2017,
