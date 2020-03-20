@@ -303,13 +303,64 @@ LSA has a regressor for each individual trial in the General Linear Model (GLM).
 
 \section*{Materials and methods}
 \subsection*{Beta Series Correlation Simulations}
-- Time Repetition = 2
-- duration of experiment = variable
-- intertrial interval = 2 - 8 seconds (exponential sampling)
-- response scaled peak response is 1
-- glover HRF
+To assess the validity and power of beta series correlations,
+we simulated realistic timeseries data and convolved short (0.2 second) task onsets with double gamma functions
+and added the responses to the timeseries.
+We used fmrisim from the brainiak toolbox to generate a two voxel timeseries
+containing drift, autocorrelation, phsysiological noise,
+task related movement, and scanner noise~\cite{Ellis2020}.
+We varied the contrast-to-noise ratio (CNR) using the amplitude of the activation
+divided by the standard deviation of the noise~\cite{Welvaert2013a}.
+The double gamma function's parameters were base on Glover~\cite{Glover1999,Welvaert2011}.
+Realistic choices for CNR were selected by running beta series correlations (LSA)
+on a local dataset, measuring the standard deviation of the residuals and peak
+estimates of the betas within regions of interest.
+We derived a CNRs of 1 and 10 as reasonable values from the dataset.
+Another parameter deemed critical is the standard deviation of the betas relative
+to the standard deviation of the noise~\cite{Abdulrahman2016}.
+Again, using our local dataset, we measured the standard deviation of the betas
+(i.e., Activation Variation) with
+the standard deviation of the residuals (i.e., Noise),
+and arrived at Activation Variation Noise ratios (AVNR) of 1 and 10.
+We can manipulate CNR and AVNR independently to determine whether variation of the betas
+impact beta series correlation's ability to recapture the true correlation.
+For all simulations the time of repetition was set at 2 seconds.
+
+The choice of onset times was varied based on average inter-trial-interval (ITI's).
+The ITI is the time from the previous task onset to the next task onset.
+We chose average ITIs at 2, 4, 6, and 8 seconds to reflect a common range of ITIs
+for fast event related design experiments
+We also varied number of trials, choosing 15, 30, 45, and 60 trials per condition,
+which also appear to be common selections for fast event related design experiments.
+The optimization of selecting task onsets was done with neurodesign~\cite{Durnez2018}.
+We chose A-Optimality to optimize onsets using the genetic algorithm implemented
+in neurodesign, selecting onsets with an exponential distribution.
+The top 20 designs were chosen from neurodesign to reduce the likelihood
+that the simulations results are an artifact of idiosyncracies of the experimental design.
+
+The beta weights for each voxel were chosen from a multivariate normal distribution
+with a mean of one and with a fixed correlation target between the two voxels and predefined variance of either 1 or 10 for the betas
+within each voxel.
+
+100 simulations were run for each trial number (15, 30, 45, 60) ITI (2, 4, 6, 8), 
+CNR (1, 10), AVNR (1, 10), condition (c1, c2), and correlation targets (0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9)
+resulting in 128,000 total simulations.
+
+To measure validity, we took two samples (n=50) with the same correlation target (e.g., 0.1)
+and matching on every other parameter, and ran a ttest to measure if the samples
+were significantly different.
+We repeated this process 10,000 times to measure the false positive rate.
+
+Once the false positive rate is established, we will establish power with the same method as above,
+but with samples containing different correlation targets, with a targeted difference of 0.1, 0.2, and 0.3.
+
+%- Time Repetition = 2
+%- duration of experiment = variable
+%- intertrial interval = 2 - 8 seconds (exponential sampling)
+%- response scaled peak response is 1
+%- glover HRF
 % https://github.com/brainiak/brainiak/blob/dc12929a99529a69da3c3242e9c9fd31c308fbb0/brainiak/utils/fmrisim.py#L722
-- the height of the voxel HRF responses was drawn from a multivariate normal distribution with mean 1 and standard deviation of 1.
+%- the height of the voxel HRF responses was drawn from a multivariate normal distribution with mean 1 and standard deviation of 1.
 % https://github.com/jdkent/betaSeriesSimulations/blob/2fc45bcbc6873d395432d01359ba492b6f3b1458/beta_sim/interfaces/fmrisim.py#L204
 % https://github.com/jdkent/betaSeriesSimulations/blob/2fc45bcbc6873d395432d01359ba492b6f3b1458/beta_sim/interfaces/fmrisim.py#L170
 % - noise was added through:
@@ -326,11 +377,11 @@ LSA has a regressor for each individual trial in the General Linear Model (GLM).
 %         components you are modeling
 %     - ma_rho [0.0]:The coefficients of the moving average components you
 %         are modeling
-- voxels correlated at set correlation values (0.1, 0.2, 0.3)
-- betas fit by least squares
-- N=10000 (at a given noise level)
-- start and end of sessions were not ignored (optimal experimental design)
-- highpass filter: 1/128 hz
+%- voxels correlated at set correlation values (0.1, 0.2, 0.3)
+%- betas fit by least squares
+%- N=100 (for a given parameter)
+%- start and end of sessions were not ignored (optimal experimental design)
+%- highpass filter: 1/128 hz
 
 
 - varying inter-trial-interval
@@ -338,17 +389,36 @@ LSA has a regressor for each individual trial in the General Linear Model (GLM).
 - varying number of trials
 
 \subsection*{Task Switching Validation}
-- 61 participants (31 females)
-- 65+ age: 71.754098 mean, 4.766745 std
-- education: 17.065574 mean, 2.657498 std
-- task: task switching, 5 blocks
-- single task (odd/even) (high/low) (30 trials each block)
-- 3 mixed blocks (48 repeat/ 40 switch trials)
-- 6 30 second rest blocks
-- participants had 4 practice trials immediately before beginning
-- participants practiced the task out of scanner.
-- iti average 3.5 seconds with exponential distribution
-- TR: 2 seconds, te: 30 ms
+To validate the betaseries simulations we used an unpublished dataset
+of older adults (n=61, 31 female) performing a mixed task switching task.
+Their average age is 71.75 years with an average of 17 years of education.
+The task switch task was a mixed block/event related design containing
+5 blocks (2 single task blocks and 3 mixed task blocks).
+There was a 30 second rest between each block.
+There were 30 trials during each single trial block,
+and for the 3 mixed blocks there were 48 repeat trials and 40 switch trials total.
+The single tasks consisted of identifying a number between
+1 and 10 excluding 5 as high/low or odd/even.
+Participants were cued to which task they were performing by the color of the square
+the number was presented on.
+
+\subsection{Scanner Parameters}
+Data were collected on a 3T GE Discovery 750.
+(scan parameters for anatomical images)
+(scan parameters for functional images)
+
+
+% - 61 participants (31 females)
+% - 65+ age: 71.754098 mean, 4.766745 std
+% - education: 17.065574 mean, 2.657498 std
+% - task: task switching, 5 blocks
+% - single task (odd/even) (high/low) (30 trials each block)
+% - 3 mixed blocks (48 repeat/ 40 switch trials)
+% - 6 30 second rest blocks
+% - participants had 4 practice trials immediately before beginning
+% - participants practiced the task out of scanner.
+% - iti average 3.5 seconds with exponential distribution
+% - TR: 2 seconds, te: 30 ms
 
 \subsection{Preparing fMRI}
 Results included in this manuscript come from preprocessing performed
@@ -407,15 +477,8 @@ several standard spaces, correspondingly generating the following
 \emph{spatially-normalized, preprocessed BOLD runs}:
 MNI152NLin2009cAsym, MNI152NLin6Asym. First, a reference volume and its
 skull-stripped version were generated using a custom methodology of
-\emph{fMRIPrep}. Automatic removal of motion artifacts using independent
-component analysis \cite[ICA-AROMA,]{aroma} was performed on the
-\emph{preprocessed BOLD on MNI space} time-series after removal of
-non-steady state volumes and spatial smoothing with an isotropic,
-Gaussian kernel of 6mm FWHM (full-width half-maximum). Corresponding
-``non-aggresively'' denoised runs were produced after such smoothing.
-Additionally, the ``aggressive'' noise-regressors were collected and
-placed in the corresponding confounds file. Several confounding
-time-series were calculated based on the \emph{preprocessed BOLD}:
+\emph{fMRIPrep}.
+Several confounding time-series were calculated based on the \emph{preprocessed BOLD}:
 framewise displacement (FD), DVARS and three region-wise global signals.
 FD and DVARS are calculated for each functional run, both using their
 implementations in \emph{Nipype} \cite[following the definitions
@@ -538,17 +601,6 @@ Additional libraries used in the NiBetaSeries workflow include
   \item take 90th percentile of significant responses
   \item use the extracted cnr from the data to inform cnr for simulations (25th percentile, 50th percentile, 75 percentile)
 \end{enumerate}
-\subsection*{Task Switching Beta Series Correlation Simulations}
-- use real task (Task Switch) to validate the simulations
-- generate contrast noise ratios for each image in the real dataset
-    - vary contrast noise ratios at 25th, 50th, and 75th percentiles
-- simulate beta series
-- issues:
-    - the cnr does not exactly match the comparisons I will be performing
-        - e.g., the cnr is based on an average of all trial types,
-          while the contrasts on real data will be done for specific trial types
-
-
 
 \subsection*{Task Switching Beta Series Correlation Analysis}
 
@@ -566,20 +618,35 @@ Additional libraries used in the NiBetaSeries workflow include
 \section*{Results}
 
 \subsection*{Beta Series Correlation Simulations}
+Across all ITIs, trial numbers, CNRs, and AVNRs, the false positive rate of 5\%
+holds.
+
+The power for detecting an effect varies by ITIs, number of trials, CNR, and AVNR.
+increasing ITI leads to more power
+increasing the number of trials leads to more power
+The CNR drastically changes whether an effect is detectable or not, depending on estimation method.
+Greater AVNR also improves power
+create/insert figures for results
 
 \begin{enumerate}
   \item power analysis (is the null effect maintained?)/ can we detect a 0.1 difference?
-  \item is the signal biased? (e.g. systematic over or under estimation)
 \end{enumerate}
 
 \subsection*{Task Switching Validation}
-% Nulla mi mi, venenatis sed ipsum varius, Table~\ref{table1} volutpat euismod diam. Proin rutrum vel massa non gravida. Quisque tempor sem et dignissim rutrum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi at justo vitae nulla elementum commodo eu id massa. In vitae diam ac augue semper tincidunt eu ut eros. Fusce fringilla erat porttitor lectus cursus, vel sagittis arcu lobortis. Aliquam in enim semper, aliquam massa id, cursus neque. Praesent faucibus semper libero.
+show the second level results
+
 - traditional substraction does not reveal differences (with full atlas)
 - will see whether subtraction with task activation atlas has the same result
 
 \subsection*{Task Switching Beta Series Correlation Simulations}
 
+
 \subsection*{Task Switching Beta Series Correlations}
+Comparing The task versus the resting state shows mixed results.
+Question: DOES LSS or LSA show more differences between task and rest for both
+the atlas and motivated ROIs?
+Question: DOES LSS or LSA show more differences between task conditions (repeat - single)?
+(either using atlas definition or traditional roi derived analysis)
 % Place tables after the first paragraph in which they are cited.
 % \begin{table}[!ht]
 % \begin{adjustwidth}{-2.25in}{0in} % Comment out/remove adjustwidth environment if table fits in text column.
