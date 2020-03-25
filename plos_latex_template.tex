@@ -163,6 +163,9 @@
 \fancyfootoffset[L]{2.25in}
 \lfoot{\today}
 
+%% TEMPORARY FIGURES (REMOVE BEFORE SUBMISSION)
+\usepackage[svgpath=./figs/]{svg}
+\usepackage{float}
 %% Include all macros below
 
 \newcommand{\lorem}{{\bf LOREM}}
@@ -402,12 +405,33 @@ The single tasks consisted of identifying a number between
 Participants were cued to which task they were performing by the color of the square
 the number was presented on.
 
+\subsection*{Null Task Data}
+In addition to the task switching task, participants also completed
+two 8 minute resting state runs.
+We used the resting state runs to compare the task data with data where there is no
+condition specific connectivity.
+While the task switch data had 471 volumes, each resting state run only had
+240 volumes.
+In order to match the resting state data with the task data, we concatenated
+the two resting state runs with cutting off the first 10 volumes of the second run
+and interpolating 1 volume between the two runs, resulting in 471 volumes.
+This null task data was treated the same as the task switching data for the
+beta series correlation analysis.
+
 \subsection{Scanner Parameters}
 Data were collected on a 3T GE Discovery 750.
 (scan parameters for anatomical images)
 (scan parameters for functional images)
 
-
+% the below are not the correct details, but I should those topics to make sure
+% I'm including the relevant information
+% gradient echo echo-planar sequence acquired with interleaved axial 4mm slices from the bottom up. The first four volumes were discarded to allow the signal to reach a steady state.
+% "RepetitionTime": 2 (aka TR in seconds)
+% "FlipAngle": 76 (degrees)
+% "EchoTime": 0.0279 (aka TE in seconds)
+% "SliceThickness": 4 (mm)
+% receiver bandwidth = +- 25.0 kHz
+% FOV = 22 cm × 22 cm, matrix size = 64 × 64,
 % - 61 participants (31 females)
 % - 65+ age: 71.754098 mean, 4.766745 std
 % - education: 17.065574 mean, 2.657498 std
@@ -431,54 +455,43 @@ which is based on \emph{Nipype} 1.4.0
 The T1-weighted (T1w) image was corrected for intensity non-uniformity
 (INU) with \texttt{N4BiasFieldCorrection} \cite{n4}, distributed with
 ANTs 2.2.0 \cite[RRID:SCR\_004757]{ants}, and used as T1w-reference
-throughout the workflow. The T1w-reference was then skull-stripped with
-a \emph{Nipype} implementation of the \texttt{antsBrainExtraction.sh}
-workflow (from ANTs), using OASIS30ANTs as target template. Brain tissue
-segmentation of cerebrospinal fluid (CSF), white-matter (WM) and
+throughout the workflow.
+The T1w-reference was then skull-stripped with a \emph{Nipype} implementation
+of the \texttt{antsBrainExtraction.sh} workflow (from ANTs), using OASIS30ANTs
+as target template.
+Brain tissue segmentation of cerebrospinal fluid (CSF), white-matter (WM) and
 gray-matter (GM) was performed on the brain-extracted T1w using
-\texttt{fast} \cite{fsl_fast} [FSL 5.0.9, RRID:SCR\_002823,][]. Brain
-surfaces were reconstructed using \texttt{recon-all} \cite{fs_reconall},
+\texttt{fast} \cite{fsl_fast} [FSL 5.0.9, RRID:SCR\_002823,][].
+Brain surfaces were reconstructed using \texttt{recon-all} \cite{fs_reconall},
 [FreeSurfer 6.0.1, RRID:SCR\_001847,][] and the brain mask estimated
 previously was refined with a custom variation of the method to
 reconcile ANTs-derived and FreeSurfer-derived segmentations of the
-cortical gray-matter of Mindboggle
-\cite[RRID:SCR\_002438,]{mindboggle}. Volume-based spatial
-normalization to two standard spaces (MNI152NLin2009cAsym,
-MNI152NLin6Asym) was performed through nonlinear registration with
-\texttt{antsRegistration} (ANTs 2.2.0), using brain-extracted versions
-of both T1w reference and the T1w template. The following templates were
-selected for spatial normalization: \emph{ICBM 152 Nonlinear
+cortical gray-matter of Mindboggle \cite[RRID:SCR\_002438,]{mindboggle}.
+Volume-based spatial normalization to one standard space (MNI152NLin2009cAsym)
+was performed through nonlinear registration with \texttt{antsRegistration}
+(ANTs 2.2.0), using brain-extracted versions of both T1w reference and the T1w template.
+The following templates were selected for spatial normalization: \emph{ICBM 152 Nonlinear
 Asymmetrical template version 2009c} {[}\cite{mni152nlin2009casym},
-RRID:SCR\_008796; TemplateFlow ID: MNI152NLin2009cAsym{]}, \emph{FSL's
-MNI ICBM 152 non-linear 6th Generation Asymmetric Average Brain
-Stereotaxic Registration Model} {[}\cite{mni152nlin6asym},
-RRID:SCR\_002823; TemplateFlow ID: MNI152NLin6Asym{]}.
+RRID:SCR\_008796; TemplateFlow ID: MNI152NLin2009cAsym{]}.
 \item[Functional data preprocessing]
 For each of the 4 BOLD runs found per subject (across all tasks and
 sessions), the following preprocessing was performed. First, a reference
 volume and its skull-stripped version were generated using a custom
-methodology of \emph{fMRIPrep}. Susceptibility distortion correction
-(SDC) was omitted. The BOLD reference was then co-registered to the T1w
-reference using \texttt{bbregister} (FreeSurfer) which implements
-boundary-based registration \cite{bbr}. Co-registration was configured
-with six degrees of freedom. Head-motion parameters with respect to the
-BOLD reference (transformation matrices, and six corresponding rotation
-and translation parameters) are estimated before any spatiotemporal
-filtering using \texttt{mcflirt} \cite[FSL 5.0.9,]{mcflirt}. BOLD
-runs were slice-time corrected using \texttt{3dTshift} from AFNI
-20160207 \cite[RRID:SCR\_005927]{afni}. The BOLD time-series, were
-resampled to surfaces on the following spaces: \emph{fsaverage5}. The
-BOLD time-series (including slice-timing correction when applied) were
-resampled onto their original, native space by applying the transforms
-to correct for head-motion. These resampled BOLD time-series will be
-referred to as \emph{preprocessed BOLD in original space}, or just
-\emph{preprocessed BOLD}. The BOLD time-series were resampled into
-several standard spaces, correspondingly generating the following
-\emph{spatially-normalized, preprocessed BOLD runs}:
-MNI152NLin2009cAsym, MNI152NLin6Asym. First, a reference volume and its
-skull-stripped version were generated using a custom methodology of
-\emph{fMRIPrep}.
+methodology of \emph{fMRIPrep}.
+Susceptibility distortion correction (SDC) was omitted.
+The BOLD reference was then co-registered to the T1w reference using \texttt{bbregister}
+(FreeSurfer) which implements boundary-based registration \cite{bbr}.
+Co-registration was configured with six degrees of freedom.
+Head-motion parameters with respect to the BOLD reference (transformation matrices,
+and six corresponding rotation and translation parameters) are estimated before any
+spatiotemporal filtering using \texttt{mcflirt} \cite[FSL 5.0.9,]{mcflirt}.
+The BOLD time-series were resampled into a standard space, correspondingly
+generating the following \emph{spatially-normalized, preprocessed BOLD runs}:
+MNI152NLin2009cAsym.
+First, a reference volume and its skull-stripped version were generated 
+ a custom methodology of \emph{fMRIPrep}.
 Several confounding time-series were calculated based on the \emph{preprocessed BOLD}:
+% only used a subset of the confounding variables
 framewise displacement (FD), DVARS and three region-wise global signals.
 FD and DVARS are calculated for each functional run, both using their
 implementations in \emph{Nipype} \cite[following the definitions
@@ -621,6 +634,69 @@ Additional libraries used in the NiBetaSeries workflow include
 Across all ITIs, trial numbers, CNRs, and AVNRs, the false positive rate of 5\%
 holds.
 
+\begin{figure}[H]
+  \centering
+  \subfloat{\includesvg[width=\textwidth]{snr-1_trial_noise-0_diff-none_simplified_pwr}}
+
+  \subfloat{\includesvg[width=\textwidth]{snr-1_trial_noise-1_diff-none_simplified_pwr}}
+  \label{fig:dnone}
+\end{figure}
+
+\begin{figure}[H]
+  \ContinuedFloat
+  \centering
+  \subfloat{\includesvg[width=\textwidth]{snr-10_trial_noise-0_diff-none_simplified_pwr}}
+
+  \subfloat{\includesvg[width=\textwidth]{snr-10_trial_noise-1_diff-none_simplified_pwr}}
+  \caption{LSA/LSS shows a \%5 false positive rate for all conditions}
+  \label{fig:dnone}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \subfloat{\includesvg[width=\textwidth]{snr-1_trial_noise-0_diff-small_simplified_pwr}}
+
+  \subfloat{\includesvg[width=\textwidth]{snr-1_trial_noise-1_diff-small_simplified_pwr}}
+  \label{fig:dsmall}
+\end{figure}
+
+\begin{figure}[H]
+  \ContinuedFloat
+  \centering
+  \subfloat{\includesvg[width=\textwidth]{snr-10_trial_noise-0_diff-small_simplified_pwr}}
+
+  \subfloat{\includesvg[width=\textwidth]{snr-10_trial_noise-1_diff-small_simplified_pwr}}
+  \caption{
+    Detecting a small difference (0.1 pearson's R) between conditions.
+    LSS and LSA perform similarly for short ITIs and long ITIs.
+    The greatest difference occurs during the four second ITI,
+    especially with a CNR of 10.}
+  \label{fig:dsmall}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \subfloat{\includesvg[width=\textwidth]{snr-1_trial_noise-0_diff-large_simplified_pwr}}
+
+  \subfloat{\includesvg[width=\textwidth]{snr-1_trial_noise-1_diff-large_simplified_pwr}}
+  \label{fig:dlarge}
+\end{figure}
+
+\begin{figure}[H]
+  \ContinuedFloat
+  \centering
+  \subfloat{\includesvg[width=\textwidth]{snr-10_trial_noise-0_diff-large_simplified_pwr}}
+
+  \subfloat{\includesvg[width=\textwidth]{snr-10_trial_noise-1_diff-large_simplified_pwr}}
+  \caption{
+    Detecting a large difference (0.3 pearson's R) between two conditions.
+    LSS and LSA perform similarly for short ITIs and long ITIs when the CNR is 10.
+    LSS has an advantage for fewer trials per condition when the ITI is four seconds.
+    LSS also has greater power at a CNR of 1 when the ITI is either four or
+    eight seconds.
+    }
+  \label{fig:dlarge}
+\end{figure}
 The power for detecting an effect varies by ITIs, number of trials, CNR, and AVNR.
 increasing ITI leads to more power
 increasing the number of trials leads to more power
@@ -628,9 +704,6 @@ The CNR drastically changes whether an effect is detectable or not, depending on
 Greater AVNR also improves power
 create/insert figures for results
 
-\begin{enumerate}
-  \item power analysis (is the null effect maintained?)/ can we detect a 0.1 difference?
-\end{enumerate}
 
 \subsection*{Task Switching Validation}
 show the second level results
