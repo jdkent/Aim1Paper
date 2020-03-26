@@ -408,8 +408,7 @@ the number was presented on.
 \subsection*{Null Task Data}
 In addition to the task switching task, participants also completed
 two 8 minute resting state runs.
-We used the resting state runs to compare the task data with data where there is no
-condition specific connectivity.
+We used the resting state runs as a null model for task switching.
 While the task switch data had 471 volumes, each resting state run only had
 240 volumes.
 In order to match the resting state data with the task data, we concatenated
@@ -474,7 +473,7 @@ The following templates were selected for spatial normalization: \emph{ICBM 152 
 Asymmetrical template version 2009c} {[}\cite{mni152nlin2009casym},
 RRID:SCR\_008796; TemplateFlow ID: MNI152NLin2009cAsym{]}.
 \item[Functional data preprocessing]
-For each of the 4 BOLD runs found per subject (across all tasks and
+For each of the 2 BOLD runs found per subject (across all tasks and
 sessions), the following preprocessing was performed. First, a reference
 volume and its skull-stripped version were generated using a custom
 methodology of \emph{fMRIPrep}.
@@ -579,17 +578,13 @@ an ROI-to-ROI connectivity analysis to produce a condition-specific
 correlation matrix.
 Two atlases were used to generate ROI-to-ROI connectivity matrices.
 The \cite[Schaefer Atlas (400 parcels, 17 networks)]{Schaefer2017} was
-used to comprehensively cover the cortex, and a custom atlas representing
-statistically significant clusters of voxels that responded across all trial types
-in task switching.
+used to comprehensively cover the cortex.
 
 The correlation coefficient estimator used for this
 step was empirical covariance, as implemented in Nilearn 0.4.2
 \cite{Abraham2014}. Correlation coefficients were converted to
 normally-distributed z-values using Fisher's r-to-z conversion
-\cite{Fisher1915}. Figures for the correlation matrices were generated
-with Matplotlib 2.2.5 \cite{Hunter2007} and MNE-Python 0.18.2
-\cite{Gramfort2013, Gramfort2014}.
+\cite{Fisher1915}.
 
 \hypertarget{software-dependencies}{%
 \subsubsection{Software Dependencies}\label{software-dependencies}}
@@ -599,16 +594,41 @@ Additional libraries used in the NiBetaSeries workflow include
 \emph{Nibabel} 2.4.1, \emph{Pandas} 0.24.2 \cite{McKinney2010}, and
 \emph{Numpy} 1.18.1 \cite{VanDerWalt2011, Oliphant2006}.
 
-\subsection*{Traditional Task Switch Analysis/Atlas Generation}
-\begin{enumerate}
-  \item use similar confounds (replaced friston 24 with framewise displacement
-        (may wish to use framewise displacement with betaseries as well?)
-  \item used smoothing kernel of 6mm
-  \item generated contrasts for each trial type relative to baseline,
-        an overall contrast, and "switch-repeat" (should include "repeat-single" as well?)
-  \item second level contrast from all the first level contrasts.
-\end{enumerate}
+\subsection*{Traditional Task Switch Analysis}
+The task switch bold fmriprep output in MNI152NLin2009cAsym space
+was analyzed with Nistats for first and second level analyses.
+we used mean white matter signal, mean cerebrospinal fluid signal,
+discrete cosine basis filter (high pass filter), framewise displacement, the first four non-steady volumes, and
+all identified motion outliers as regressors in the first level model for each participant
+in addition to the task onsets convolved with a double gamma function ~\cite{Glover1999}.
+Each image was smoothed with a 6mm full-wide half-max kernel.
+We derived all condition versus baseline contrasts: single, repeat, switch, as well as
+additional contrasts for switch - repeat and a weighted average of all task conditions.
+We ignored correctness of the participant's response since this was not important to
+establish whether the contrasts looked reasonable.
+
+Second level analysis took a summary of the first level results presenting which
+regions were robustly activated between participants.
+For each contrast, the alpha was set to 0.01 with a cluster threshold of 10 voxels using
+false discovery rate error control.
+
 \subsection*{contrast noise ratio calculation}
+To generate realistic numbers for simulating timeseries at varying CNRs,
+we used the task switch dataset.
+We ran LSA on all participants to get both trial estimates of activation (i.e., betas)
+as well as residuals from the model.
+To calculate CNR, several steps were taken.
+First, we took the absolute value all beta estimates for a participant.
+Second, we took the median beta estimates over all trial volumes
+to create a 3D median amplitude beta estimate map.
+Third, we took the standard deviation of the residuals for each voxel
+Fourth, we divided the 3D median amplitude beta estimate map by the 3D standard deviation of the residual map,
+resulting in a 3D map of CNR
+Fifth, we took either the max or median value from the participant's CNR map.
+Sixth, we took the median value across all participants for either the max or median CNR,
+giving us a reasonable upper bound of CNR as well a more typical CNR value.
+Calculating CVNR followed the same procedure as CNR with the exception of the first two steps.
+First, we took the standard deviation of the beta estimates, then we followed steps 3 through 6 above.
 \begin{enumerate}
   \item use finite impulse responses (FIR), observing the amplitude 6 second post onset
   \item take 90th percentile of significant responses
@@ -648,7 +668,11 @@ holds.
   \subfloat{\includesvg[width=\textwidth]{snr-10_trial_noise-0_diff-none_simplified_pwr}}
 
   \subfloat{\includesvg[width=\textwidth]{snr-10_trial_noise-1_diff-none_simplified_pwr}}
-  \caption{LSA/LSS shows a \%5 false positive rate for all conditions}
+  \caption{
+    LSA/LSS shows a \%5 false positive rate for all conditions.
+    Each power plot represents a sample of 50 pairs of correlations (with no true difference)
+    randomly pulled from a distribution of correlations 10,000 times.
+  }
   \label{fig:dnone}
 \end{figure}
 
@@ -668,6 +692,8 @@ holds.
   \subfloat{\includesvg[width=\textwidth]{snr-10_trial_noise-1_diff-small_simplified_pwr}}
   \caption{
     Detecting a small difference (0.1 pearson's R) between conditions.
+    Each power plot represents a sample of 50 pairs of correlations (with a true difference of 0.1)
+    randomly pulled from a distribution of correlations 10,000 times.
     LSS and LSA perform similarly for short ITIs and long ITIs.
     The greatest difference occurs during the four second ITI,
     especially with a CNR of 10.}
@@ -690,6 +716,8 @@ holds.
   \subfloat{\includesvg[width=\textwidth]{snr-10_trial_noise-1_diff-large_simplified_pwr}}
   \caption{
     Detecting a large difference (0.3 pearson's R) between two conditions.
+    Each power plot represents a sample of 50 pairs of correlations (with a 0.3 true difference)
+    randomly pulled from a distribution of correlations 10,000 times.
     LSS and LSA perform similarly for short ITIs and long ITIs when the CNR is 10.
     LSS has an advantage for fewer trials per condition when the ITI is four seconds.
     LSS also has greater power at a CNR of 1 when the ITI is either four or
@@ -706,20 +734,181 @@ create/insert figures for results
 
 
 \subsection*{Task Switching Validation}
-show the second level results
 
-- traditional substraction does not reveal differences (with full atlas)
-- will see whether subtraction with task activation atlas has the same result
+\subsubsection{Task Switch Univariate Results}
+To provide evidence task switching looks normal under traditional analyses,
+we did a standard univariate test across all voxels to identify regions
+of activation.
 
-\subsection*{Task Switching Beta Series Correlation Simulations}
+\begin{figure}[H]
+  \centering
+  \subfloat{
+    \includesvg[width=\textwidth]{stat-map-single}
+  }
+  \label{fig:statmaps}
+\end{figure}
 
+\begin{figure}[H]
+  \ContinuedFloat
+  \centering
+  \subfloat{
+    \includesvg[width=\textwidth]{stat-map-repeat}
+  }
+  \label{fig:statmaps}
+\end{figure}
+
+\begin{figure}[H]
+  \ContinuedFloat
+  \centering
+  \subfloat{
+    \includesvg[width=\textwidth]{stat-map-switch}
+  }
+  \label{fig:statmaps}
+\end{figure}
+
+\begin{figure}[H]
+  \ContinuedFloat
+  \centering
+  \subfloat{
+    \includesvg[width=\textwidth]{stat-map-switch-repeat}
+  }
+  \caption{Univariate statistical maps of average responses and the contrast "switch - repeat"}
+  \label{fig:statmaps}
+\end{figure}
+
+\subsection*{Task Switch Beta Series Correlation Simulations}
+
+\begin{figure}[H]
+  \centering
+  \subfloat{
+    \includesvg[width=\textwidth]{diff-small_task-taskswitch_simplified_pwr}
+  }
+  \label{fig:taskpwr}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \ContinuedFloat
+  \subfloat{
+    \includesvg[width=\textwidth]{diff-large_task-taskswitch_simplified_pwr}
+  }
+  \caption{
+    Simulating power to detect small and large differences using
+    a real task design.
+    Each power plot represents a sample of 61 pairs of correlations
+    randomly pulled from a distribution of correlations 10,000 times.
+    The correlation pairs either had a true difference 0.1 or 0.3.
+    With a large CNR, the power for both LSS and LSA
+    is maximal regardless of the true difference.
+    With a small CNR, LSS has greater power to detect a difference.
+    }
+  \label{fig:taskpwr}
+\end{figure}
 
 \subsection*{Task Switching Beta Series Correlations}
-Comparing The task versus the resting state shows mixed results.
-Question: DOES LSS or LSA show more differences between task and rest for both
-the atlas and motivated ROIs?
-Question: DOES LSS or LSA show more differences between task conditions (repeat - single)?
-(either using atlas definition or traditional roi derived analysis)
+We looked at task switching data from multiple perspectives to observe the performance of LSA and LSS,
+as well as beta series correlations to detect an effect at all.
+
+\subsubsection*{Task Swiching versus Rest}
+\begin{figure}[H]
+  \centering
+  \includesvg[width=\textwidth]{cond1-taskswitch_cond2-rest_statistical_overlap}
+  \caption{
+    correlation differences with a p-value less than 0.05.
+    LSS (green), LSA (blue), and their overlap (yellow) are shown.
+  }
+  \label{fig:taskvrest}
+\end{figure}
+
+The most lenient comparison is to compare the switch condition from task switching to resting state.
+LSA has a total of 8,202 significant results, LSS has a total of 15,292,
+and their overlap is 3,677.
+A number of the significant correlations are undoubtably false positives, but
+since we are interested in comparing LSS and LSA and not making strong theoretical claims,
+we can say this provides evidence LSS is a more sensitive measure.
+
+\subsubsection*{Switch versus Single}
+Since we are comparing two conditions with task switching (instead of comparing task with rest),
+we can use the rest data as a built in null to test if false positives are greater for LSA or LSS.
+First we will show the switch minus single contrast for task switching.
+\begin{figure}[H]
+  \centering
+  \includesvg[width=\textwidth]{cond1-switch_cond2-single_statistical_overlap}
+  \caption{
+    correlation differences with a p-value less than 0.05.
+    LSS (green), LSA (blue), and their overlap (yellow) are shown.
+  }
+  \label{fig:switchvsingle}
+\end{figure}
+LSA has a total of 2,474 significant results, LSS has a total of 3,108,
+and their overlap is 151 results.
+
+\begin{figure}[H]
+  \centering
+  \includesvg[width=\textwidth]{cond1-restswitch_cond2-restsingle_statistical_overlap}
+  \caption{
+    correlation differences with a p-value less than 0.05.
+    LSS (green), LSA (blue), and their overlap (yellow) are shown.
+  }
+  \label{fig:restswitchvsingle}
+\end{figure}
+LSA has a total of 2,129 significant results and LSS has a total of 1,693,
+and their overlap is 54.
+
+\subsubsection*{Repeat versus Single}
+\begin{figure}[H]
+  \centering
+  \includesvg[width=\textwidth]{cond1-repeat_cond2-single_statistical_overlap}
+  \caption{
+    correlation differences with a p-value less than 0.05.
+    LSS (green), LSA (blue), and their overlap (yellow) are shown.
+  }
+  \label{fig:repeatvsingle}
+\end{figure}
+LSA has a total of 2,851 significant results, LSS has a total of 3,838,
+and their overlap is 282 results.
+
+\begin{figure}[H]
+  \centering
+  \includesvg[width=\textwidth]{cond1-restrepeat_cond2-restsingle_statistical_overlap}
+  \caption{
+    correlation differences with a p-value less than 0.05.
+    LSS (green), LSA (blue), and their overlap (yellow) are shown.
+  }
+  \label{fig:restrepeatvsingle}
+\end{figure}
+LSA has a total of 2,048 significant results and LSS has a total of 2,140,
+and their overlap is 67.
+
+\subsubsection*{Switch versus Repeat}
+\begin{figure}[H]
+  \centering
+  \includesvg[width=\textwidth]{cond1-switch_cond2-repeat_statistical_overlap}
+  \caption{
+    correlation differences with a p-value less than 0.05.
+    LSS (green), LSA (blue), and their overlap (yellow) are shown.
+  }
+  \label{fig:switchvrepeat}
+\end{figure}
+LSA has a total of 101 significant results, LSS has a total of 1,322,
+and their overlap is 3 results.
+
+\begin{figure}[H]
+  \centering
+  \includesvg[width=\textwidth]{cond1-restswitch_cond2-restrepeat_statistical_overlap}
+  \caption{
+    correlation differences with a p-value less than 0.05.
+    LSS (green), LSA (blue), and their overlap (yellow) are shown.
+  }
+  \label{fig:restswitchvrepeat}
+\end{figure}
+LSA has a total of 339 significant results and LSS has a total of 1,205,
+and their overlap is 5 results.
+% Comparing The task versus the resting state shows mixed results.
+% Question: DOES LSS or LSA show more differences between task and rest for both
+% the atlas and motivated ROIs?
+% Question: DOES LSS or LSA show more differences between task conditions (repeat - single)?
+% (either using atlas definition or traditional roi derived analysis)
 % Place tables after the first paragraph in which they are cited.
 % \begin{table}[!ht]
 % \begin{adjustwidth}{-2.25in}{0in} % Comment out/remove adjustwidth environment if table fits in text column.
@@ -763,10 +952,25 @@ Question: DOES LSS or LSA show more differences between task conditions (repeat 
 % \end{itemize}
 
 \section*{Discussion}
+
 % Nulla mi mi, venenatis sed ipsum varius, Table~\ref{table1} volutpat euismod diam. Proin rutrum vel massa non gravida. Quisque tempor sem et dignissim rutrum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi at justo vitae nulla elementum commodo eu id massa. In vitae diam ac augue semper tincidunt eu ut eros. Fusce fringilla erat porttitor lectus cursus, vel sagittis arcu lobortis. Aliquam in enim semper, aliquam massa id, cursus neque. Praesent faucibus semper libero~\cite{bib3}.
 \subsection*{Simulation Conclusions}
 
+\begin{itemize}
+  \item LSS and LSA perform similarly at low and high ITIs
+  \item LSS outperforms at 4 seconds ITI
+  \item fast(ish) event related design, use LSS
+  \item mention Abdulrahman2016 because I did not set the trial variance to below 1.
+\end{itemize}
+
 \subsection*{Task Switching Conclusions}
+\begin{itemize}
+  \item Simulations suggested LSS would improve sensitivity of results (while maintaining a \%5 false positive rate)
+  \item (Especially if the CNR was low)
+  \item The task versus rest contrast showed more results for LSS,
+        suggesting even the most lenient was not large enough
+        to have parity between LSA and LSS.
+\end{itemize}
 
 \subsection{Limitations}
 \section*{Conclusion}
