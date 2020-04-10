@@ -165,6 +165,8 @@
 
 %% TEMPORARY FIGURES (REMOVE BEFORE SUBMISSION)
 \usepackage[svgpath=./figs/]{svg}
+\usepackage{graphicx}
+\graphicspath{ {./figs/} }
 \usepackage{float}
 %% Include all macros below
 
@@ -243,119 +245,155 @@ Simulations, task, and combination
 
 % Use "Eq" instead of "Equation" for equation citations.
 \section*{Introduction}
-\subsection{Concepts To Cover}
-\begin{enumerate}
-	\item Big Idea
-  \begin{enumerate}
-    \item Evaluate beta series correlations between brain regions during a task.
-  \end{enumerate}
-	\item Topics
-	\begin{enumerate}
-    \item Definition of a trial
-    \item General Linear Model
-    \item Block versus rapid event related designs
-    \item BOLD variability
-    \item BOLD Response/BOLD correlations
-    \item Beta Series Correlations and PsychoPhysiological Interactions
-    \item Different methods to estimate beta series correlations: Least-Squares All and Least-Squares Separate
-  \end{enumerate}
-	\item Gap
-  \begin{enumerate}
-    \item combination of simulation/real data to compare/validate methods
-  \end{enumerate}
-\end{enumerate}
 
-\subsection{Introduction}
-What are the available methods to measure which brain regions correlate during a task with functional Magnetic Resonance Imaging (fMRI)?
-The two most popular methods appear to be Psychophysiological Interactions (PPI) and Beta Series Correlations (BSC).
-However, the efficacy of PPI and BSC depends on the experimental design.
-Many experimental designs place trials belonging to different conditions close to each other
-to capture the psychological process of interest.
-For example, if a task measured surprise, placing all the surprising stimuli together
-invalidates the concept one is attempting to measure.
-These rapid event-related experimental designs with intermixed conditions (?) are difficult to analyze.
-The difficulty comes from the sluggish Blood Oxygen Level Dependent (BOLD) response.
-Multiple trials overlap as they occur faster than the time it takes the BOLD response to return to baseline.
-This overlap creates ambiguity whether the changing BOLD response is due to the trial of interest or surrounding trials.
-Previous work has found PPI is less powerful than BSC to detect condition differences using rapid event-related designs.
-Thus, only variants of BS will be considered.
-While previous studies have investigated variants of BS, they either only focused on multivariate pattern analysis
-or only performed simulations.
-We will focus on BSC using both simulations and real data to compare and validate methods,
-expanding and improving previous work.
-Specifically, we will compare two strategies to generate BS's: "Least-Squares All" (LSA) and "Least-Squares Separate" (LSS).
-LSA has a regressor for each individual trial in the General Linear Model (GLM).
-% Lorem ipsum dolor sit~\cite{bib1} amet, consectetur adipiscing elit. Curabitur eget porta erat. Morbi consectetur est vel gravida pretium. Suspendisse ut dui eu ante cursus gravida non sed sem. Nullam Eq~(\ref{eq:schemeP}) sapien tellus, commodo id velit id, eleifend volutpat quam. Phasellus mauris velit, dapibus finibus elementum vel, pulvinar non tellus. Nunc pellentesque pretium diam, quis maximus dolor faucibus id.~\cite{bib2} Nunc convallis sodales ante, ut ullamcorper est egestas vitae. Nam sit amet enim ultrices, ultrices elit pulvinar, volutpat risus.
-\subsection{Understanding brain organization}
-\begin{enumerate}
-  \item evolving relationship between resting state and task fmri
-  \item connectivity in task fmri is measured in different ways
-  \item linear addition of task activation on top of low frequency oscillations
-  \item other view that oscillations change in complex ways
-  \item could be variances in bold response independent of the low frequency oscillations
-\end{enumerate}
+The field of human imaging neuroscience has moved towards interrogating networks of brain regions
+over individual brain regions.
+Broadly defined, a brain network is a collection of widespread regions who share information.
+Brain networks have primarily been investigated while participants are at rest or while they are performing
+a single task for a block of time, such as tapping a finger for a 30 second period.
+However, networks have resisted measurement while participants perform interleaved tasks or when
+events of interest occur close together in a task, such as a task switching task where participants
+must either classify a number as high/low or as odd/even depending on the cue.
+In other words, brain networks have not been investigated within fast event related designs.
+We seek to validate and compare two methods that can measure brain responses to events that occur
+close in time.
 
-\subsection{How to measure brain organization}
-- methods include: psychophysiological interactions and beta series correlations
+The overarching method being investigated is beta series correlations (BSC) ~\cite{Rissman2004,Mumford2012,Turner2012a,Abdulrahman2016}
+There are two main approaches to estimate the Beta Series for BSC: Least Squares All (LSA) and Least Squares Separate (LSS).
+Both approaches of beta series estimation seek to derive single event estimates that represent a brain region's activity
+at each individual event.
+An event is defined as "a stimulus or participant response recorded during a task." ~\cite{Gorgolewski2016}
+Where task is defined as "a set of structured activities performed by the participant." ~\cite{Gorgolewski2016}
+The single event estimates become difficult to estimate when trials are close together,
+in other words, less than 4 seconds.
+Such designs are called fast event related designs.
+The reason these single events are difficult to estimate in fast event related designs comes from
+the sluggish Blood Oxygen Level Dependent (BOLD) response.
+The BOLD response is an indirect measure of neuronal activity that take approximately 6 seconds to
+peak and around 32 seconds to fully resolve.
+If events are occurring (on average) 4 seconds apart, the difficulty of single event estimation
+becomes apparent.
+One does not know whether BOLD activity should be attributed to a target event or an
+adjacent event.
+LSA and LSS approach this problem differently.
+LSA, namely, ignores this problem, while LSS attempts to provide a more reliable measure.
 
-\subsection{comparison of LSS and LSA methods}
-% \begin{eqnarray}
-% \label{eq:schemeP}
-% 	\mathrm{P_Y} = \underbrace{H(Y_n) - H(Y_n|\mathbf{V}^{Y}_{n})}_{S_Y} + \underbrace{H(Y_n|\mathbf{V}^{Y}_{n})- H(Y_n|\mathbf{V}^{X,Y}_{n})}_{T_{X\rightarrow Y}},
-% \end{eqnarray}
+To understand how LSA and LSS tackle single event estimation, it is necessary to introduce
+the General Linear Model (GLM).
+GLMs are a mainstay in the neuroimaging literature, allowing researchers to model
+a response that approximates the BOLD response shape and linearly scale the response
+to best match the data.
+The multiplicative that linearly scales the model BOLD response is known as a beta.
+The beta in the GLM is where the beta in beta series comes from.
+This beta is often interpreted as the amplitude of the response.
+In a traditional GLM, events of the same type will be grouped together
+to provide a robust estimate of whether a particular region or set of regions are
+active relative to some other baseline.
+That approach, however, does not tell you which regions are acting in concert
+in response to the event type.
+It could be the case that for half of the events of the same type two regions are active,
+and for the other half, another two regions are active.
+The traditional GLM will not be able differentiate the two pairs of regions.
+LSS and LSA, on the other hand, propose to be able to separate the two pairs of regions.
+LSA takes a variant of the traditional GLM whereby instead of providing a beta
+estimate for a group of events, each event gets it's own beta estimate in a single GLM.
+LSS differs from LSA by fitting a separate GLM for each event, where in each model a target
+event is fit and the rest of the events are grouped together and given separate beta estimates.
+the target trial estimate for each model is taken to form a beta series.
+Harkening back to the sluggish BOLD response, LSA suffers when the events are close together,
+since the GLM cannot reliably attribute which BOLD response should correspond to which event.
+LSS attempts to reduce the model confusion by only having one single event estimate per model,
+so the non-target events have their beta influenced by multiple observations, ostensibly
+providing a more reliable single event beta estimate.
+
+While previous work has simulated beta series and evaluated beta series on real data,
+several key gaps remain.
+One, simulations have not taken into account realistic noise structure of fMRI data.
+Two, simulations have not used optimal fast event related designs.
+Three, realistic expectations of signal to noise ratios have not been considered.
+Four, a quantitative comparison/validation of LSA and LSS estimation for BSC has not been done.
+The present work fills these gaps and provides recommendations for further research
+using these methods.
 
 \section*{Materials and methods}
 \subsection*{Beta Series Correlation Simulations}
 To assess the validity and power of beta series correlations,
-we simulated realistic timeseries data and convolved short (0.2 second) task onsets with double gamma functions
-and added the responses to the timeseries.
+we simulated timeseries data and convolved short (0.2 second) task onsets with double gamma functions
+and added the responses to the timeseries~\cite{Glover1999,Welvaert2011}.
 We used fmrisim from the brainiak toolbox to generate a two voxel timeseries
 containing drift, autocorrelation, phsysiological noise,
 task related movement, and scanner noise~\cite{Ellis2020}.
+For all simulations the time of repetition was set at 2 seconds.
 We varied the contrast-to-noise ratio (CNR) using the amplitude of the activation
 divided by the standard deviation of the noise~\cite{Welvaert2013a}.
-The double gamma function's parameters were base on Glover~\cite{Glover1999,Welvaert2011}.
-Realistic choices for CNR were selected by running beta series correlations (LSA)
-on a local dataset, measuring the standard deviation of the residuals and peak
-estimates of the betas within regions of interest.
-We derived a CNRs of 1 and 10 as reasonable values from the dataset.
-Another parameter deemed critical is the standard deviation of the betas relative
-to the standard deviation of the noise~\cite{Abdulrahman2016}.
+Another parameter deemed critical by previous work is the standard deviation
+of the betas relative to the standard deviation of the noise~\cite{Abdulrahman2016}.
+
+To generate realistic numbers for simulating timeseries at varying CNRs,
+we used the task switch dataset.
+We ran LSS/LSA on all participants to get both trial estimates of activation (i.e., betas)
+as well as residuals from the model.
+To calculate CNR, several steps were taken.
+First, we masked the betaseries using the Schaefer and Activation atlases (See Atlas Correlation Analysis).
+Second, we took the absolute value of all masked beta estimates for a participant.
+Third, we took the median beta estimates over all trial volumes resulting
+in a median beta estimate amplitude for all ROIs.
+Fourth, we took the standard deviation of the residuals for each ROI.
+Fifth, we divided the median amplitude beta estimates by the standard deviation of the residuals
+for each ROI.
+Sixth, we took either the mean or max CNR across all ROIs to provide a reasonable estimate
+and upper bound of CNR.
+Calculating AVNR followed the same procedure as CNR with the exception of the first two steps.
+First, we took the standard deviation of the beta estimates, then we followed steps three through six above.
+
+We derived CNRs of 1 and 10 as reasonable values from the dataset.
 Again, using our local dataset, we measured the standard deviation of the betas
 (i.e., Activation Variation) with
 the standard deviation of the residuals (i.e., Noise),
 and arrived at Activation Variation Noise ratios (AVNR) of 1 and 10.
 We can manipulate CNR and AVNR independently to determine whether variation of the betas
 impact beta series correlation's ability to recapture the true correlation.
-For all simulations the time of repetition was set at 2 seconds.
-
-The choice of onset times was varied based on average inter-trial-interval (ITI's).
-The ITI is the time from the previous task onset to the next task onset.
-We chose average ITIs at 2, 4, 6, and 8 seconds to reflect a common range of ITIs
+% display example of design
+% display example of simulated timeseries
+The choice of onset times was varied based on average inter-event-interval (IEI's).
+The IEI is the time from the previous event onset to the next event onset.
+We chose average IEIs at 2, 4, 6, and 8 seconds to reflect a common range of IEIs
 for fast event related design experiments
-We also varied number of trials, choosing 15, 30, 45, and 60 trials per condition,
+We also varied number of events, choosing 15, 30, 45, and 60 events per condition,
 which also appear to be common selections for fast event related design experiments.
-The optimization of selecting task onsets was done with neurodesign~\cite{Durnez2018}.
+The optimization of selecting event onsets was done with neurodesign~\cite{Durnez2018}.
 We chose A-Optimality to optimize onsets using the genetic algorithm implemented
 in neurodesign, selecting onsets with an exponential distribution.
 The top 20 designs were chosen from neurodesign to reduce the likelihood
 that the simulations results are an artifact of idiosyncracies of the experimental design.
 
 The beta weights for each voxel were chosen from a multivariate normal distribution
-with a mean of one and with a fixed correlation target between the two voxels and predefined variance of either 1 or 10 for the betas
-within each voxel.
+with a mean of one and with a fixed ground truth correlation between the two voxels 
+(varying between 0.0-0.9) and predefined variance of either 1 or 10
+for the betas within each voxel.
+The beta weights were convolved with a hemodynamic response function and scaled
+relative to the noise standard deviation to CNRs of 1 or 10.
 
-100 simulations were run for each trial number (15, 30, 45, 60) ITI (2, 4, 6, 8), 
-CNR (1, 10), AVNR (1, 10), condition (c1, c2), and correlation targets (0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9)
+100 simulations were run for each event number (15, 30, 45, 60) IEI (2, 4, 6, 8), 
+CNR (1, 10), AVNR (1, 10), condition (c1, c2), and ground truth correlation
+(0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9)
 resulting in 128,000 total simulations.
 
-To measure validity, we took two samples (n=50) with the same correlation target (e.g., 0.1)
-and matching on every other parameter, and ran a ttest to measure if the samples
-were significantly different.
+To measure validity for power analyses, we first ensured that we have
+the expected false positive rate when there is no difference between samples.
+we took two samples (n=50) with the same ground truth correlation (e.g., 0.1)
+matching on every other parameter, and ran a ttest to measure if the samples
+were statistically significantly different.
+Since the ground truth correlation is the same between samples,
+we expect a false positive rate of \%5 at an alpha of 0.05.
 We repeated this process 10,000 times to measure the false positive rate.
 
 Once the false positive rate is established, we will establish power with the same method as above,
-but with samples containing different correlation targets, with a targeted difference of 0.1, 0.2, and 0.3.
+but with samples containing different ground truth correlations.
+We select two samples where one sample had a ground truth
+correlation that was either 0.1 or 0.3 less than than the other sample.
+Thus we detected how well correlation differences could be detected
+with different task design and noise parameters.
 
 %- Time Repetition = 2
 %- duration of experiment = variable
@@ -385,16 +423,11 @@ but with samples containing different correlation targets, with a targeted diffe
 %- N=100 (for a given parameter)
 %- start and end of sessions were not ignored (optimal experimental design)
 %- highpass filter: 1/128 hz
-
-
-- varying inter-trial-interval
-- varying noise level
-- varying number of trials
-
 \subsection*{Task Switching Validation}
 To validate the betaseries simulations we used an unpublished dataset
-of older adults (n=61, 31 female) performing a mixed task switching task.
-Their average age is 71.75 years with an average of 17 years of education.
+of older adults (N=61, 31 female, age=71.75(4.77), education=17.07(2.66)) performing a mixed task switching task.
+21 participants were excluded for having a framewise displacement of over 0.5mm for
+over a 100 volumes, resulting in a final N of 40.
 The task switch task was a mixed block/event related design containing
 5 blocks (2 single task blocks and 3 mixed task blocks).
 There was a 30 second rest between each block.
@@ -404,6 +437,10 @@ The single tasks consisted of identifying a number between
 1 and 10 excluding 5 as high/low or odd/even.
 Participants were cued to which task they were performing by the color of the square
 the number was presented on.
+Each stimulus was presented for 1.5 seconds, and participants were allowed
+to respond within 2.0 seconds of stimulus onset.
+The average IEI was 3.5 seconds following an exponential distribution.
+
 
 \subsection*{Null Task Data}
 In addition to the task switching task, participants also completed
@@ -411,9 +448,11 @@ two 8 minute resting state runs.
 We used the resting state runs as a null model for task switching.
 While the task switch data had 471 volumes, each resting state run only had
 240 volumes.
-In order to match the resting state data with the task data, we concatenated
-the two resting state runs with cutting off the first 10 volumes of the second run
+In order to match the length of the resting state data with the task data, we concatenated
+the two resting state runs while cutting off the first 10 volumes of the second run
 and interpolating 1 volume between the two runs, resulting in 471 volumes.
+The interpolation helps transition the bold series from one run to the next,
+analogous to interpolation performed when scrubbing high motion volumes. 
 This null task data was treated the same as the task switching data for the
 beta series correlation analysis.
 
@@ -473,10 +512,10 @@ The following templates were selected for spatial normalization: \emph{ICBM 152 
 Asymmetrical template version 2009c} {[}\cite{mni152nlin2009casym},
 RRID:SCR\_008796; TemplateFlow ID: MNI152NLin2009cAsym{]}.
 \item[Functional data preprocessing]
-For each of the 2 BOLD runs found per subject (across all tasks and
-sessions), the following preprocessing was performed. First, a reference
-volume and its skull-stripped version were generated using a custom
-methodology of \emph{fMRIPrep}.
+For each of the 2 BOLD runs found per subject,
+the following preprocessing was performed.
+First, a reference volume and its skull-stripped version were generated
+using a custom methodology of \emph{fMRIPrep}.
 Susceptibility distortion correction (SDC) was omitted.
 The BOLD reference was then co-registered to the T1w reference using \texttt{bbregister}
 (FreeSurfer) which implements boundary-based registration \cite{bbr}.
@@ -487,48 +526,29 @@ spatiotemporal filtering using \texttt{mcflirt} \cite[FSL 5.0.9,]{mcflirt}.
 The BOLD time-series were resampled into a standard space, correspondingly
 generating the following \emph{spatially-normalized, preprocessed BOLD runs}:
 MNI152NLin2009cAsym.
-First, a reference volume and its skull-stripped version were generated 
- a custom methodology of \emph{fMRIPrep}.
 Several confounding time-series were calculated based on the \emph{preprocessed BOLD}:
 % only used a subset of the confounding variables
-framewise displacement (FD), DVARS and three region-wise global signals.
-FD and DVARS are calculated for each functional run, both using their
-implementations in \emph{Nipype} \cite[following the definitions
-by]{power_fd_dvars}. The three global signals are extracted within the
-CSF, the WM, and the whole-brain masks. Additionally, a set of
-physiological regressors were extracted to allow for component-based
-noise correction \cite[\emph{CompCor},]{compcor}. Principal
-components are estimated after high-pass filtering the
-\emph{preprocessed BOLD} time-series (using a discrete cosine filter
-with 128s cut-off) for the two \emph{CompCor} variants: temporal
-(tCompCor) and anatomical (aCompCor). tCompCor components are then
-calculated from the top 5\% variable voxels within a mask covering the
-subcortical regions. This subcortical mask is obtained by heavily
-eroding the brain mask, which ensures it does not include cortical GM
-regions. For aCompCor, components are calculated within the intersection
-of the aforementioned mask and the union of CSF and WM masks calculated
-in T1w space, after their projection to the native space of each
-functional run (using the inverse BOLD-to-T1w transformation).
-Components are also calculated separately within the WM and CSF masks.
-For each CompCor decomposition, the \emph{k} components with the largest
-singular values are retained, such that the retained components' time
-series are sufficient to explain 50 percent of variance across the
-nuisance mask (CSF, WM, combined, or temporal). The remaining components
-are dropped from consideration. The head-motion estimates calculated in
-the correction step were also placed within the corresponding confounds
-file. The confound time series derived from head motion estimates and
-global signals were expanded with the inclusion of temporal derivatives
-and quadratic terms for each \cite{confounds_satterthwaite_2013}.
+framewise displacement (FD) and two region-wise global signals.
+FD was calculated for each functional run, using its
+implementation in \emph{Nipype} \cite[following the definitions
+by]{power_fd_dvars}.
+The two global signals are extracted within the
+cerebrospinal fluid and the white matter.
+High-pass filtering the \emph{preprocessed BOLD} time-series was done using
+a discrete cosine filter with 128s cut-off.
+The head-motion estimates calculated in
+the correction step were also placed within the corresponding confounds file. 
 Frames that exceeded a threshold of 0.5 mm FD or 1.5 standardised DVARS
-were annotated as motion outliers. All resamplings can be performed with
-\emph{a single interpolation step} by composing all the pertinent
-transformations (i.e.~head-motion transform matrices, susceptibility
-distortion correction when available, and co-registrations to anatomical
-and output spaces). Gridded (volumetric) resamplings were performed
-using \texttt{antsApplyTransforms} (ANTs), configured with Lanczos
-interpolation to minimize the smoothing effects of other kernels
-\cite{lanczos}. Non-gridded (surface) resamplings were performed using
-\texttt{mri\_vol2surf} (FreeSurfer).
+were annotated as motion outliers.
+An additional 4 frames at the beginning of each run were also
+annotated as outliers to allow the magnet to reach equilibrium.
+
+All resamplings can be performed with \emph{a single interpolation step} by composing all the pertinent
+transformations (i.e.~head-motion transform matrices, co-registrations to anatomical
+and output spaces).
+Gridded (volumetric) resamplings were performed using \texttt{antsApplyTransforms} (ANTs),
+configured with Lanczos interpolation to minimize the smoothing effects of other kernels
+\cite{lanczos}.
 \end{description}
 
 Many internal operations of \emph{fMRIPrep} use \emph{Nilearn} 0.6.1
@@ -540,45 +560,59 @@ section corresponding to workflows in \emph{fMRIPrep}'s documentation}.
 \subsection{BetaSeries Correlations}
 
 Results included in this manuscript come from modeling performed using
-\emph{NiBetaSeries} 0.4.3 \cite{Kent2018}, which is based on
+\emph{NiBetaSeries} 0.4.3 \cite{Kent2018}, which uses
 \emph{Nipype} 1.4.2 \cite{Gorgolewski2011, Gorgolewski2018}.
 
 \hypertarget{beta-series-modeling}{%
 \subsubsection{Beta Series Modeling}\label{beta-series-modeling}}
 
-Least squares- separate (LSS) models were generated for each event in
+The LSS models were generated for each event in
 the task following the method described in \cite{Turner2012a}, using
-Nistats 0.0.1b1.\\
-Prior to modeling, preprocessed data were masked,and mean-scaled over
-time. For each trial, preprocessed data were subjected to a general
-linear model in which the trial was modeled with its own regressor, while
-all other trials from that condition were modeled in a second regressor,
-and other conditions were modeled in their own regressors. Each
-condition regressor was convolved with a \cite[glover hemodynamic response
+Nistats 0.0.1b2.\\
+Prior to modeling, preprocessed data were masked, and mean-scaled over
+time.
+Mean scaling was not applied when calculating CNR and AVNR so the
+beta estimates would be in the original BOLD units.
+For each event, preprocessed data were subjected to a GLM
+in which the event was modeled with its own regressor, while
+all other events from that condition were modeled in a second regressor,
+and other conditions were modeled in their own regressors.
+So if the task has the conditions switch, repeat, and single, 
+a single GLM would have 4 event regressors, 1 for the target
+trial, and 3 for the remaining event types.
+Each event regressor was convolved with a \cite[glover hemodynamic response
 function]{Glover1999}.\\
-In addition to condition regressors, average white matter signal, average csf signal,
-cosine basis set high pass regressors, the initial four non stead state volumes,
-\cite[friston 24]{Friston1996}, and motion outliers were included
-in the model. AR(1) prewhitening was applied in each model to account
+In addition to event regressors, average white matter signal, average csf signal,
+cosine basis set high pass regressors, the initial four non stead state volumes, 
+and motion outliers were included
+in the model as calculated in the Preparing fMRI section.
+AR(1) prewhitening was applied in each model to account
 for temporal autocorrelation.
 
+The LSA model was generated following the method described in
+\cite[Rissman 2004]{Rissman2004}, using Nistats 0.0.1b2.
+
 After fitting each model, the parameter estimate (i.e., beta) map
-associated with the target trial's regressor was retained and
-concatenated into a 4D image with all other trials from the same
+associated with the target event's regressor was retained and
+concatenated into a 4D image with all other events from the same
 condition, resulting in a set of N 4D images where N refers to the
 number of conditions in the task. The number of volumes in each 4D image
-represents the number of trials in that condition.
+represents the number of events in that condition.
 
-\hypertarget{atlas-connectivity-analysis}{%
-\subsubsection{Atlas Connectivity
-Analysis}\label{atlas-connectivity-analysis}}
+\hypertarget{atlas-correlation-analysis}{%
+\subsubsection{Atlas Correlation
+Analysis}\label{atlas-correlation-analysis}}
 
 The beta series 4D image for each condition in the task was subjected to
-an ROI-to-ROI connectivity analysis to produce a condition-specific
-correlation matrix.
-Two atlases were used to generate ROI-to-ROI connectivity matrices.
+an region of interest to region of interest (ROI-to-ROI) correlation analysis
+to produce condition-specific correlation matrices.
+Two atlases were used to generate ROI-to-ROI correlation matrices.
 The \cite[Schaefer Atlas (400 parcels, 17 networks)]{Schaefer2017} was
 used to comprehensively cover the cortex.
+An activation atlas was generated based on an F-test across conditions
+to identify regions that were reliably activated for all participants.
+5mm spheres were drawn around each statistical peak (20 peaks total)
+to form the activation atlas.
 
 The correlation coefficient estimator used for this
 step was empirical covariance, as implemented in Nilearn 0.4.2
@@ -600,12 +634,12 @@ was analyzed with Nistats for first and second level analyses.
 we used mean white matter signal, mean cerebrospinal fluid signal,
 discrete cosine basis filter (high pass filter), framewise displacement, the first four non-steady volumes, and
 all identified motion outliers as regressors in the first level model for each participant
-in addition to the task onsets convolved with a double gamma function ~\cite{Glover1999}.
+in addition to event onsets convolved with a double gamma function ~\cite{Glover1999}.
 Each image was smoothed with a 6mm full-wide half-max kernel.
 We derived all condition versus baseline contrasts: single, repeat, switch, as well as
-additional contrasts for switch - repeat and a weighted average of all task conditions.
+additional contrasts for switch - repeat and an F-test of all task conditions.
 We ignored correctness of the participant's response since this was not important to
-establish whether the contrasts looked reasonable.
+separate the impact of condition and error processing to validate BSC.
 
 Second level analysis took a summary of the first level results presenting which
 regions were robustly activated between participants.
@@ -615,27 +649,37 @@ false discovery rate error control.
 \subsection*{contrast noise ratio calculation}
 To generate realistic numbers for simulating timeseries at varying CNRs,
 we used the task switch dataset.
-We ran LSA on all participants to get both trial estimates of activation (i.e., betas)
+We ran LSS/LSA on all participants to get both trial estimates of activation (i.e., betas)
 as well as residuals from the model.
 To calculate CNR, several steps were taken.
-First, we took the absolute value all beta estimates for a participant.
-Second, we took the median beta estimates over all trial volumes
-to create a 3D median amplitude beta estimate map.
-Third, we took the standard deviation of the residuals for each voxel
-Fourth, we divided the 3D median amplitude beta estimate map by the 3D standard deviation of the residual map,
-resulting in a 3D map of CNR
-Fifth, we took either the max or median value from the participant's CNR map.
-Sixth, we took the median value across all participants for either the max or median CNR,
-giving us a reasonable upper bound of CNR as well a more typical CNR value.
-Calculating CVNR followed the same procedure as CNR with the exception of the first two steps.
-First, we took the standard deviation of the beta estimates, then we followed steps 3 through 6 above.
-\begin{enumerate}
-  \item use finite impulse responses (FIR), observing the amplitude 6 second post onset
-  \item take 90th percentile of significant responses
-  \item use the extracted cnr from the data to inform cnr for simulations (25th percentile, 50th percentile, 75 percentile)
-\end{enumerate}
+First, we masked the betaseries using the Schaefer and Activation atlases (See Atlas Correlation Analysis).
+Second, we took the absolute value of all masked beta estimates for a participant.
+Third, we took the median beta estimates over all trial volumes resulting
+in a median beta estimate amplitude for all ROIs.
+Fourth, we took the standard deviation of the residuals for each ROI.
+Fifth, we divided the median amplitude beta estimates by the standard deviation of the residuals
+for each ROI.
+Sixth, we took either the mean or max CNR across all ROIs to provide a reasonable estimate
+and upper bound of CNR.
+Calculating AVNR followed the same procedure as CNR with the exception of the first two steps.
+First, we took the standard deviation of the beta estimates, then we followed steps three through six above.
 
 \subsection*{Task Switching Beta Series Correlation Analysis}
+
+BSC generated correlation matrices for each condition (switch, repeat, single),
+each method, (LSA and LSS), each data type (taskswitch and null), and each participant (N=40).
+The first check performed was contrasting the taskswitch switch condition and null switch condition
+to ensure BSC from a task are different than BSC from null data.
+A ttest was run on each ROI-ROI pair for the Schaefer atlas, totaling 79,800 comparisons
+between task and null.
+The results were corrected for multiple comparisons (Benjamini/Hochberg).
+
+
+We next contrasted switch - single, repeat - single, and switch - repeat, for LSS/LSA in both
+task and null data.
+Valid positive rates were calculated for LSA and LSS by dividing the number of positive results (p < 0.05)
+in the task data with the number of positives found in the null data.
+
 
 % For figure citations, please use "Fig" instead of "Figure".
 % Nulla mi mi, Fig~\ref{fig1} venenatis sed ipsum varius, volutpat euismod diam. Proin rutrum vel massa non gravida. Quisque tempor sem et dignissim rutrum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi at justo vitae nulla elementum commodo eu id massa. In vitae diam ac augue semper tincidunt eu ut eros. Fusce fringilla erat porttitor lectus cursus, \nameref{S1_Video} vel sagittis arcu lobortis. Aliquam in enim semper, aliquam massa id, cursus neque. Praesent faucibus semper libero.
@@ -812,9 +856,9 @@ as well as beta series correlations to detect an effect at all.
 \subsubsection*{Task Swiching versus Rest}
 \begin{figure}[H]
   \centering
-  \includesvg[width=\textwidth]{cond1-taskswitch_cond2-rest_statistical_overlap}
+  \includegraphics[width=\textwidth]{cond1-taskswitch_cond2-rest_statistical_overlap}
   \caption{
-    correlation differences with a p-value less than 0.05.
+    Task versus Rest. Correlation differences with a p-value less than 0.05.
     LSS (green), LSA (blue), and their overlap (yellow) are shown.
   }
   \label{fig:taskvrest}
@@ -833,9 +877,9 @@ we can use the rest data as a built in null to test if false positives are great
 First we will show the switch minus single contrast for task switching.
 \begin{figure}[H]
   \centering
-  \includesvg[width=\textwidth]{cond1-switch_cond2-single_statistical_overlap}
+  \includegraphics[width=\textwidth]{cond1-switch_cond2-single_statistical_overlap}
   \caption{
-    correlation differences with a p-value less than 0.05.
+    Switch versus single. Correlation differences with a p-value less than 0.05.
     LSS (green), LSA (blue), and their overlap (yellow) are shown.
   }
   \label{fig:switchvsingle}
@@ -845,9 +889,9 @@ and their overlap is 151 results.
 
 \begin{figure}[H]
   \centering
-  \includesvg[width=\textwidth]{cond1-restswitch_cond2-restsingle_statistical_overlap}
+  \includegraphics[width=\textwidth]{cond1-restswitch_cond2-restsingle_statistical_overlap}
   \caption{
-    correlation differences with a p-value less than 0.05.
+    Switch versus single (in the rest data). Correlation differences with a p-value less than 0.05.
     LSS (green), LSA (blue), and their overlap (yellow) are shown.
   }
   \label{fig:restswitchvsingle}
@@ -858,9 +902,9 @@ and their overlap is 54.
 \subsubsection*{Repeat versus Single}
 \begin{figure}[H]
   \centering
-  \includesvg[width=\textwidth]{cond1-repeat_cond2-single_statistical_overlap}
+  \includegraphics[width=\textwidth]{cond1-repeat_cond2-single_statistical_overlap}
   \caption{
-    correlation differences with a p-value less than 0.05.
+    Repeat versus single. Correlation differences with a p-value less than 0.05.
     LSS (green), LSA (blue), and their overlap (yellow) are shown.
   }
   \label{fig:repeatvsingle}
@@ -870,9 +914,9 @@ and their overlap is 282 results.
 
 \begin{figure}[H]
   \centering
-  \includesvg[width=\textwidth]{cond1-restrepeat_cond2-restsingle_statistical_overlap}
+  \includegraphics[width=\textwidth]{cond1-restrepeat_cond2-restsingle_statistical_overlap}
   \caption{
-    correlation differences with a p-value less than 0.05.
+    Repeat versus single (in the rest data). Correlation differences with a p-value less than 0.05.
     LSS (green), LSA (blue), and their overlap (yellow) are shown.
   }
   \label{fig:restrepeatvsingle}
@@ -883,9 +927,9 @@ and their overlap is 67.
 \subsubsection*{Switch versus Repeat}
 \begin{figure}[H]
   \centering
-  \includesvg[width=\textwidth]{cond1-switch_cond2-repeat_statistical_overlap}
+  \includegraphics[width=\textwidth]{cond1-switch_cond2-repeat_statistical_overlap}
   \caption{
-    correlation differences with a p-value less than 0.05.
+    Switch versus repeat. Correlation differences with a p-value less than 0.05.
     LSS (green), LSA (blue), and their overlap (yellow) are shown.
   }
   \label{fig:switchvrepeat}
@@ -895,9 +939,9 @@ and their overlap is 3 results.
 
 \begin{figure}[H]
   \centering
-  \includesvg[width=\textwidth]{cond1-restswitch_cond2-restrepeat_statistical_overlap}
+  \includegraphics[width=\textwidth]{cond1-restswitch_cond2-restrepeat_statistical_overlap}
   \caption{
-    correlation differences with a p-value less than 0.05.
+    Switch versus repeat (in the rest data). Correlation differences with a p-value less than 0.05.
     LSS (green), LSA (blue), and their overlap (yellow) are shown.
   }
   \label{fig:restswitchvrepeat}
@@ -1050,4 +1094,3 @@ and their overlap is 5 results.
 
 
 \end{document}
-
