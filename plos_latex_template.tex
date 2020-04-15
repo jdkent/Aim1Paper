@@ -389,232 +389,16 @@ The present work fills these gaps and provides recommendations for further resea
 using LSA and LSS.
 
 \section*{Materials and methods}
-\subsection*{Beta Series Correlation Simulations}
-To assess the validity and power of beta series correlations,
-we simulated two voxels of timeseries data and convolved short (0.2 second)
-task onsets with double gamma functions
-and added the responses to the timeseries~\cite{Glover1999,Welvaert2011}.
-We used fmrisim from the brainiak toolbox to generate a two voxel timeseries
-containing drift, autocorrelation, phsysiological noise,
-task related movement, and scanner noise ~\cite{Ellis2020}.
-For all simulations the time of repetition was set at 2 seconds.
-We varied the contrast-to-noise ratio (CNR) using the amplitude of the activation
-divided by the standard deviation of the noise~\cite{Welvaert2013a}.
-Another parameter deemed critical by previous work is the standard deviation
-of the betas relative to the standard deviation of the noise~\cite{Abdulrahman2016},
-so we varied that measure as well.
-\cite[Since Abdulrahman \& Henson (2016)]{Abdulrahman2016} also called their measure
-CNR, we've decided to rename it as Activation Variance to Noise Ratio (AVNR).
-
-To generate realistic numbers for simulating timeseries at varying CNRs and AVNRs
-we used an unpublished dataset on task switching in older adults.
-We ran LSS/LSA on real data (N=40) to get both trial estimates of activation (i.e., betas)
-as well as residuals from the model.
-To calculate CNR, several steps were taken.
-First, we masked the betaseries using the Schaefer or Activation atlases (See Atlas Correlation Analysis).
-Second, we took the absolute value of all masked beta estimates for a participant.
-Third, we took the median beta estimates over all trial volumes resulting
-in a median beta estimate amplitude for all ROIs.
-Fourth, we took the standard deviation of the residuals for each ROI.
-Fifth, we divided the median amplitude beta estimates by the standard deviation of the residuals
-for each ROI.
-Sixth, we took either the mean or max CNR across all ROIs to provide a reasonable estimate
-and upper bound of CNR.
-Calculating AVNR followed the same procedure as CNR with the exception of the first two steps.
-First, we took the standard deviation of the beta estimates, then we followed steps three through six above.
-
-We derived CNRs of 1 and 2 as and AVNRs of 1 and 2 as reasonable values from the dataset.
-We can manipulate CNR and AVNR independently to determine whether variation of the betas
-impact beta series correlation's ability to recapture the true correlation.
-% display example of design
-% display example of simulated timeseries
-The choice of onset times was varied based on average inter-event-interval (IEI's).
-The IEI is the time from the previous event onset to the next event onset.
-We chose average IEIs at 2, 4, 6, and 8 seconds to reflect a common range of IEIs
-for fast event related design experiments ~\cite{Hennigan2015,Dichter2007,Goghari2009}.
-We also varied number of events, choosing 15, 30, 45, and 60 events per condition,
-which also appear to be common selections for fast event related design experiments.
-The optimization of selecting event onsets was done with neurodesign ~\cite{Durnez2018}.
-We chose to optimize A-Optimality for onsets selection using the genetic algorithm implemented
-in neurodesign, selecting onsets with an exponential distribution.
-The top 20 designs were chosen from neurodesign to reduce the likelihood
-that the simulation results are an artifact of idiosyncrasies
-of the optimized experimental design.
-
-The beta weights for each voxel were chosen from a multivariate normal distribution
-with a mean of one and with a fixed ground truth correlation between the two voxels 
-(varying between 0.0-0.9) with AVNR of either 1 or 2.
-The beta weights were convolved with a hemodynamic response function and scaled
-relative to the noise standard deviation to CNRs of 1 or 2.
-
-100 simulations were run for each event number (15, 30, 45, 60) IEI (2, 4, 6, 8), 
-CNR (1, 2), AVNR (1, 2), condition (c1, c2), and ground truth correlation
-(0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9)
-resulting in 128,000 total simulations.
-
-To measure validity for power analyses, we first ensured that we have
-the expected false positive rate when there is no difference between samples.
-we took two samples (n=50) with the same ground truth correlation (e.g., 0.1)
-matching on every other parameter, and ran a ttest to measure if the samples
-were statistically significantly different.
-Since the ground truth correlation is the same between samples,
-we expect a false positive rate of \%5 at an alpha of 0.05.
-We repeated this process 10,000 times to measure the false positive rate.
-
-Once the false positive rate was established, we established power with the same method as above,
-but with samples containing different ground truth correlations.
-We selected two samples where there was 0.1 (pearson's r) difference between the samples.
-0.1 difference was chosen based on reported differences found in other published
-reports as well as the dataset used in this report ~\cite{Katsura2014,Lee2017,Turner2017,Lin2019,Huang2019}.
-This process was also repeated 10,000 times to establish power.
-Thus we detected how well correlation differences could be detected
-with different task design and noise parameters.
-
-%- Time Repetition = 2
-%- duration of experiment = variable
-%- intertrial interval = 2 - 8 seconds (exponential sampling)
-%- response scaled peak response is 1
-%- glover HRF
-% https://github.com/brainiak/brainiak/blob/dc12929a99529a69da3c3242e9c9fd31c308fbb0/brainiak/utils/fmrisim.py#L722
-%- the height of the voxel HRF responses was drawn from a multivariate normal distribution with mean 1 and standard deviation of 1.
-% https://github.com/jdkent/betaSeriesSimulations/blob/2fc45bcbc6873d395432d01359ba492b6f3b1458/beta_sim/interfaces/fmrisim.py#L204
-% https://github.com/jdkent/betaSeriesSimulations/blob/2fc45bcbc6873d395432d01359ba492b6f3b1458/beta_sim/interfaces/fmrisim.py#L170
-% - noise was added through:
-%     - snr: 40
-%     - sfnr: 60
-%     - task_sigma $1: Size of the variance of task specific noise
-%     - drift_sigma 1: Size of the variance of drift noise
-%     - auto_reg_sigma 0.5: Size of the variance of autoregressive
-%         noise. This is an ARMA process where the AR and MA components can be
-%         separately specified.
-%     - physiological_sigma 1: Size of the variance of physiological
-%         noise
-%     - auto_reg_rho [0.5]: The coefficients of the autoregressive
-%         components you are modeling
-%     - ma_rho [0.0]:The coefficients of the moving average components you
-%         are modeling
-%- voxels correlated at set correlation values (0.1, 0.2, 0.3)
-%- betas fit by least squares
-%- N=100 (for a given parameter)
-%- start and end of sessions were not ignored (optimal experimental design)
-%- highpass filter: 1/128 hz
-\subsection*{Task Switching Validation}
-To validate the betaseries simulations we used an unpublished dataset
-of older adults (N=61, 31 female, age=71.75(4.77), education=17.07(2.66)) performing a mixed task switching task.
-21 participants were excluded for having a framewise displacement of over 0.5mm for
-over a 100 volumes, resulting in a final N of 40.
-The task switch task was a mixed block/event related design containing
-5 blocks (2 single task blocks and 3 mixed task blocks).
-There was a 30 second rest between each block.
-There were 30 trials during each single trial block,
-and for the 3 mixed blocks there were 48 repeat trials and 40 switch trials total.
-The single tasks consisted of identifying a number between
-1 and 10 excluding 5 as high/low or odd/even.
-Participants were cued to which task they were performing by the color of the square
-the number was presented on.
-Each stimulus was presented for 1.5 seconds, and participants were allowed
-to respond within 2.0 seconds of stimulus onset.
-The average IEI was 3.5 seconds following an exponential distribution.
-
-\begin{figure}[H]
-  \centering
-  \subfloat{
-    \includegraphics[width=\textwidth]{stat-map-single}
-  }
-\end{figure}
-
-\begin{figure}[H]
-  \ContinuedFloat
-  \centering
-  \subfloat{
-    \includegraphics[width=\textwidth]{stat-map-repeat}
-  }
-\end{figure}
-
-\begin{figure}[H]
-  \ContinuedFloat
-  \centering
-  \subfloat{
-    \includegraphics[width=\textwidth]{stat-map-switch}
-  }
-\end{figure}
-
-\begin{figure}[H]
-  \ContinuedFloat
-  \centering
-  \subfloat{
-    \includegraphics[width=\textwidth]{stat-map-switchXrepeat}
-  }
-  \caption{Univariate statistical maps of average responses and the contrast "switch - repeat"}
-  \label{fig:stat_maps}
-\end{figure}
-
-An activation atlas was generated based on an F-test across conditions
-to identify regions that were reliably activated for all participants.
-5mm spheres were drawn around each statistical peak (20 peaks total)
-to form the activation atlas.
-
-\begin{table}
-  \csvautotabular[separator=tab, no check column count]{./data/cluster_table.tsv}
-  \caption{
-    The peak MNI coordinates/Z-statistic identifying clusters/sub-clusters from the overall
-    response contrast.
-    These peaks were used to create regions of interest (ROIs) to form an atlas representative
-    of the most consistently activated regions across conditions.
-  }
-  \label{table:clusters}
-\end{table}
-
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=\textwidth]{activation_roi_map}
-  \caption{
-    ROIs drawn from the peak Z-score table, placing a sphere with a 5mm radius
-    at each peak coordinate.
-  }
-  \label{fig:methroimap}
-\end{figure}
-
-\subsection*{Null Task Data}
-In addition to the task switching task, participants also completed
-two 8 minute resting state runs.
-We used the resting state runs as a null model for task switching.
-While the task switch data had 471 volumes, each resting state run only had
-240 volumes.
-In order to match the length of the resting state data with the task data, we concatenated
-the two resting state runs while cutting off the first 10 volumes of the second run
-and interpolating 1 volume between the two runs, resulting in 471 volumes.
-The interpolation helps transition the bold series from one run to the next,
-analogous to interpolation performed when scrubbing high motion volumes. 
-This null task data was treated equivalently to the task switching data for the
-beta series correlation analysis.
-
 \subsection{Scanner Parameters}
-Data were collected on a 3T GE Discovery 750.
-(scan parameters for anatomical images)
-(scan parameters for functional images)
-
-% the below are not the correct details, but I should those topics to make sure
-% I'm including the relevant information
-% gradient echo echo-planar sequence acquired with interleaved axial 4mm slices from the bottom up. The first four volumes were discarded to allow the signal to reach a steady state.
-% "RepetitionTime": 2 (aka TR in seconds)
-% "FlipAngle": 76 (degrees)
-% "EchoTime": 0.0279 (aka TE in seconds)
-% "SliceThickness": 4 (mm)
-% receiver bandwidth = +- 25.0 kHz
-% FOV = 22 cm × 22 cm, matrix size = 64 × 64,
-% - 61 participants (31 females)
-% - 65+ age: 71.754098 mean, 4.766745 std
-% - education: 17.065574 mean, 2.657498 std
-% - task: task switching, 5 blocks
-% - single task (odd/even) (high/low) (30 trials each block)
-% - 3 mixed blocks (48 repeat/ 40 switch trials)
-% - 6 30 second rest blocks
-% - participants had 4 practice trials immediately before beginning
-% - participants practiced the task out of scanner.
-% - iti average 3.5 seconds with exponential distribution
-% - TR: 2 seconds, te: 30 ms
+MRI data were collected on a 3T GE Discovery 750w using a 32 channel head coil.
+The anatomical T1w images were collected using a SPoiled Gradient-Recalled (SPGR) sequence
+sagittally with a flip angle of 8$^{\circ}$, echo time of 3.168ms,
+repetition time of 8.388ms, inversion time of 900ms, isometric voxel sizes of 1mm,
+[256x256] acquisition matrix with 196 slices, field of view 25.6cm x 25.6cm.
+The functional bold images were collected using a Gradient Echo sequence axially from
+the bottom up sequentially with a flip angle of 80$^{\circ}$, echo time of 30ms,
+repetition time of 2000ms, voxel sizes of 3.44x3.44x4.00 on a [64x64] acquisition matrix
+with 37 slices, field of view 22cm x 22cm.
 
 \subsection{Preparing fMRI}
 Results included in this manuscript come from preprocessing performed
@@ -764,7 +548,150 @@ Additional libraries used in the NiBetaSeries workflow include
 \emph{Nibabel} 2.4.1, \emph{Pandas} 0.24.2 \cite{McKinney2010}, and
 \emph{Numpy} 1.18.1 \cite{VanDerWalt2011, Oliphant2006}.
 
-\subsection*{Traditional Task Switch Analysis}
+\subsection*{Beta Series Correlation Simulations}
+
+To assess the validity and power of beta series correlations,
+we simulated two voxels of timeseries data and convolved short (0.2 second)
+task onsets with double gamma functions
+and added the responses to the timeseries~\cite{Glover1999,Welvaert2011}.
+We used fmrisim from the brainiak toolbox to generate a two voxel timeseries
+containing drift, autocorrelation, phsysiological noise,
+task related movement, and scanner noise ~\cite{Ellis2020}.
+For all simulations the time of repetition was set at 2 seconds.
+We varied the contrast-to-noise ratio (CNR) using the amplitude of the activation
+divided by the standard deviation of the noise~\cite{Welvaert2013a}.
+Another parameter deemed critical by previous work is the standard deviation
+of the betas relative to the standard deviation of the noise~\cite{Abdulrahman2016},
+so we varied that measure as well.
+\cite[Since Abdulrahman \& Henson (2016)]{Abdulrahman2016} also called their measure
+CNR, we've decided to rename it as Activation Variance to Noise Ratio (AVNR).
+
+To generate realistic numbers for simulating timeseries at varying CNRs and AVNRs
+we used an unpublished dataset on task switching in older adults.
+We ran LSS/LSA on real data (N=40) to get both trial estimates of activation (i.e., betas)
+as well as residuals from the model.
+To calculate CNR, several steps were taken.
+First, we masked the betaseries using the Schaefer or Activation atlases (See Atlas Correlation Analysis).
+Second, we took the absolute value of all masked beta estimates for a participant.
+Third, we took the median beta estimates over all trial volumes resulting
+in a median beta estimate amplitude for all ROIs.
+Fourth, we took the standard deviation of the residuals for each ROI.
+Fifth, we divided the median amplitude beta estimates by the standard deviation of the residuals
+for each ROI.
+Sixth, we took either the mean or max CNR across all ROIs to provide a reasonable estimate
+and upper bound of CNR.
+Calculating AVNR followed the same procedure as CNR with the exception of the first two steps.
+First, we took the standard deviation of the beta estimates, then we followed steps three through six above.
+
+We derived CNRs of 1 and 2 as and AVNRs of 1 and 2 as reasonable values from the dataset.
+We can manipulate CNR and AVNR independently to determine whether variation of the betas
+impact beta series correlation's ability to recapture the true correlation.
+% display example of design
+% display example of simulated timeseries
+The choice of onset times was varied based on average inter-event-interval (IEI's).
+The IEI is the time from the previous event onset to the next event onset.
+We chose average IEIs at 2, 4, 6, and 8 seconds to reflect a common range of IEIs
+for fast event related design experiments ~\cite{Hennigan2015,Dichter2007,Goghari2009}.
+We also varied number of events, choosing 15, 30, 45, and 60 events per condition,
+which also appear to be common selections for fast event related design experiments.
+The optimization of selecting event onsets was done with neurodesign ~\cite{Durnez2018}.
+We chose to optimize A-Optimality for onsets selection using the genetic algorithm implemented
+in neurodesign, selecting onsets with an exponential distribution.
+The top 20 designs were chosen from neurodesign to reduce the likelihood
+that the simulation results are an artifact of idiosyncrasies
+of the optimized experimental design.
+
+The beta weights for each voxel were chosen from a multivariate normal distribution
+with a mean of one and with a fixed ground truth correlation between the two voxels 
+(varying between 0.0-0.9) with AVNR of either 1 or 2.
+The beta weights were convolved with a hemodynamic response function and scaled
+relative to the noise standard deviation to CNRs of 1 or 2.
+
+100 simulations were run for each event number (15, 30, 45, 60) IEI (2, 4, 6, 8), 
+CNR (1, 2), AVNR (1, 2), condition (c0, c1), and ground truth correlation
+(0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9)
+resulting in 128,000 total simulations.
+
+To measure validity for power analyses, we first ensured that we have
+the expected false positive rate when there is no difference between samples.
+we took two samples (n=50) with the same ground truth correlation (e.g., 0.1)
+matching on every other parameter, and ran a ttest to measure if the samples
+were statistically significantly different.
+Since the ground truth correlation is the same between samples,
+we expect a false positive rate of \%5 at an alpha of 0.05.
+We repeated this process 10,000 times to measure the false positive rate.
+
+Once the false positive rate was established, we established power with the same method as above,
+but with samples containing different ground truth correlations.
+We selected two samples where there was 0.1 (pearson's r) difference between the samples.
+0.1 difference was chosen based on reported differences found in other published
+reports as well as the dataset used in this report ~\cite{Katsura2014,Lee2017,Turner2017,Lin2019,Huang2019}.
+This process was also repeated 10,000 times to establish power.
+Thus we detected how well correlation differences could be detected
+with different task design and noise parameters.
+
+%- Time Repetition = 2
+%- duration of experiment = variable
+%- intertrial interval = 2 - 8 seconds (exponential sampling)
+%- response scaled peak response is 1
+%- glover HRF
+% https://github.com/brainiak/brainiak/blob/dc12929a99529a69da3c3242e9c9fd31c308fbb0/brainiak/utils/fmrisim.py#L722
+%- the height of the voxel HRF responses was drawn from a multivariate normal distribution with mean 1 and standard deviation of 1.
+% https://github.com/jdkent/betaSeriesSimulations/blob/2fc45bcbc6873d395432d01359ba492b6f3b1458/beta_sim/interfaces/fmrisim.py#L204
+% https://github.com/jdkent/betaSeriesSimulations/blob/2fc45bcbc6873d395432d01359ba492b6f3b1458/beta_sim/interfaces/fmrisim.py#L170
+% - noise was added through:
+%     - snr: 40
+%     - sfnr: 60
+%     - task_sigma $1: Size of the variance of task specific noise
+%     - drift_sigma 1: Size of the variance of drift noise
+%     - auto_reg_sigma 0.5: Size of the variance of autoregressive
+%         noise. This is an ARMA process where the AR and MA components can be
+%         separately specified.
+%     - physiological_sigma 1: Size of the variance of physiological
+%         noise
+%     - auto_reg_rho [0.5]: The coefficients of the autoregressive
+%         components you are modeling
+%     - ma_rho [0.0]:The coefficients of the moving average components you
+%         are modeling
+%- voxels correlated at set correlation values (0.1, 0.2, 0.3)
+%- betas fit by least squares
+%- N=100 (for a given parameter)
+%- start and end of sessions were not ignored (optimal experimental design)
+%- highpass filter: 1/128 hz
+\subsection*{Task Switching Validation}
+
+To validate the betaseries simulations we used an unpublished dataset
+of older adults (N=61, 31 female, age=71.75$\pm$4.77, education=17.07$\pm$2.66)
+performing a mixed task switching task.
+Numbers reported are mean$\pm$standard deviation.
+Prior to any experimentation, participants provided verbal and written consent
+to participate in the research presented in this manuscript, which was approved
+by the University of Iowa's Institution Review Board.
+21 participants were excluded for having a framewise displacement of over 0.5mm for
+over a 100 volumes, resulting in a final N of 40.
+The task switch task was a mixed block/event related design containing
+5 blocks (2 single task blocks and 3 mixed task blocks).
+There was a 30 second rest between each block.
+There were 30 trials during each single trial block,
+and for the 3 mixed blocks there were 48 repeat trials and 40 switch trials total.
+The single tasks consisted of identifying a number between
+1 and 10 excluding 5 as high/low or odd/even, using their left and right index fingers
+on a fiber optic response pad.
+Participants were cued to which task they were performing by the color of the square
+the number was presented on.
+Each stimulus was presented for 1.5 seconds, and participants were allowed
+to respond within 2.0 seconds of stimulus onset.
+The average IEI was 3.5 seconds following an exponential distribution.
+All stimuli were presented using E-Prime.
+Participants practiced an abridged version of this task in a mock scanner
+prior to the real scan and had 4 practice trials in the real scanner immediately
+prior to performing the task to ensure proper finger placement and data acquisition.
+
+Participants' average accuracy and reaction time were:
+single, (92\%$\pm$27\%, 792ms$\pm$225ms); repeat, (89\%$\pm$31\%, 1001ms$\pm$278ms);
+and switch, (83\%$\pm$36.8\%, 1108ms$\pm$289ms).
+Due to data collection error, behavioral data were not collected on 3 participants.
+
 The task switch bold fmriprep output in MNI152NLin2009cAsym space
 was analyzed with Nistats for first and second level analyses.
 we used mean white matter signal, mean cerebrospinal fluid signal,
@@ -780,7 +707,82 @@ separate the impact of condition and error processing to validate BSC.
 Second level analysis took a summary of the first level results presenting which
 regions were robustly activated between participants.
 For each contrast, the alpha was set to 0.01 with a cluster threshold of 10 voxels using
-false discovery rate error control.
+false discovery rate error control \ref{fig:stat_maps}.
+
+\begin{figure}[H]
+  \centering
+  \subfloat{
+    \includegraphics[width=\textwidth]{stat-map-single}
+  }
+\end{figure}
+
+\begin{figure}[H]
+  \ContinuedFloat
+  \centering
+  \subfloat{
+    \includegraphics[width=\textwidth]{stat-map-repeat}
+  }
+\end{figure}
+
+\begin{figure}[H]
+  \ContinuedFloat
+  \centering
+  \subfloat{
+    \includegraphics[width=\textwidth]{stat-map-switch}
+  }
+\end{figure}
+
+\begin{figure}[H]
+  \ContinuedFloat
+  \centering
+  \subfloat{
+    \includegraphics[width=\textwidth]{stat-map-switchXrepeat}
+  }
+  \caption{Univariate statistical maps of average responses and the contrast "switch - repeat"}
+  \label{fig:stat_maps}
+\end{figure}
+
+An activation atlas was generated based on an F-test across conditions
+to identify regions that were reliably activated for all participants.
+5mm spheres were drawn around each statistical peak (20 peaks total)
+to form the activation atlas.
+
+\begin{table}
+  \csvautotabular[separator=tab, no check column count]{./data/cluster_table.tsv}
+  \caption{
+    The peak MNI coordinates/Z-statistic identifying clusters/sub-clusters from the overall
+    response contrast.
+    These peaks were used to create regions of interest (ROIs) to form an atlas representative
+    of the most consistently activated regions across conditions.
+  }
+  \label{table:clusters}
+\end{table}
+
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{activation_roi_map}
+  \caption{
+    ROIs drawn from the peak Z-score table, placing a sphere with a 5mm radius
+    at each peak coordinate.
+  }
+  \label{fig:methroimap}
+\end{figure}
+
+\subsection*{Null Task Data}
+
+In addition to the task switching task, participants also completed
+two 8 minute resting state runs.
+We used the resting state runs as a null model for task switching.
+While the task switch data had 471 volumes, each resting state run only had
+240 volumes.
+In order to match the length of the resting state data with the task data, we concatenated
+the two resting state runs while cutting off the first 10 volumes of the second run
+and interpolating 1 volume between the two runs, resulting in 471 volumes.
+The interpolation helps transition the bold series from one run to the next,
+analogous to interpolation performed when scrubbing high motion volumes. 
+This null task data was treated equivalently to the task switching data for the
+beta series correlation analysis.
 
 \subsection*{Task Switching Beta Series Correlation Analysis}
 
@@ -813,6 +815,7 @@ in the task data with the number of positives found in the null data.
 \section*{Results}
 
 \subsection*{Beta Series Correlation Simulations}
+
 Across all ITIs, trial numbers, CNRs, and AVNRs, the false positive rate of 5\%
 holds.
 
