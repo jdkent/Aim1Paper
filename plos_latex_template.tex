@@ -164,10 +164,15 @@
 \lfoot{\today}
 
 %% TEMPORARY FIGURES (REMOVE BEFORE SUBMISSION)
-\usepackage[svgpath=./figs/]{svg}
+% \usepackage[svgpath=./figs/]{svg}
 \usepackage{graphicx}
 \graphicspath{ {./figs/} }
 \usepackage{float}
+\usepackage[caption=false]{subfig}
+\usepackage{csvsimple}
+\usepackage{chngcntr}
+\counterwithout{figure}{section}
+
 %% Include all macros below
 
 \newcommand{\lorem}{{\bf LOREM}}
@@ -268,9 +273,23 @@ The single event estimates become difficult to estimate when trials are close to
 in other words, less than 4 seconds.
 Such designs are called fast event related designs.
 The reason these single events are difficult to estimate in fast event related designs comes from
-the sluggish Blood Oxygen Level Dependent (BOLD) response.
+the sluggish Blood Oxygen Level Dependent (BOLD) response \ref{fig:introhrf}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{introduction-hrf}
+  \caption{
+    Model of the Hemodynamic Response Function (HRF) ~\cite{Glover1999} at a
+    typical resolution of an fMRI scan (2 seconds).
+    The x-axis represents time in seconds and the y-axis is arbitrary units.
+    Fast event related designs with inter event intervals (IEIs) at or faster than time to peak
+    response (e.g., 4-6 seconds), need to account for the overlapping signals.
+  }
+  \label{fig:introhrf}
+\end{figure}
+
 The BOLD response is an indirect measure of neuronal activity that take approximately 6 seconds to
-peak and around 32 seconds to fully resolve.
+peak and around 16 seconds to effectively resolve.
 If events are occurring (on average) 4 seconds apart, the difficulty of single event estimation
 becomes apparent.
 One does not know whether BOLD activity should be attributed to a target event or an
@@ -289,6 +308,19 @@ This beta is often interpreted as the amplitude of the response.
 In a traditional GLM, events of the same type will be grouped together
 to provide a robust estimate of whether a particular region or set of regions are
 active relative to some other baseline.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics{introduction-normalGLM}
+  \caption{
+    An example of a design matrix seen in a traditional GLM used in fMRI ~\cite{Friston1995}.
+    There is a single column for each condition, resulting in two columns (intercept column ignored for clarity).
+    With this design you can answer questions about which voxels are more or less active in one condition
+    versus another, but you cannot see which voxels vary together over stimulus presentations.
+  }
+  \label{fig:introGLM}
+\end{figure}
+
 That approach, however, does not tell you which regions are acting in concert
 in response to the event type.
 It could be the case that for half of the events of the same type two regions are active,
@@ -296,12 +328,52 @@ and for the other half, another two regions are active.
 The traditional GLM will not be able differentiate the two pairs of regions.
 LSS and LSA, on the other hand, propose to be able to separate the two pairs of regions.
 LSA takes a variant of the traditional GLM whereby instead of providing a beta
-estimate for a group of events, each event gets it's own beta estimate in a single GLM.
+estimate for a group of events, each event gets it's own beta estimate in a single GLM ~\ref{fig:introlsa}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{introduction-lsa}
+  \caption{
+    Left shows an example design matrix for LSA where each event gets its own column.
+    Since we receive a beta estimate per column, we end up with as many beta estimates as there
+    are events.
+    We can combine those beta estimates to create a beta series (Right) for each condition.
+    In this example we measured beta series for two voxels, allowing us to
+    correlate the betaseries from one voxel to another.
+    We can perform the correlation for the two conditions.
+    The arrows on the design matrix (left) correspond to the beta estimates of those events
+    on the shaded regions (right).
+  }
+  \label{fig:introlsa}
+\end{figure}
+
 LSS differs from LSA by fitting a separate GLM for each event, where in each model a target
-event is fit and the rest of the events are grouped together and given separate beta estimates.
-the target trial estimate for each model is taken to form a beta series.
+event is fit and the rest of the events are grouped together and given separate beta estimates ~\ref{fig:introlss}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{introduction-lss}
+  \caption{
+    Left shows an example design matrix for LSS where each event gets its own model
+    (intercept excluded for clarity).
+    The target event (outlined in red) comes from either condition 0 or 1.
+    For example, if the target event is from condition 1, the remaining condition 1 events
+    get their own column, and all of the condition 0 events get their own column
+    Since we receive a beta estimate per model, we end up with as many beta estimates as there
+    are events.
+    We can combine those beta estimates to create a beta series (Right) for each condition.
+    In this example we measured beta series for two voxels, allowing us to
+    correlate the betaseries from one voxel to another.
+    We can perform the correlation for the two conditions.
+    The arrows on the design matrix (left) correspond to the beta estimates of those events
+    on the shaded regions (right).
+  }
+  \label{fig:introlss}
+\end{figure}
+
+The target trial estimate for each model is taken to form a beta series.
 Harkening back to the sluggish BOLD response, LSA suffers when the events are close together,
-since the GLM cannot reliably attribute which BOLD response should correspond to which event.
+since the GLM cannot reliably attribute which BOLD response should correspond to which event ~\ref{fig:introGLM}.
 LSS attempts to reduce the model confusion by only having one single event estimate per model,
 so the non-target events have their beta influenced by multiple observations, ostensibly
 providing a more reliable single event beta estimate.
@@ -331,10 +403,10 @@ of the betas relative to the standard deviation of the noise~\cite{Abdulrahman20
 
 To generate realistic numbers for simulating timeseries at varying CNRs,
 we used the task switch dataset.
-We ran LSS/LSA on all participants to get both trial estimates of activation (i.e., betas)
+We ran LSS/LSA on real data (N=40) to get both trial estimates of activation (i.e., betas)
 as well as residuals from the model.
 To calculate CNR, several steps were taken.
-First, we masked the betaseries using the Schaefer and Activation atlases (See Atlas Correlation Analysis).
+First, we masked the betaseries using the Schaefer or Activation atlases (See Atlas Correlation Analysis).
 Second, we took the absolute value of all masked beta estimates for a participant.
 Third, we took the median beta estimates over all trial volumes resulting
 in a median beta estimate amplitude for all ROIs.
@@ -346,11 +418,11 @@ and upper bound of CNR.
 Calculating AVNR followed the same procedure as CNR with the exception of the first two steps.
 First, we took the standard deviation of the beta estimates, then we followed steps three through six above.
 
-We derived CNRs of 1 and 10 as reasonable values from the dataset.
+We derived CNRs of 1 and 2 as reasonable values from the dataset.
 Again, using our local dataset, we measured the standard deviation of the betas
 (i.e., Activation Variation) with
 the standard deviation of the residuals (i.e., Noise),
-and arrived at Activation Variation Noise ratios (AVNR) of 1 and 10.
+and arrived at Activation Variation Noise ratios (AVNR) of 1 and 2.
 We can manipulate CNR and AVNR independently to determine whether variation of the betas
 impact beta series correlation's ability to recapture the true correlation.
 % display example of design
@@ -358,21 +430,21 @@ impact beta series correlation's ability to recapture the true correlation.
 The choice of onset times was varied based on average inter-event-interval (IEI's).
 The IEI is the time from the previous event onset to the next event onset.
 We chose average IEIs at 2, 4, 6, and 8 seconds to reflect a common range of IEIs
-for fast event related design experiments
+for fast event related design experiments ~\cite{Hennigan2015,Dichter2007,Goghari2009}.
 We also varied number of events, choosing 15, 30, 45, and 60 events per condition,
 which also appear to be common selections for fast event related design experiments.
-The optimization of selecting event onsets was done with neurodesign~\cite{Durnez2018}.
-We chose A-Optimality to optimize onsets using the genetic algorithm implemented
+The optimization of selecting event onsets was done with neurodesign ~\cite{Durnez2018}.
+We chose to optimize A-Optimality for onsets selection using the genetic algorithm implemented
 in neurodesign, selecting onsets with an exponential distribution.
 The top 20 designs were chosen from neurodesign to reduce the likelihood
-that the simulations results are an artifact of idiosyncracies of the experimental design.
+that the simulation results are an artifact of idiosyncrasies
+of the optimized experimental design.
 
 The beta weights for each voxel were chosen from a multivariate normal distribution
 with a mean of one and with a fixed ground truth correlation between the two voxels 
-(varying between 0.0-0.9) and predefined variance of either 1 or 10
-for the betas within each voxel.
+(varying between 0.0-0.9) with AVNR of either 1 or 2.
 The beta weights were convolved with a hemodynamic response function and scaled
-relative to the noise standard deviation to CNRs of 1 or 10.
+relative to the noise standard deviation to CNRs of 1 or 2.
 
 100 simulations were run for each event number (15, 30, 45, 60) IEI (2, 4, 6, 8), 
 CNR (1, 10), AVNR (1, 10), condition (c1, c2), and ground truth correlation
@@ -388,10 +460,12 @@ Since the ground truth correlation is the same between samples,
 we expect a false positive rate of \%5 at an alpha of 0.05.
 We repeated this process 10,000 times to measure the false positive rate.
 
-Once the false positive rate is established, we will establish power with the same method as above,
+Once the false positive rate was established, we established power with the same method as above,
 but with samples containing different ground truth correlations.
-We select two samples where one sample had a ground truth
-correlation that was either 0.1 or 0.3 less than than the other sample.
+We selected two samples where there was 0.1 (pearson's r) difference between the samples.
+0.1 difference was chosen based on reported differences found in other published
+reports as well as the dataset used in this report ~\cite{Katsura2014,Lee2017,Turner2017,Lin2019,Huang2019}.
+This process was also repeated 10,000 times to establish power.
 Thus we detected how well correlation differences could be detected
 with different task design and noise parameters.
 
@@ -441,6 +515,65 @@ Each stimulus was presented for 1.5 seconds, and participants were allowed
 to respond within 2.0 seconds of stimulus onset.
 The average IEI was 3.5 seconds following an exponential distribution.
 
+\begin{figure}[H]
+  \centering
+  \subfloat{
+    \includegraphics[width=\textwidth]{stat-map-single}
+  }
+\end{figure}
+
+\begin{figure}[H]
+  \ContinuedFloat
+  \centering
+  \subfloat{
+    \includegraphics[width=\textwidth]{stat-map-repeat}
+  }
+\end{figure}
+
+\begin{figure}[H]
+  \ContinuedFloat
+  \centering
+  \subfloat{
+    \includegraphics[width=\textwidth]{stat-map-switch}
+  }
+\end{figure}
+
+\begin{figure}[H]
+  \ContinuedFloat
+  \centering
+  \subfloat{
+    \includegraphics[width=\textwidth]{stat-map-switchXrepeat}
+  }
+  \caption{Univariate statistical maps of average responses and the contrast "switch - repeat"}
+  \label{fig:stat_maps}
+\end{figure}
+
+An activation atlas was generated based on an F-test across conditions
+to identify regions that were reliably activated for all participants.
+5mm spheres were drawn around each statistical peak (20 peaks total)
+to form the activation atlas.
+
+\begin{table}
+  \csvautotabular[separator=tab, no check column count]{./data/cluster_table.tsv}
+  \caption{
+    The peak MNI coordinates/Z-statistic identifying clusters/sub-clusters from the overall
+    response contrast.
+    These peaks were used to create regions of interest (ROIs) to form an atlas representative
+    of the most consistently activated regions across conditions.
+  }
+  \label{table:clusters}
+\end{table}
+
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{activation_roi_map}
+  \caption{
+    ROIs drawn from the peak Z-score table, placing a sphere with a 5mm radius
+    at each peak coordinate.
+  }
+  \label{fig:methroimap}
+\end{figure}
 
 \subsection*{Null Task Data}
 In addition to the task switching task, participants also completed
@@ -453,7 +586,7 @@ the two resting state runs while cutting off the first 10 volumes of the second 
 and interpolating 1 volume between the two runs, resulting in 471 volumes.
 The interpolation helps transition the bold series from one run to the next,
 analogous to interpolation performed when scrubbing high motion volumes. 
-This null task data was treated the same as the task switching data for the
+This null task data was treated equivalently to the task switching data for the
 beta series correlation analysis.
 
 \subsection{Scanner Parameters}
@@ -532,8 +665,8 @@ framewise displacement (FD) and two region-wise global signals.
 FD was calculated for each functional run, using its
 implementation in \emph{Nipype} \cite[following the definitions
 by]{power_fd_dvars}.
-The two global signals are extracted within the
-cerebrospinal fluid and the white matter.
+The two global signals were extracted within the
+cerebrospinal fluid and the white matter masks.
 High-pass filtering the \emph{preprocessed BOLD} time-series was done using
 a discrete cosine filter with 128s cut-off.
 The head-motion estimates calculated in
@@ -579,7 +712,13 @@ all other events from that condition were modeled in a second regressor,
 and other conditions were modeled in their own regressors.
 So if the task has the conditions switch, repeat, and single, 
 a single GLM would have 4 event regressors, 1 for the target
-trial, and 3 for the remaining event types.
+event, and 3 for the remaining conditions.
+
+The LSA model was generated following the method described in
+\cite[Rissman 2004]{Rissman2004}, using Nistats 0.0.1b2.
+Each event was given its own regressor in a single GLM, such that
+if the experiment had 100 events, there would be 100 regressors in the GLM.
+
 Each event regressor was convolved with a \cite[glover hemodynamic response
 function]{Glover1999}.\\
 In addition to event regressors, average white matter signal, average csf signal,
@@ -589,15 +728,12 @@ in the model as calculated in the Preparing fMRI section.
 AR(1) prewhitening was applied in each model to account
 for temporal autocorrelation.
 
-The LSA model was generated following the method described in
-\cite[Rissman 2004]{Rissman2004}, using Nistats 0.0.1b2.
-
 After fitting each model, the parameter estimate (i.e., beta) map
 associated with the target event's regressor was retained and
 concatenated into a 4D image with all other events from the same
-condition, resulting in a set of N 4D images where N refers to the
-number of conditions in the task. The number of volumes in each 4D image
-represents the number of events in that condition.
+condition, resulting in a set of X 4D images where X refers to the
+number of conditions in the task.
+The number of volumes in each 4D image represents the number of events in that condition.
 
 \hypertarget{atlas-correlation-analysis}{%
 \subsubsection{Atlas Correlation
@@ -609,10 +745,6 @@ to produce condition-specific correlation matrices.
 Two atlases were used to generate ROI-to-ROI correlation matrices.
 The \cite[Schaefer Atlas (400 parcels, 17 networks)]{Schaefer2017} was
 used to comprehensively cover the cortex.
-An activation atlas was generated based on an F-test across conditions
-to identify regions that were reliably activated for all participants.
-5mm spheres were drawn around each statistical peak (20 peaks total)
-to form the activation atlas.
 
 The correlation coefficient estimator used for this
 step was empirical covariance, as implemented in Nilearn 0.4.2
@@ -645,24 +777,6 @@ Second level analysis took a summary of the first level results presenting which
 regions were robustly activated between participants.
 For each contrast, the alpha was set to 0.01 with a cluster threshold of 10 voxels using
 false discovery rate error control.
-
-\subsection*{contrast noise ratio calculation}
-To generate realistic numbers for simulating timeseries at varying CNRs,
-we used the task switch dataset.
-We ran LSS/LSA on all participants to get both trial estimates of activation (i.e., betas)
-as well as residuals from the model.
-To calculate CNR, several steps were taken.
-First, we masked the betaseries using the Schaefer and Activation atlases (See Atlas Correlation Analysis).
-Second, we took the absolute value of all masked beta estimates for a participant.
-Third, we took the median beta estimates over all trial volumes resulting
-in a median beta estimate amplitude for all ROIs.
-Fourth, we took the standard deviation of the residuals for each ROI.
-Fifth, we divided the median amplitude beta estimates by the standard deviation of the residuals
-for each ROI.
-Sixth, we took either the mean or max CNR across all ROIs to provide a reasonable estimate
-and upper bound of CNR.
-Calculating AVNR followed the same procedure as CNR with the exception of the first two steps.
-First, we took the standard deviation of the beta estimates, then we followed steps three through six above.
 
 \subsection*{Task Switching Beta Series Correlation Analysis}
 
@@ -700,153 +814,145 @@ holds.
 
 \begin{figure}[H]
   \centering
-  \subfloat{\includesvg[width=\textwidth]{snr-1_trial_noise-0_diff-none_simplified_pwr}}
+  \subfloat{\includegraphics[width=\textwidth]{avnr-1_fpr}}
 
-  \subfloat{\includesvg[width=\textwidth]{snr-1_trial_noise-1_diff-none_simplified_pwr}}
-  \label{fig:dnone}
-\end{figure}
+  \subfloat{\includegraphics[width=\textwidth]{avnr-10_fpr}}
 
-\begin{figure}[H]
-  \ContinuedFloat
-  \centering
-  \subfloat{\includesvg[width=\textwidth]{snr-10_trial_noise-0_diff-none_simplified_pwr}}
-
-  \subfloat{\includesvg[width=\textwidth]{snr-10_trial_noise-1_diff-none_simplified_pwr}}
   \caption{
-    LSA/LSS shows a \%5 false positive rate for all conditions.
-    Each power plot represents a sample of 50 pairs of correlations (with no true difference)
+    LSA/LSS both show a \%5 false positive rate for all conditions.
+    Each bar represents a sample of 50 pairs of correlations (with no true difference)
     randomly pulled from a distribution of correlations 10,000 times.
   }
-  \label{fig:dnone}
+  \label{fig:res_sim_fpr}
 \end{figure}
 
 \begin{figure}[H]
   \centering
-  \subfloat{\includesvg[width=\textwidth]{snr-1_trial_noise-0_diff-small_simplified_pwr}}
+  \subfloat{\includegraphics[width=\textwidth]{avnr-1_smalldiff}}
 
-  \subfloat{\includesvg[width=\textwidth]{snr-1_trial_noise-1_diff-small_simplified_pwr}}
-  \label{fig:dsmall}
-\end{figure}
+  \subfloat{\includegraphics[width=\textwidth]{avnr-10_smalldiff}}
 
-\begin{figure}[H]
-  \ContinuedFloat
-  \centering
-  \subfloat{\includesvg[width=\textwidth]{snr-10_trial_noise-0_diff-small_simplified_pwr}}
-
-  \subfloat{\includesvg[width=\textwidth]{snr-10_trial_noise-1_diff-small_simplified_pwr}}
   \caption{
-    Detecting a small difference (0.1 pearson's R) between conditions.
-    Each power plot represents a sample of 50 pairs of correlations (with a true difference of 0.1)
+    Detection power of a small difference between conditions (r=0.1).
+    LSS at least marginally outperforms LSA in most simulated experimental
+    designs, with a large difference in power when IEI is 4 seconds and
+    CNR is high.
+    LSS appears to have an advantage in low CNR scenerios across the longer IEIs
+    when AVNR is high.
+    Each bar represents a sample of 50 pairs of correlations (with no true difference)
     randomly pulled from a distribution of correlations 10,000 times.
-    LSS and LSA perform similarly for short ITIs and long ITIs.
-    The greatest difference occurs during the four second ITI,
-    especially with a CNR of 10.}
-  \label{fig:dsmall}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-  \subfloat{\includesvg[width=\textwidth]{snr-1_trial_noise-0_diff-large_simplified_pwr}}
-
-  \subfloat{\includesvg[width=\textwidth]{snr-1_trial_noise-1_diff-large_simplified_pwr}}
-  \label{fig:dlarge}
-\end{figure}
-
-\begin{figure}[H]
-  \ContinuedFloat
-  \centering
-  \subfloat{\includesvg[width=\textwidth]{snr-10_trial_noise-0_diff-large_simplified_pwr}}
-
-  \subfloat{\includesvg[width=\textwidth]{snr-10_trial_noise-1_diff-large_simplified_pwr}}
-  \caption{
-    Detecting a large difference (0.3 pearson's R) between two conditions.
-    Each power plot represents a sample of 50 pairs of correlations (with a 0.3 true difference)
-    randomly pulled from a distribution of correlations 10,000 times.
-    LSS and LSA perform similarly for short ITIs and long ITIs when the CNR is 10.
-    LSS has an advantage for fewer trials per condition when the ITI is four seconds.
-    LSS also has greater power at a CNR of 1 when the ITI is either four or
-    eight seconds.
-    }
-  \label{fig:dlarge}
-\end{figure}
-The power for detecting an effect varies by ITIs, number of trials, CNR, and AVNR.
-increasing ITI leads to more power
-increasing the number of trials leads to more power
-The CNR drastically changes whether an effect is detectable or not, depending on estimation method.
-Greater AVNR also improves power
-create/insert figures for results
-
-
-\subsection*{Task Switching Validation}
-
-\subsubsection{Task Switch Univariate Results}
-To provide evidence task switching looks normal under traditional analyses,
-we did a standard univariate test across all voxels to identify regions
-of activation.
-
-\begin{figure}[H]
-  \centering
-  \subfloat{
-    \includesvg[width=\textwidth]{stat-map-single}
   }
-  \label{fig:statmaps}
+  \label{fig:res_sim_smalldiff}
 \end{figure}
 
-\begin{figure}[H]
-  \ContinuedFloat
-  \centering
-  \subfloat{
-    \includesvg[width=\textwidth]{stat-map-repeat}
-  }
-  \label{fig:statmaps}
-\end{figure}
+% \begin{figure}[H]
+%   \centering
+%   \subfloat{\includesvg[width=\textwidth]{snr-1_trial_noise-0_diff-none_simplified_pwr}}
 
-\begin{figure}[H]
-  \ContinuedFloat
-  \centering
-  \subfloat{
-    \includesvg[width=\textwidth]{stat-map-switch}
-  }
-  \label{fig:statmaps}
-\end{figure}
+%   \subfloat{\includesvg[width=\textwidth]{snr-1_trial_noise-1_diff-none_simplified_pwr}}
+%   \label{fig:dnone}
+% \end{figure}
 
-\begin{figure}[H]
-  \ContinuedFloat
-  \centering
-  \subfloat{
-    \includesvg[width=\textwidth]{stat-map-switch-repeat}
-  }
-  \caption{Univariate statistical maps of average responses and the contrast "switch - repeat"}
-  \label{fig:statmaps}
-\end{figure}
+% \begin{figure}[H]
+%   \ContinuedFloat
+%   \centering
+%   \subfloat{\includesvg[width=\textwidth]{snr-10_trial_noise-0_diff-none_simplified_pwr}}
+
+%   \subfloat{\includesvg[width=\textwidth]{snr-10_trial_noise-1_diff-none_simplified_pwr}}
+%   \caption{
+%     LSA/LSS shows a \%5 false positive rate for all conditions.
+%     Each power plot represents a sample of 50 pairs of correlations (with no true difference)
+%     randomly pulled from a distribution of correlations 10,000 times.
+%   }
+%   \label{fig:dnone}
+% \end{figure}
+
+% \begin{figure}[H]
+%   \centering
+%   \subfloat{\includesvg[width=\textwidth]{snr-1_trial_noise-0_diff-small_simplified_pwr}}
+
+%   \subfloat{\includesvg[width=\textwidth]{snr-1_trial_noise-1_diff-small_simplified_pwr}}
+%   \label{fig:dsmall}
+% \end{figure}
+
+% \begin{figure}[H]
+%   \ContinuedFloat
+%   \centering
+%   \subfloat{\includesvg[width=\textwidth]{snr-10_trial_noise-0_diff-small_simplified_pwr}}
+
+%   \subfloat{\includesvg[width=\textwidth]{snr-10_trial_noise-1_diff-small_simplified_pwr}}
+%   \caption{
+%     Detecting a small difference (0.1 pearson's R) between conditions.
+%     Each power plot represents a sample of 50 pairs of correlations (with a true difference of 0.1)
+%     randomly pulled from a distribution of correlations 10,000 times.
+%     LSS and LSA perform similarly for short ITIs and long ITIs.
+%     The greatest difference occurs during the four second ITI,
+%     especially with a CNR of 10.}
+%   \label{fig:dsmall}
+% \end{figure}
+
+% \begin{figure}[H]
+%   \centering
+%   \subfloat{\includesvg[width=\textwidth]{snr-1_trial_noise-0_diff-large_simplified_pwr}}
+
+%   \subfloat{\includesvg[width=\textwidth]{snr-1_trial_noise-1_diff-large_simplified_pwr}}
+%   \label{fig:dlarge}
+% \end{figure}
+
+% \begin{figure}[H]
+%   \ContinuedFloat
+%   \centering
+%   \subfloat{\includesvg[width=\textwidth]{snr-10_trial_noise-0_diff-large_simplified_pwr}}
+
+%   \subfloat{\includesvg[width=\textwidth]{snr-10_trial_noise-1_diff-large_simplified_pwr}}
+%   \caption{
+%     Detecting a large difference (0.3 pearson's R) between two conditions.
+%     Each power plot represents a sample of 50 pairs of correlations (with a 0.3 true difference)
+%     randomly pulled from a distribution of correlations 10,000 times.
+%     LSS and LSA perform similarly for short ITIs and long ITIs when the CNR is 10.
+%     LSS has an advantage for fewer trials per condition when the ITI is four seconds.
+%     LSS also has greater power at a CNR of 1 when the ITI is either four or
+%     eight seconds.
+%     }
+%   \label{fig:dlarge}
+% \end{figure}
+% The power for detecting an effect varies by ITIs, number of trials, CNR, and AVNR.
+% increasing ITI leads to more power
+% increasing the number of trials leads to more power
+% The CNR drastically changes whether an effect is detectable or not, depending on estimation method.
+% Greater AVNR also improves power
+% create/insert figures for results
+
 
 \subsection*{Task Switch Beta Series Correlation Simulations}
 
+
 \begin{figure}[H]
   \centering
-  \subfloat{
-    \includesvg[width=\textwidth]{diff-small_task-taskswitch_simplified_pwr}
-  }
-  \label{fig:taskpwr}
+    \includegraphics[width=\textwidth]{taskswitch-switchXrepeat_fpr}
+  \label{fig:task_fpr}
 \end{figure}
 
 \begin{figure}[H]
   \centering
-  \ContinuedFloat
-  \subfloat{
-    \includesvg[width=\textwidth]{diff-large_task-taskswitch_simplified_pwr}
-  }
+  \includegraphics[width=\textwidth]{taskswitch-switchXrepeat_smalldiff}
+  \label{fig:task_smalldiff}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=\textwidth]{taskswitch-switchXrepeat_largediff}
   \caption{
     Simulating power to detect small and large differences using
     a real task design.
-    Each power plot represents a sample of 61 pairs of correlations
+    Each power plot represents a sample of 40 pairs of correlations
     randomly pulled from a distribution of correlations 10,000 times.
     The correlation pairs either had a true difference 0.1 or 0.3.
     With a large CNR, the power for both LSS and LSA
     is maximal regardless of the true difference.
     With a small CNR, LSS has greater power to detect a difference.
-    }
-  \label{fig:taskpwr}
+  }
+  \label{fig:task_largediff}
 \end{figure}
 
 \subsection*{Task Switching Beta Series Correlations}
@@ -856,7 +962,7 @@ as well as beta series correlations to detect an effect at all.
 \subsubsection*{Task Swiching versus Rest}
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{cond1-taskswitch_cond2-rest_statistical_overlap}
+  \includegraphics[width=\textwidth]{data-both_atlas-activation_contrast-taskXnull}
   \caption{
     Task versus Rest. Correlation differences with a p-value less than 0.05.
     LSS (green), LSA (blue), and their overlap (yellow) are shown.
@@ -871,38 +977,10 @@ A number of the significant correlations are undoubtably false positives, but
 since we are interested in comparing LSS and LSA and not making strong theoretical claims,
 we can say this provides evidence LSS is a more sensitive measure.
 
-\subsubsection*{Switch versus Single}
-Since we are comparing two conditions with task switching (instead of comparing task with rest),
-we can use the rest data as a built in null to test if false positives are greater for LSA or LSS.
-First we will show the switch minus single contrast for task switching.
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=\textwidth]{cond1-switch_cond2-single_statistical_overlap}
-  \caption{
-    Switch versus single. Correlation differences with a p-value less than 0.05.
-    LSS (green), LSA (blue), and their overlap (yellow) are shown.
-  }
-  \label{fig:switchvsingle}
-\end{figure}
-LSA has a total of 2,474 significant results, LSS has a total of 3,108,
-and their overlap is 151 results.
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=\textwidth]{cond1-restswitch_cond2-restsingle_statistical_overlap}
-  \caption{
-    Switch versus single (in the rest data). Correlation differences with a p-value less than 0.05.
-    LSS (green), LSA (blue), and their overlap (yellow) are shown.
-  }
-  \label{fig:restswitchvsingle}
-\end{figure}
-LSA has a total of 2,129 significant results and LSS has a total of 1,693,
-and their overlap is 54.
-
 \subsubsection*{Repeat versus Single}
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{cond1-repeat_cond2-single_statistical_overlap}
+  \includegraphics[width=\textwidth]{data-task_atlas-activation_contrast-repeatXsingle}
   \caption{
     Repeat versus single. Correlation differences with a p-value less than 0.05.
     LSS (green), LSA (blue), and their overlap (yellow) are shown.
@@ -914,7 +992,7 @@ and their overlap is 282 results.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{cond1-restrepeat_cond2-restsingle_statistical_overlap}
+  \includegraphics[width=\textwidth]{data-null_atlas-activation_contrast-repeatXsingle}
   \caption{
     Repeat versus single (in the rest data). Correlation differences with a p-value less than 0.05.
     LSS (green), LSA (blue), and their overlap (yellow) are shown.
@@ -924,30 +1002,6 @@ and their overlap is 282 results.
 LSA has a total of 2,048 significant results and LSS has a total of 2,140,
 and their overlap is 67.
 
-\subsubsection*{Switch versus Repeat}
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=\textwidth]{cond1-switch_cond2-repeat_statistical_overlap}
-  \caption{
-    Switch versus repeat. Correlation differences with a p-value less than 0.05.
-    LSS (green), LSA (blue), and their overlap (yellow) are shown.
-  }
-  \label{fig:switchvrepeat}
-\end{figure}
-LSA has a total of 101 significant results, LSS has a total of 1,322,
-and their overlap is 3 results.
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=\textwidth]{cond1-restswitch_cond2-restrepeat_statistical_overlap}
-  \caption{
-    Switch versus repeat (in the rest data). Correlation differences with a p-value less than 0.05.
-    LSS (green), LSA (blue), and their overlap (yellow) are shown.
-  }
-  \label{fig:restswitchvrepeat}
-\end{figure}
-LSA has a total of 339 significant results and LSS has a total of 1,205,
-and their overlap is 5 results.
 % Comparing The task versus the resting state shows mixed results.
 % Question: DOES LSS or LSA show more differences between task and rest for both
 % the atlas and motivated ROIs?
@@ -999,7 +1053,17 @@ and their overlap is 5 results.
 
 % Nulla mi mi, venenatis sed ipsum varius, Table~\ref{table1} volutpat euismod diam. Proin rutrum vel massa non gravida. Quisque tempor sem et dignissim rutrum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi at justo vitae nulla elementum commodo eu id massa. In vitae diam ac augue semper tincidunt eu ut eros. Fusce fringilla erat porttitor lectus cursus, vel sagittis arcu lobortis. Aliquam in enim semper, aliquam massa id, cursus neque. Praesent faucibus semper libero~\cite{bib3}.
 \subsection*{Simulation Conclusions}
+We found both LSS and LSA produce expected false positive rates of \%5
+across all experimental designs and data parameters.
+A large advantage of LSS over LSA occurs when the IEI is 4 seconds, but is eliminated
+when the IEI is 2 seconds.
+This is likely because the sampling rate was simulated to be 2 seconds, resulting
+in an event to occur for every "volume".
+The slow BOLD response for each event results in highly colinear regressors for both LSA and LSS.
 
+Our CNR estimates were much lower than the range reported by \cite[Welvaert]{Welvaert2013a}, likely
+due to their use of a Block design, and partially due to the more complex calculation
+used in this report.
 \begin{itemize}
   \item LSS and LSA perform similarly at low and high ITIs
   \item LSS outperforms at 4 seconds ITI
