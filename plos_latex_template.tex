@@ -253,27 +253,29 @@ Simulations, task, and combination
 
 The field of human imaging neuroscience has moved towards interrogating networks of brain regions
 over individual brain regions.
-Broadly defined, a brain network is a collection of widespread regions who share information.
-Brain networks have primarily been investigated while participants are at rest or while they are performing
-a single task for a block of time, such as tapping a finger for a 30 second period.
-However, networks have resisted measurement while participants perform interleaved tasks or when
-events of interest occur close together in a task, such as a task switching task where participants
-must either classify a number as high/low or as odd/even depending on the cue.
-In other words, brain networks have not been investigated within fast event related designs.
+Broadly defined, a brain network is a collection of widespread brain regions who share information ~\cite{Uddin2019}.
+Brain networks have primarily been investigated while participants are at rest, there
+is a raising popularity to observe brain networks while participants perform tasks ~\cite{Cole2014a}.
+There is also a rising popularity to measure dynamic brain networks where brain regions change
+what network they participate in over time ~\cite{Sakoglu2008,Hindriks2016}.
+However, There has not been significant validation and investigation of brain networks
+when participants engage in tasks with interleaved conditions that could induce
+different brain networks dynamically.
+In other words, brain networks have not been investigated within fast event related designs ~\cite{Buckner1998}.
 We seek to validate and compare two methods that can measure brain responses to events that occur
 close in time.
 
 The overarching method being investigated is beta series correlations (BSC) ~\cite{Rissman2004,Mumford2012,Turner2012a,Abdulrahman2016}
-There are two main approaches to estimate the Beta Series for BSC: Least Squares All (LSA) and Least Squares Separate (LSS).
+There are two main approaches to estimate the Beta Series for BSC: Least Squares All (LSA) and Least Squares Separate (LSS) ~\cite{Mumford2012}.
 Both approaches of beta series estimation seek to derive single event estimates that represent a brain region's activity
 at each individual event.
 An event is defined as "a stimulus or participant response recorded during a task." ~\cite{Gorgolewski2016}
 Where task is defined as "a set of structured activities performed by the participant." ~\cite{Gorgolewski2016}
 The single event estimates become difficult to estimate when trials are close together,
-in other words, less than 4 seconds.
+in other words, less than the time it takes for the Blood Oxygen Level Dependent (BOLD) response to resolve \ref{fig:introhrf}.
 Such designs are called fast event related designs.
 The reason these single events are difficult to estimate in fast event related designs comes from
-the sluggish Blood Oxygen Level Dependent (BOLD) response \ref{fig:introhrf}.
+the sluggish BOLD response \ref{fig:introhrf}.
 
 \begin{figure}[H]
   \centering
@@ -289,14 +291,14 @@ the sluggish Blood Oxygen Level Dependent (BOLD) response \ref{fig:introhrf}.
 \end{figure}
 
 The BOLD response is an indirect measure of neuronal activity that take approximately 6 seconds to
-peak and around 16 seconds to effectively resolve.
+peak and around 16-32 seconds to effectively resolve.
 If events are occurring (on average) 4 seconds apart, the difficulty of single event estimation
 becomes apparent.
 One does not know whether BOLD activity should be attributed to a target event or an
 adjacent event.
 LSA and LSS approach this problem differently.
-LSA, namely, ignores this problem, while LSS attempts to provide a more reliable measure.
-
+LSA, namely, ignores this problem providing a high variance, but low bias measure; while LSS provides
+a lower variance; but more biased measure.
 To understand how LSA and LSS tackle single event estimation, it is necessary to introduce
 the General Linear Model (GLM).
 GLMs are a mainstay in the neuroimaging literature, allowing researchers to model
@@ -325,8 +327,8 @@ That approach, however, does not tell you which regions are acting in concert
 in response to the event type.
 It could be the case that for half of the events of the same type two regions are active,
 and for the other half, another two regions are active.
-The traditional GLM will not be able differentiate the two pairs of regions.
-LSS and LSA, on the other hand, propose to be able to separate the two pairs of regions.
+The traditional GLM will not be able differentiate the different pairs of regions.
+LSS and LSA, on the other hand, propose to be able to separate the different pairs of regions.
 LSA takes a variant of the traditional GLM whereby instead of providing a beta
 estimate for a group of events, each event gets it's own beta estimate in a single GLM ~\ref{fig:introlsa}.
 
@@ -375,34 +377,37 @@ The target trial estimate for each model is taken to form a beta series.
 Harkening back to the sluggish BOLD response, LSA suffers when the events are close together,
 since the GLM cannot reliably attribute which BOLD response should correspond to which event ~\ref{fig:introGLM}.
 LSS attempts to reduce the model confusion by only having one single event estimate per model,
-so the non-target events have their beta influenced by multiple observations, ostensibly
-providing a more reliable single event beta estimate.
-
+so the non-target events have their beta influenced by multiple observations, loosening the
+constraint that adjacent events to the target event need to be orthogonal (i.e. independent) of each other.
 While previous work has simulated beta series and evaluated beta series on real data,
 several key gaps remain.
 One, simulations have not taken into account realistic noise structure of fMRI data.
-Two, simulations have not used optimal fast event related designs.
-Three, realistic expectations of signal to noise ratios have not been considered.
+Two, simulations have not used optimal fast event related designs, only random designs. 
+Three, empirical selections of signal to noise ratios have not been considered.
 Four, a quantitative comparison/validation of LSA and LSS estimation for BSC has not been done.
 The present work fills these gaps and provides recommendations for further research
-using these methods.
+using LSA and LSS.
 
 \section*{Materials and methods}
 \subsection*{Beta Series Correlation Simulations}
 To assess the validity and power of beta series correlations,
-we simulated timeseries data and convolved short (0.2 second) task onsets with double gamma functions
+we simulated two voxels of timeseries data and convolved short (0.2 second)
+task onsets with double gamma functions
 and added the responses to the timeseries~\cite{Glover1999,Welvaert2011}.
 We used fmrisim from the brainiak toolbox to generate a two voxel timeseries
 containing drift, autocorrelation, phsysiological noise,
-task related movement, and scanner noise~\cite{Ellis2020}.
+task related movement, and scanner noise ~\cite{Ellis2020}.
 For all simulations the time of repetition was set at 2 seconds.
 We varied the contrast-to-noise ratio (CNR) using the amplitude of the activation
 divided by the standard deviation of the noise~\cite{Welvaert2013a}.
 Another parameter deemed critical by previous work is the standard deviation
-of the betas relative to the standard deviation of the noise~\cite{Abdulrahman2016}.
+of the betas relative to the standard deviation of the noise~\cite{Abdulrahman2016},
+so we varied that measure as well.
+\cite[Since Abdulrahman \& Henson (2016)]{Abdulrahman2016} also called their measure
+CNR, we've decided to rename it as Activation Variance to Noise Ratio (AVNR).
 
-To generate realistic numbers for simulating timeseries at varying CNRs,
-we used the task switch dataset.
+To generate realistic numbers for simulating timeseries at varying CNRs and AVNRs
+we used an unpublished dataset on task switching in older adults.
 We ran LSS/LSA on real data (N=40) to get both trial estimates of activation (i.e., betas)
 as well as residuals from the model.
 To calculate CNR, several steps were taken.
@@ -418,11 +423,7 @@ and upper bound of CNR.
 Calculating AVNR followed the same procedure as CNR with the exception of the first two steps.
 First, we took the standard deviation of the beta estimates, then we followed steps three through six above.
 
-We derived CNRs of 1 and 2 as reasonable values from the dataset.
-Again, using our local dataset, we measured the standard deviation of the betas
-(i.e., Activation Variation) with
-the standard deviation of the residuals (i.e., Noise),
-and arrived at Activation Variation Noise ratios (AVNR) of 1 and 2.
+We derived CNRs of 1 and 2 as and AVNRs of 1 and 2 as reasonable values from the dataset.
 We can manipulate CNR and AVNR independently to determine whether variation of the betas
 impact beta series correlation's ability to recapture the true correlation.
 % display example of design
@@ -447,7 +448,7 @@ The beta weights were convolved with a hemodynamic response function and scaled
 relative to the noise standard deviation to CNRs of 1 or 2.
 
 100 simulations were run for each event number (15, 30, 45, 60) IEI (2, 4, 6, 8), 
-CNR (1, 10), AVNR (1, 10), condition (c1, c2), and ground truth correlation
+CNR (1, 2), AVNR (1, 2), condition (c1, c2), and ground truth correlation
 (0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9)
 resulting in 128,000 total simulations.
 
@@ -693,7 +694,7 @@ section corresponding to workflows in \emph{fMRIPrep}'s documentation}.
 \subsection{BetaSeries Correlations}
 
 Results included in this manuscript come from modeling performed using
-\emph{NiBetaSeries} 0.4.3 \cite{Kent2018}, which uses
+\emph{NiBetaSeries} 0.6.0 \cite{Kent2018}, which uses
 \emph{Nipype} 1.4.2 \cite{Gorgolewski2011, Gorgolewski2018}.
 
 \hypertarget{beta-series-modeling}{%
@@ -746,6 +747,9 @@ Two atlases were used to generate ROI-to-ROI correlation matrices.
 The \cite[Schaefer Atlas (400 parcels, 17 networks)]{Schaefer2017} was
 used to comprehensively cover the cortex.
 
+Outlier beta estimate volumes were identified and discarded using a
+modified Nipype function for outlier detection
+(\href{https://github.com/HBClab/NiBetaSeries/blob/a45c0a1f/src/nibetaseries/interfaces/nilearn.py#L153}{see here}) ~\cite{Crosby1994}.
 The correlation coefficient estimator used for this
 step was empirical covariance, as implemented in Nilearn 0.4.2
 \cite{Abraham2014}. Correlation coefficients were converted to
