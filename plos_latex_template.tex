@@ -590,7 +590,7 @@ we used an unpublished dataset on task switching in older adults.
 We ran LSS/LSA on real data (N=40) to get both trial estimates of activation (i.e., betas)
 as well as residuals from the model.
 To calculate CNR, several steps were taken.
-First, we masked the betaseries using the Schaefer or Activation atlases (See Atlas Correlation Analysis).
+First, we masked the betaseries using the Schaefer or Activation atlases (see \nameref{methods:atlas-corr-analysis}).
 Second, we took the absolute value of all masked beta estimates for a participant.
 Third, we took the median beta estimates over all trial volumes resulting
 in a median beta estimate amplitude for all ROIs.
@@ -841,6 +841,8 @@ in the task data with the number of positives found in the null data.
 \subsection*{Beta Series Correlation Simulations}
 \label{results:bsc-simulations}
 
+For proper interpretation of the power analyses, we first established whether
+a 5\% false positive rate was found.
 Across all ITIs, trial numbers, CNRs, and AVNRs, the false positive rate of 5\%
 holds.
 
@@ -857,6 +859,9 @@ holds.
   }
   \label{fig:res_sim_fpr}
 \end{figure}
+
+Next we observed how detectable a correlation difference of 0.1 was
+across all parameters.
 
 \begin{figure}[H]
   \centering
@@ -955,10 +960,14 @@ holds.
 % Greater AVNR also improves power
 % create/insert figures for results
 
-
 \subsection*{Task Switch Beta Series Correlation Simulations}
 \label{results:bsc-taskswitch-simulations}
 
+To make the simulations and the real data as analogous as possible
+for comparison, we ran simulations using the same experimental design
+that was used to collect the real data.
+
+Again, we established a 5\% false positive rate.
 
 \begin{figure}[H]
   \centering
@@ -976,11 +985,11 @@ holds.
   \centering
     \includegraphics[width=\textwidth]{taskswitch-switchXrepeat_largediff}
   \caption{
-    Simulating power to detect small and large differences using
-    a real task design.
+    Simulating power to detect a correlation difference of 0.1 between
+    conditions.
     Each power plot represents a sample of 40 pairs of correlations
     randomly pulled from a distribution of correlations 10,000 times.
-    The correlation pairs either had a true difference 0.1 or 0.3.
+    The correlation pairs had a true difference 0.1.
     With a large CNR, the power for both LSS and LSA
     is maximal regardless of the true difference.
     With a small CNR, LSS has greater power to detect a difference.
@@ -991,11 +1000,15 @@ holds.
 \subsection*{Task Switching Beta Series Correlations}
 \label{results:bsc-taskswitch}
 
-We looked at task switching data from multiple perspectives to observe the performance of LSA and LSS,
-as well as beta series correlations to detect an effect at all.
+We looked at task switching data from multiple perspectives to
+observe the performance of LSA and LSS, as well as beta series correlations
+to detect an effect at all relative to null data.
 
-\subsubsection*{Task Switch versus Rest}
-\label{results:bsc-taskswitchXrest}
+\subsubsection*{Task versus Null}
+\label{results:bsc-taskswitchXNull}
+
+We demonstrate a widespread pattern where the correlation between pairs of
+regions differ between task and null data \ref{fig:taskvnull}.
 
 \begin{figure}[H]
   \centering
@@ -1004,15 +1017,20 @@ as well as beta series correlations to detect an effect at all.
     Task versus Rest. Correlation differences with a p-value less than 0.05.
     LSS (green), LSA (blue), and their overlap (yellow) are shown.
   }
-  \label{fig:taskvrest}
+  \label{fig:taskvnull}
 \end{figure}
 
-The most lenient comparison is to compare the switch condition from task switching to resting state.
-LSA has a total of 8,202 significant results, LSS has a total of 15,292,
-and their overlap is 3,677.
+The most lenient comparison is to compare the switch condition from task switching to the null data.
+LSA has a total of 16 significant results, LSS has a total of 24,
+and their overlap is 7.
 A number of the significant correlations are undoubtably false positives, but
 since we are interested in comparing LSS and LSA and not making strong theoretical claims,
-we can say this provides evidence LSS is a more sensitive measure.
+we can say this result provides evidence LSS is a more sensitive measure.
+
+\subsubsection*{Switch versus Single}
+\label{results:bsc-repeatXsingle}
+
+
 
 \subsubsection*{Repeat versus Single}
 \label{results:bsc-repeatXsingle}
@@ -1026,6 +1044,7 @@ we can say this provides evidence LSS is a more sensitive measure.
   }
   \label{fig:repeatvsingle}
 \end{figure}
+
 LSA has a total of 2,851 significant results, LSS has a total of 3,838,
 and their overlap is 282 results.
 
