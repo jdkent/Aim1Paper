@@ -250,6 +250,7 @@ Simulations, task, and combination
 
 % Use "Eq" instead of "Equation" for equation citations.
 \section*{Introduction}
+\label{intro}
 
 The field of human imaging neuroscience has moved towards interrogating networks of brain regions
 over individual brain regions.
@@ -389,7 +390,11 @@ The present work fills these gaps and provides recommendations for further resea
 using LSA and LSS.
 
 \section*{Materials and methods}
-\subsection{Scanner Parameters}
+\label{methods}
+
+\subsection*{Scanner Parameters}
+\label{methods:scanner}
+
 MRI data were collected on a 3T GE Discovery 750w using a 32 channel head coil.
 The anatomical T1w images were collected using a SPoiled Gradient-Recalled (SPGR) sequence
 sagittally with a flip angle of 8$^{\circ}$, echo time of 3.168ms,
@@ -400,14 +405,18 @@ the bottom up sequentially with a flip angle of 80$^{\circ}$, echo time of 30ms,
 repetition time of 2000ms, voxel sizes of 3.44x3.44x4.00 on a [64x64] acquisition matrix
 with 37 slices, field of view 22cm x 22cm.
 
-\subsection{Preparing fMRI}
+\subsection*{Preparing fMRI}
+\label{methods:fmriprep}
+
 Results included in this manuscript come from preprocessing performed
 using \emph{fMRIPrep} 1.5.7 (\cite{fmriprep1}; \cite{fmriprep2}; RRID:SCR\_016216),
 which is based on \emph{Nipype} 1.4.0
 (\cite{nipype1}; \cite{nipype2}; RRID:SCR\_002502).
 
-\begin{description}
-\item[Anatomical data preprocessing]
+
+\subsubsection*{Anatomical data preprocessing}
+\label{methods:anat}
+
 The T1-weighted (T1w) image was corrected for intensity non-uniformity
 (INU) with \texttt{N4BiasFieldCorrection} \cite{n4}, distributed with
 ANTs 2.2.0 \cite[RRID:SCR\_004757]{ants}, and used as T1w-reference
@@ -429,7 +438,10 @@ was performed through nonlinear registration with \texttt{antsRegistration}
 The following templates were selected for spatial normalization: \emph{ICBM 152 Nonlinear
 Asymmetrical template version 2009c} {[}\cite{mni152nlin2009casym},
 RRID:SCR\_008796; TemplateFlow ID: MNI152NLin2009cAsym{]}.
-\item[Functional data preprocessing]
+
+\subsubsection*{Functional data preprocessing}
+\label{methods:func}
+
 For each of the 2 BOLD runs found per subject,
 the following preprocessing was performed.
 First, a reference volume and its skull-stripped version were generated
@@ -467,22 +479,16 @@ and output spaces).
 Gridded (volumetric) resamplings were performed using \texttt{antsApplyTransforms} (ANTs),
 configured with Lanczos interpolation to minimize the smoothing effects of other kernels
 \cite{lanczos}.
-\end{description}
 
-Many internal operations of \emph{fMRIPrep} use \emph{Nilearn} 0.6.1
-\cite[RRID:SCR\_001362]{nilearn}, mostly within the functional
-processing workflow. For more details of the pipeline, see
-\href{https://fmriprep.readthedocs.io/en/latest/workflows.html}{the
-section corresponding to workflows in \emph{fMRIPrep}'s documentation}.
-
-\subsection{BetaSeries Correlations}
+\subsection*{BetaSeries Correlations}
+\label{methods:bsc}
 
 Results included in this manuscript come from modeling performed using
 \emph{NiBetaSeries} 0.6.0 \cite{Kent2018}, which uses
 \emph{Nipype} 1.4.2 \cite{Gorgolewski2011, Gorgolewski2018}.
 
-\hypertarget{beta-series-modeling}{%
-\subsubsection{Beta Series Modeling}\label{beta-series-modeling}}
+\subsubsection*{Beta Series Modeling}
+\label{methods:bsc_model}
 
 The LSS models were generated for each event in
 the task following the method described in \cite{Turner2012a}, using
@@ -520,9 +526,9 @@ condition, resulting in a set of X 4D images where X refers to the
 number of conditions in the task.
 The number of volumes in each 4D image represents the number of events in that condition.
 
-\hypertarget{atlas-correlation-analysis}{%
-\subsubsection{Atlas Correlation
-Analysis}\label{atlas-correlation-analysis}}
+
+\subsubsection*{Atlas Correlation Analysis}
+\label{methods:atlas-corr-analysis}
 
 The beta series 4D image for each condition in the task was subjected to
 an region of interest to region of interest (ROI-to-ROI) correlation analysis
@@ -540,15 +546,28 @@ step was empirical covariance, as implemented in Nilearn 0.4.2
 normally-distributed z-values using Fisher's r-to-z conversion
 \cite{Fisher1915}.
 
-\hypertarget{software-dependencies}{%
-\subsubsection{Software Dependencies}\label{software-dependencies}}
 
-Additional libraries used in the NiBetaSeries workflow include
+\subsection*{Software Dependencies}
+\label{methods:software-dependencies}
+
+The results in this manuscript are dependent on many open source
+libraries, while we have inevitably missed providing all due credit,
+we would like to acknowledge some of the main libraries used in 
+\emph{fMRIPrep} and \emph{NiBetaSeries}.
+
+Many internal operations of \emph{fMRIPrep} use \emph{Nilearn} 0.6.1
+\cite[RRID:SCR\_001362]{nilearn}, mostly within the functional
+processing workflow. For more details of the pipeline, see
+\href{https://fmriprep.readthedocs.io/en/latest/workflows.html}{the
+section corresponding to workflows in \emph{fMRIPrep}'s documentation}.
+
+Additional libraries used in the \emph{NiBetaSeries} workflow include
 \emph{Pybids} 0.9.5 \cite{Yarkoni2019}, \emph{Niworkflows} 1.0.4,
 \emph{Nibabel} 2.4.1, \emph{Pandas} 0.24.2 \cite{McKinney2010}, and
 \emph{Numpy} 1.18.1 \cite{VanDerWalt2011, Oliphant2006}.
 
 \subsection*{Beta Series Correlation Simulations}
+\label{methods:bsc-simulations}
 
 To assess the validity and power of beta series correlations,
 we simulated two voxels of timeseries data and convolved short (0.2 second)
@@ -658,7 +677,8 @@ with different task design and noise parameters.
 %- N=100 (for a given parameter)
 %- start and end of sessions were not ignored (optimal experimental design)
 %- highpass filter: 1/128 hz
-\subsection*{Task Switching Validation}
+\subsection*{Real Data Validation}
+\label{methods:task-switch}
 
 To validate the betaseries simulations we used an unpublished dataset
 of older adults (N=61, 31 female, age=71.75$\pm$4.77, education=17.07$\pm$2.66)
@@ -690,10 +710,10 @@ prior to performing the task to ensure proper finger placement and data acquisit
 Participants' average accuracy and reaction time were:
 single, (92\%$\pm$27\%, 792ms$\pm$225ms); repeat, (89\%$\pm$31\%, 1001ms$\pm$278ms);
 and switch, (83\%$\pm$36.8\%, 1108ms$\pm$289ms).
-Due to data collection error, behavioral data were not collected on 3 participants.
+Due to data collection error, behavioral data were not collected for 3 participants.
 
-The task switch bold fmriprep output in MNI152NLin2009cAsym space
-was analyzed with Nistats for first and second level analyses.
+The task switch bold \emph{fmriprep} output in MNI152NLin2009cAsym space
+was analyzed with \emph{Nistats} for first and second level analyses.
 we used mean white matter signal, mean cerebrospinal fluid signal,
 discrete cosine basis filter (high pass filter), framewise displacement, the first four non-steady volumes, and
 all identified motion outliers as regressors in the first level model for each participant
@@ -738,7 +758,10 @@ false discovery rate error control \ref{fig:stat_maps}.
   \subfloat{
     \includegraphics[width=\textwidth]{stat-map-switchXrepeat}
   }
-  \caption{Univariate statistical maps of average responses and the contrast "switch - repeat"}
+  \caption{
+    Univariate statistical maps of second level results representing
+    each condition relative to baseline, an F-test over all conditions,
+    and the contrast "switch - repeat"}
   \label{fig:stat_maps}
 \end{figure}
 
@@ -769,7 +792,8 @@ to form the activation atlas.
   \label{fig:methroimap}
 \end{figure}
 
-\subsection*{Null Task Data}
+\subsection*{Null Data Validation}
+\label{methods:null-bold}
 
 In addition to the task switching task, participants also completed
 two 8 minute resting state runs.
@@ -784,7 +808,8 @@ analogous to interpolation performed when scrubbing high motion volumes.
 This null task data was treated equivalently to the task switching data for the
 beta series correlation analysis.
 
-\subsection*{Task Switching Beta Series Correlation Analysis}
+\subsection*{Real/Null Data Beta Series Correlation Analysis}
+\label{methods:data-bsc}
 
 BSC generated correlation matrices for each condition (switch, repeat, single),
 each method, (LSA and LSS), each data type (taskswitch and null), and each participant (N=40).
@@ -794,12 +819,10 @@ A ttest was run on each ROI-ROI pair for the Schaefer atlas, totaling 79,800 com
 between task and null.
 The results were corrected for multiple comparisons (Benjamini/Hochberg).
 
-
 We next contrasted switch - single, repeat - single, and switch - repeat, for LSS/LSA in both
 task and null data.
 Valid positive rates were calculated for LSA and LSS by dividing the number of positive results (p < 0.05)
 in the task data with the number of positives found in the null data.
-
 
 % For figure citations, please use "Fig" instead of "Figure".
 % Nulla mi mi, Fig~\ref{fig1} venenatis sed ipsum varius, volutpat euismod diam. Proin rutrum vel massa non gravida. Quisque tempor sem et dignissim rutrum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi at justo vitae nulla elementum commodo eu id massa. In vitae diam ac augue semper tincidunt eu ut eros. Fusce fringilla erat porttitor lectus cursus, \nameref{S1_Video} vel sagittis arcu lobortis. Aliquam in enim semper, aliquam massa id, cursus neque. Praesent faucibus semper libero.
@@ -813,8 +836,10 @@ in the task data with the number of positives found in the null data.
 
 % Results and Discussion can be combined.
 \section*{Results}
+\label{results}
 
 \subsection*{Beta Series Correlation Simulations}
+\label{results:bsc-simulations}
 
 Across all ITIs, trial numbers, CNRs, and AVNRs, the false positive rate of 5\%
 holds.
@@ -932,6 +957,7 @@ holds.
 
 
 \subsection*{Task Switch Beta Series Correlation Simulations}
+\label{results:bsc-taskswitch-simulations}
 
 
 \begin{figure}[H]
@@ -963,10 +989,14 @@ holds.
 \end{figure}
 
 \subsection*{Task Switching Beta Series Correlations}
+\label{results:bsc-taskswitch}
+
 We looked at task switching data from multiple perspectives to observe the performance of LSA and LSS,
 as well as beta series correlations to detect an effect at all.
 
-\subsubsection*{Task Swiching versus Rest}
+\subsubsection*{Task Switch versus Rest}
+\label{results:bsc-taskswitchXrest}
+
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{data-both_atlas-activation_contrast-taskXnull}
@@ -985,6 +1015,8 @@ since we are interested in comparing LSS and LSA and not making strong theoretic
 we can say this provides evidence LSS is a more sensitive measure.
 
 \subsubsection*{Repeat versus Single}
+\label{results:bsc-repeatXsingle}
+
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{data-task_atlas-activation_contrast-repeatXsingle}
@@ -1057,9 +1089,12 @@ and their overlap is 67.
 % \end{itemize}
 
 \section*{Discussion}
+\label{discussion}
 
 % Nulla mi mi, venenatis sed ipsum varius, Table~\ref{table1} volutpat euismod diam. Proin rutrum vel massa non gravida. Quisque tempor sem et dignissim rutrum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi at justo vitae nulla elementum commodo eu id massa. In vitae diam ac augue semper tincidunt eu ut eros. Fusce fringilla erat porttitor lectus cursus, vel sagittis arcu lobortis. Aliquam in enim semper, aliquam massa id, cursus neque. Praesent faucibus semper libero~\cite{bib3}.
 \subsection*{Simulation Conclusions}
+\label{discussion:simulation-conclusions}
+
 We found both LSS and LSA produce expected false positive rates of \%5
 across all experimental designs and data parameters.
 A large advantage of LSS over LSA occurs when the IEI is 4 seconds, but is eliminated
