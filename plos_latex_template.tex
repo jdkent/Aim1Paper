@@ -1028,9 +1028,33 @@ since we are interested in comparing LSS and LSA and not making strong theoretic
 we can say this result provides evidence LSS is a more sensitive measure.
 
 \subsubsection*{Switch versus Single}
-\label{results:bsc-repeatXsingle}
+\label{results:bsc-switchXsingle}
 
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{data-task_atlas-activation_contrast-switchXsingle}
+  \caption{
+    Switch versus single. Correlation differences with a p-value less than 0.05.
+    LSS (green), LSA (blue), and their overlap (yellow) are shown.
+  }
+  \label{fig:switchvsingle}
+\end{figure}
 
+LSA has a total of 4 significant results, LSS has a total of 4,
+and their overlap is 0 results.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{data-null_atlas-activation_contrast-repeatXsingle}
+  \caption{
+    Switch versus single (null data). Correlation differences with a p-value less than 0.05.
+    LSS (green), LSA (blue), and their overlap (yellow) are shown.
+  }
+  \label{fig:restswitchvsingle}
+\end{figure}
+
+LSA has a total of 9 significant results and LSS has a total of 4,
+and their overlap is 1.
 
 \subsubsection*{Repeat versus Single}
 \label{results:bsc-repeatXsingle}
@@ -1039,33 +1063,114 @@ we can say this result provides evidence LSS is a more sensitive measure.
   \centering
   \includegraphics[width=\textwidth]{data-task_atlas-activation_contrast-repeatXsingle}
   \caption{
-    Repeat versus single. Correlation differences with a p-value less than 0.05.
+    Repeat versus single (real data). Correlation differences with a p-value less than 0.05.
     LSS (green), LSA (blue), and their overlap (yellow) are shown.
   }
   \label{fig:repeatvsingle}
 \end{figure}
 
-LSA has a total of 2,851 significant results, LSS has a total of 3,838,
-and their overlap is 282 results.
+LSA has a total of 13 significant results, LSS has a total of 7,
+and their overlap is 1 result.
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{data-null_atlas-activation_contrast-repeatXsingle}
   \caption{
-    Repeat versus single (in the rest data). Correlation differences with a p-value less than 0.05.
+    Repeat versus single (null data). Correlation differences with a p-value less than 0.05.
     LSS (green), LSA (blue), and their overlap (yellow) are shown.
   }
   \label{fig:restrepeatvsingle}
 \end{figure}
-LSA has a total of 2,048 significant results and LSS has a total of 2,140,
-and their overlap is 67.
 
-% Comparing The task versus the resting state shows mixed results.
-% Question: DOES LSS or LSA show more differences between task and rest for both
-% the atlas and motivated ROIs?
-% Question: DOES LSS or LSA show more differences between task conditions (repeat - single)?
-% (either using atlas definition or traditional roi derived analysis)
-% Place tables after the first paragraph in which they are cited.
+LSA has a total of 5 significant results and LSS has a total of 6,
+and their overlap is 0.
+
+\subsubsection*{Switch versus Repeat}
+\label{results:bsc-switchXrepeat}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{data-task_atlas-activation_contrast-switchXrepeat}
+  \caption{
+    switch versus repeat (real data). Correlation differences with a p-value less than 0.05.
+    LSS (green), LSA (blue), and their overlap (yellow) are shown.
+  }
+  \label{fig:switchvrepeat}
+\end{figure}
+
+LSA has a total of 1 significant results, LSS has a total of 0,
+and their overlap is 0 result.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{data-null_atlas-activation_contrast-switchXrepeat}
+  \caption{
+    Switch versus repeat (null data). Correlation differences with a p-value less than 0.05.
+    LSS (green), LSA (blue), and their overlap (yellow) are shown.
+  }
+  \label{fig:restswitchvrepeat}
+\end{figure}
+
+LSA has a total of 2 significant results and LSS has a total of 0,
+and their overlap is 0.
+
+\subsection*{Debate on Results (not actually in paper)}
+\begin{itemize}
+  \item Good participants (N=40)
+    \item Schaefer Atlas
+      \item Task versus Null
+        \item LSS > LSA
+      \item Switch versus Single
+        \item LSS < LSA
+      \item Repeat versus Single
+        \item LSS < LSA
+      \item Switch versus Repeat
+        \item LSS < LSA
+    \item Activation Atlas
+      \item Task versus Null
+        \item LSS > LSA
+      \item Switch versus Single
+        \item LSS > LSA
+      \item Repeat versus Single
+        \item LSS < LSA
+      \item Switch versus Repeat
+        \item LSS = LSA
+  \item All Participants (N=61)
+    \item Schaefer Atlas
+      \item Task versus Null
+        \item LSS > LSA
+      \item Switch versus Single
+        \item LSS > LSA
+      \item Repeat versus Single
+        \item LSS < LSA
+      \item Switch versus Repeat
+        \item LSS > LSA
+    \item Activation Atlas
+      \item Task versus Null
+        \item LSS > LSA
+      \item Switch versus Single
+        \item LSS > LSA
+      \item Repeat versus Single
+        \item LSS = LSA
+      \item Switch versus Repeat
+        \item LSS > LSA
+\end{itemize}
+
+Total LSS "Wins": 9\\
+Total LSA "Wins": 5\\
+Total "Ties": 2\\
+
+Main takeaway from analysis:
+
+Including "noisier" data appears to boost
+the advantage of LSS to detect effects,
+
+while only having clean data appears to give
+LSA the advantage.
+
+The simulations, however, suggest LSS should
+always have an advantage.
+
 % \begin{table}[!ht]
 % \begin{adjustwidth}{-2.25in}{0in} % Comment out/remove adjustwidth environment if table fits in text column.
 % \centering
