@@ -602,25 +602,28 @@ and upper bound of CNR.
 Calculating AVNR followed the same procedure as CNR with the exception of the first two steps.
 First, we took the standard deviation of the beta estimates, then we followed steps three through six above.
 
-% \begin{table}[!ht]
-% \begin{adjustwidth}{-2.25in}{0in} % Comment out/remove adjustwidth environment if table fits in text column.
-% \centering
-% \caption{
-% {\bf Table caption Nulla mi mi, venenatis sed ipsum varius, volutpat euismod diam.}}
-% \begin{tabular}{|l+l|l|l|l|l|l|l|}
-% \hline
-% \multicolumn{4}{|l|}{\bf Heading1} & \multicolumn{4}{|l|}{\bf Heading2}\\ \thickhline
-% $cell1 row1$ & cell2 row 1 & cell3 row 1 & cell4 row 1 & cell5 row 1 & cell6 row 1 & cell7 row 1 & cell8 row 1\\ \hline
-% $cell1 row2$ & cell2 row 2 & cell3 row 2 & cell4 row 2 & cell5 row 2 & cell6 row 2 & cell7 row 2 & cell8 row 2\\ \hline
-% $cell1 row3$ & cell2 row 3 & cell3 row 3 & cell4 row 3 & cell5 row 3 & cell6 row 3 & cell7 row 3 & cell8 row 3\\ \hline
-% \end{tabular}
-% \begin{flushleft} Table notes Phasellus venenatis, tortor nec vestibulum mattis, massa tortor interdum felis, nec pellentesque metus tortor nec nisl. Ut ornare mauris tellus, vel dapibus arcu suscipit sed.
-% \end{flushleft}
-% \label{table1}
-% \end{adjustwidth}
-% \end{table}
+\begin{table}[H]
+\begin{adjustwidth}{0in}{0in} % Comment out/remove adjustwidth environment if table fits in text column.
+\centering
+\caption{
+{\bf Summary of AVNR and CNR measures in Real Data}}
+\begin{tabular}{|l+l+l|l|l|l|}
+\hline
+Atlas & Method & CNR (mean) & CNR (max) & AVNR (mean) & AVNR (max)\\ \thickhline
+$Schaefer$ & $LSS$ & 0.71 & 1.81 & 1.03 & 2.33\\ \hline
+$Activation$ & $LSS$ & 0.99 & 1.58 & 1.42 & 2.18\\ \hline
+$Schaefer$ & $LSA$ & 1.02 & 2.48 & 1.54 & 3.61\\ \hline
+$Activation$ & $LSA$ & 1.42 & 2.18 & 2.15 & 3.26\\ \hline
+\end{tabular}
+The average and maximum CNR and AVNR for both atlases (Schaefer and Activation)
+as well as estimation method (LSS and LSA).
+LSS tends to give lower CNR/AVNR since the measure sacrifices
+variance for bias, unlike LSA, which remains unbiased.
+\label{table1}
+\end{adjustwidth}
+\end{table}
 
-We derived CNRs of 1 and 2 as and AVNRs of 1 and 2 as reasonable values from the dataset.
+We derived CNRs of 1 and 2 as and AVNRs of 1 and 2 as reasonable values from the dataset \ref{table1}.
 We can manipulate CNR and AVNR independently to determine whether variation of the betas
 impact beta series correlation's ability to recapture the true correlation.
 % display example of design
@@ -788,7 +791,7 @@ to identify regions that were reliably activated for all participants.
 5mm spheres were drawn around each statistical peak (20 peaks total)
 to form the activation atlas.
 
-\begin{table}
+\begin{table}[H]
   \csvautotabular[separator=tab, no check column count]{./data/cluster_table.tsv}
   \caption{
     The peak MNI coordinates/Z-statistic identifying clusters/sub-clusters from the overall
