@@ -573,9 +573,21 @@ To assess the validity and power of beta series correlations,
 we simulated two voxels of timeseries data and convolved short (0.2 second)
 task onsets with double gamma functions
 and added the responses to the timeseries~\cite{Glover1999,Welvaert2011}.
-We used fmrisim from the brainiak toolbox to generate a two voxel timeseries
+We used \cite[fmrisim from the brainiak toolbox]{Ellis2020} to generate a two voxel timeseries
 containing drift, autocorrelation, phsysiological noise,
-task related movement, and scanner noise ~\cite{Ellis2020}.
+task related movement, and scanner noise \ref{fig:simulation_example}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics{methods-simulation_example}
+  \caption{
+    Example of predicted BOLD from a task design (thick grey line), real BOLD
+    from a participant (see \nameref{methods:task-switch}), and simulated BOLD
+    from \cite[fmrisim]{Ellis2020}.
+  }
+  \label{fig:simulation_example}
+\end{figure}
+
 For all simulations the time of repetition was set at 2 seconds.
 We varied the contrast-to-noise ratio (CNR) using the amplitude of the activation
 divided by the standard deviation of the noise~\cite{Welvaert2013a}.
@@ -1158,10 +1170,13 @@ always have an advantage.
 \subsection*{Simulation Conclusions}
 \label{discussion:simulation-conclusions}
 
+The results are surprisingly non-overlapping between LSS and LSA in the real data,
+although they are designed to measure the same phenomenom.
+
 We found both LSS and LSA produce expected false positive rates of \%5
 across all experimental designs and data parameters.
 A large advantage of LSS over LSA occurs when the IEI is 4 seconds, but is eliminated
-when the IEI is 2 seconds.
+when the IEI is either 2 seconds or more than 4 seconds.
 This is likely because the sampling rate was simulated to be 2 seconds, resulting
 in an event to occur for every "volume".
 The slow BOLD response for each event results in highly colinear regressors for both LSA and LSS.
