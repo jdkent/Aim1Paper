@@ -408,10 +408,6 @@ in beta series correlations.
 \subsection*{BetaSeries Correlations}
 \label{methods:bsc}
 
-Results included in this manuscript come from modeling performed using
-\emph{NiBetaSeries} 0.6.0 \cite{Kent2018}, which uses
-\emph{Nipype} 1.4.2 \cite{Gorgolewski2011, Gorgolewski2018}.
-
 \subsubsection*{Beta Series Modeling}
 \label{methods:bsc_model}
 
@@ -436,7 +432,7 @@ Each event was given its own regressor in a single GLM, such that
 if the experiment had 100 events, there would be 100 regressors in the GLM.
 
 Each event regressor was convolved with a \cite[glover hemodynamic response
-function]{Glover1999}.\\
+function]{Glover1999}.
 In addition to event regressors, average white matter signal, average csf signal,
 cosine basis set high pass regressors, the initial four non stead state volumes, 
 and motion outliers were included
@@ -475,6 +471,20 @@ was empirical covariance, as implemented in Nilearn 0.4.2
 \cite{Abraham2014}.
 Correlation coefficients were converted to normally-distributed z-values using
 Fisher's r-to-z conversion \cite{Fisher1915}.
+
+In the participant data, BSC generated correlation matrices for each condition (switch, repeat, single),
+each method, (LSA and LSS), each data type (real and null), and each participant (N=40).
+The first check performed was contrasting the real switch condition and null switch condition
+to ensure BSC from a task are different than BSC from null data.
+A ttest was run on each ROI-ROI pair for the activation atlas, totaling 190 comparisons
+between task and null.
+The results were corrected for multiple comparisons (Benjamini/Hochberg).
+(\href{https://github.com/jdkent/BetaSeriesRealDataAnalysis/blob/90fafb5b83b2e1bfade61a9fb1a87f225efaa95f/nibsAnalysis/BetaSeriesAnalysis.ipynb}{see here for relevant code})
+
+We next contrasted $switch - single$, $repeat - single$, and $switch - repeat$, for LSS/LSA in both
+real and null data.
+Positive rates were calculated for LSA and LSS by dividing the number of positive results (p < 0.05)
+in the real data with the number of positives found in the null data.
 
 \subsection*{Beta Series Correlation Simulations}
 \label{methods:bsc-simulations}
@@ -526,7 +536,9 @@ for each ROI.
 Sixth, we took either the mean or max CNR across all ROIs to provide a reasonable estimate
 and upper bound of CNR.
 Calculating AVNR followed the same procedure as CNR with the exception of the first two steps.
-First, we took the standard deviation of the beta estimates, then we followed steps three through six above.
+First, we took the standard deviation of the beta estimates, then we followed steps three through six above
+on the standard deviation of the beta estimates (as opposed the amplitude).
+(\href{https://github.com/jdkent/BetaSeriesRealDataAnalysis/blob/90fafb5b83b2e1bfade61a9fb1a87f225efaa95f/nibsAnalysis/cnr_trial_variability.ipynb}{see here for the relevant code})
 
 \begin{table}[H]
 \begin{adjustwidth}{0in}{0in} % Comment out/remove adjustwidth environment if table fits in text column.
@@ -550,8 +562,9 @@ variance for bias, unlike LSA, which remains unbiased.
 \end{table}
 
 We derived CNRs of 1 and 2 as and AVNRs of 1 and 2 as reasonable values from the dataset \ref{table1}.
-We can manipulate CNR and AVNR independently to determine whether variation of the betas
-impact beta series correlation's ability to recapture the true correlation.
+We can manipulate CNR and AVNR independently to determine whether simulated BOLD response variation
+impact beta series correlation's ability to recapture the true correlation or if the simulated BOLD
+response magnitude is more important.
 The choice of onset times was varied based on average inter-event-interval (IEIs).
 The IEI is the time from the previous event onset to the next event onset.
 We chose average IEIs at 2, 4, 6, and 8 seconds to reflect a common range of IEIs
@@ -568,31 +581,50 @@ of the optimized experimental design.
 The beta weights for each voxel were chosen from a multivariate normal distribution
 with a mean of one and with a fixed ground truth correlation between the two voxels 
 (varying between 0.0-0.9) with AVNR of either 1 or 2.
+The ground truth correlation was varied to ensure the ground truth correlations were above
+and below the correlations of the noise timeseries between the two voxels,
+since both voxels had shared noise sources from simulated motion.
 The beta weights were convolved with a hemodynamic response function and scaled
 relative to the noise standard deviation to CNRs of 1 or 2.
+(\href{https://github.com/jdkent/betaSeriesSimulations/tree/38dfbf2d83a8ab742d134c490b850ad893c8b4c7/beta_sim}{see here for simulation code})
 
-100 simulations were run for each event number (15, 30, 45, 60) IEI (2, 4, 6, 8), 
-CNR (1, 2), AVNR (1, 2), condition (c0, c1), and ground truth correlation
+200 simulations were run for each combination of event number
+(15, 30, 45, 60) IEI (2, 4, 6, 8),  CNR (1, 2), AVNR (1, 2), condition (c0, c1),
+and ground truth correlation
 (0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9)
-resulting in 128,000 total simulations.
+resulting in 256,000 total simulations.
+Within each 200 simulation combination, the 20 top task designs specified by
+neurodesign were evenly applied to the simulations, resulting in 10 simulations
+using the same design.
+Each simulation of two voxels can be imagined as a unique participant or run from
+the same participant.
 
 To measure validity for power analyses, we first ensured that we have
 the expected false positive rate when there is no difference between samples.
 we took two samples (n=50) with the same ground truth correlation (e.g., 0.1)
-matching on every other parameter, and ran a ttest to measure if the samples
+matching on event number, IEI, CNR, and AVNR, and ran a ttest to measure if the samples
 were statistically significantly different.
 Since the ground truth correlation is the same between samples,
 we expect a false positive rate of \%5 at an alpha of 0.05.
-We repeated this process 10,000 times to measure the false positive rate.
+We repeated this process 10,000 times to measure the false positive rate as
+the number of statistically significant ttests.
 
 Once the false positive rate was established, we established power with the same method as above,
 but with samples containing different ground truth correlations.
-We selected two samples where there was 0.1 (pearson's r) difference between the samples.
+We selected two samples where there was 0.1 (Pearson's r) difference between the samples.
 0.1 difference was chosen based on reported differences found in other published
 reports as well as the dataset used in this report ~\cite{Katsura2014,Lee2017,Turner2017,Lin2019,Huang2019}.
 This process was also repeated 10,000 times to establish power.
 Thus we detected how well correlation differences could be detected
 with different task design and noise parameters.
+
+Simulating data using the same task design as the real data followed the same
+procedure as above, varying CNR (1, 2), AVNR (1, 2), condition (switch, repeat, single),
+and ground truth correlation (0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9).
+IEI and event number were not varied since those parameters are fixed by the
+task design.
+Each parameter combination was simulated 1000 times resulting in a total of 240,000 simulations.
+False positive rate and power were evaluated using the same procedure as the other simulated data.
 
 \subsection*{Real Data Validation}
 \label{methods:task-switch}
@@ -604,8 +636,9 @@ Numbers reported are mean$\pm$standard deviation.
 Prior to any experimentation, participants provided verbal and written consent
 to participate in the research presented in this manuscript, which was approved
 by the University of Iowa's Institution Review Board.
-21 participants were excluded for having a framewise displacement of over 0.5mm for
-over a 100 volumes, resulting in a final N of 40.
+21 participants were excluded in the primary analysis for having a
+framewise displacement of over 0.5mm for over a 100 volumes,
+resulting in a final N of 40.
 The task switch task was a mixed block/event related design containing
 5 blocks (2 single task blocks and 3 mixed task blocks).
 There was a 30 second rest between each block.
@@ -627,7 +660,8 @@ prior to performing the task to ensure proper finger placement and data acquisit
 Participants' average accuracy and reaction time were:
 single, (92\%$\pm$27\%, 792ms$\pm$225ms); repeat, (89\%$\pm$31\%, 1001ms$\pm$278ms);
 and switch, (83\%$\pm$36.8\%, 1108ms$\pm$289ms).
-Due to data collection error, behavioral data were not collected for 3 participants.
+Due to data collection error, behavioral data were not collected for 3 participants
+(\href{https://github.com/jdkent/BetaSeriesRealDataAnalysis/blob/90fafb5b83b2e1bfade61a9fb1a87f225efaa95f/summarizeBehavior/summarize_behavior.ipynb}{see here for relevent code})
 
 The task switch bold \emph{fmriprep} output in MNI152NLin2009cAsym space
 was analyzed with \emph{Nistats} for first and second level analyses.
@@ -818,7 +852,7 @@ configured with Lanczos interpolation to minimize the smoothing effects of other
 The results in this manuscript are dependent on many open source
 libraries, while we have inevitably missed providing all due credit,
 we would like to acknowledge some of the main libraries used in 
-\emph{fMRIPrep} and \emph{NiBetaSeries}.
+\emph{fMRIPrep} 1.5.7 \cite{fmriprep1} and \emph{NiBetaSeries} 0.6.0 \cite{Kent2018}.
 
 Many internal operations of \emph{fMRIPrep} use \emph{Nilearn} 0.6.1
 \cite[RRID:SCR\_001362]{nilearn}, mostly within the functional
@@ -831,21 +865,9 @@ Additional libraries used in the \emph{NiBetaSeries} workflow include
 \emph{Nibabel} 2.4.1, \emph{Pandas} 0.24.2 \cite{McKinney2010}, and
 \emph{Numpy} 1.18.1 \cite{VanDerWalt2011, Oliphant2006}.
 
-\subsection*{Real/Null Data Beta Series Correlation Analysis}
-\label{methods:data-bsc}
-
-BSC generated correlation matrices for each condition (switch, repeat, single),
-each method, (LSA and LSS), each data type (taskswitch and null), and each participant (N=40).
-The first check performed was contrasting the taskswitch switch condition and null switch condition
-to ensure BSC from a task are different than BSC from null data.
-A ttest was run on each ROI-ROI pair for the Activation atlas, totaling 79,800 comparisons
-between task and null.
-The results were corrected for multiple comparisons (Benjamini/Hochberg).
-
-We next contrasted switch - single, repeat - single, and switch - repeat, for LSS/LSA in both
-task and null data.
-Valid positive rates were calculated for LSA and LSS by dividing the number of positive results (p < 0.05)
-in the task data with the number of positives found in the null data.
+In addition to the data analysis, visualization of results depended
+on matplotlib \cite{Hunter2007}, seaborn \cite{Waskom2020}, nilearn,
+jupyter notebooks \cite{Kluyver2016a}, and the packages they depend on.
 
 % For figure citations, please use "Fig" instead of "Figure".
 % Nulla mi mi, Fig~\ref{fig1} venenatis sed ipsum varius, volutpat euismod diam. Proin rutrum vel massa non gravida. Quisque tempor sem et dignissim rutrum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi at justo vitae nulla elementum commodo eu id massa. In vitae diam ac augue semper tincidunt eu ut eros. Fusce fringilla erat porttitor lectus cursus, \nameref{S1_Video} vel sagittis arcu lobortis. Aliquam in enim semper, aliquam massa id, cursus neque. Praesent faucibus semper libero.
@@ -1195,7 +1217,8 @@ and partially due to the more complex calculation of CNR used in this report
   \item temporal/spatial analysis with Finite Impulse Responses \cite{Turner2012a}
   \item Add ability to simulate possible condition relationships in NiBetaSeries
   \item need to add "fake" mean hemodynamic response to normalize the data
-  \item extend Cole's work (compare residual correlations with LSA/LSS) 
+  \item extend Cole's work (compare residual correlations with LSA/LSS)
+  \item investigate graph theoretical measures to validate between task conditions and task/null.
 
 \end{itemize}
 \subsection*{Task Switching Conclusions}
@@ -1267,7 +1290,10 @@ are low (average framewise displacement and temporal signal to noise ratio).
 
 \section*{Acknowledgments}
 %Cras egestas velit mauris, eu mollis turpis pellentesque sit amet. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nam id pretium nisi. Sed ac quam id nisi malesuada congue. Sed interdum aliquet augue, at pellentesque quam rhoncus vitae.
-
+\begin{itemize}
+  \item "This research was supported in part through computational resources provided by The University of Iowa, Iowa City, Iowa."
+  \item Data/people from the BETTER study 
+\end{itemize}
 \nolinenumbers
 
 \bibliography{plos}
