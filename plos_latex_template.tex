@@ -392,93 +392,18 @@ using LSA and LSS.
 \section*{Materials and methods}
 \label{methods}
 
-\subsection*{Scanner Parameters}
-\label{methods:scanner}
-
-MRI data were collected on a 3T GE Discovery 750w using a 32 channel head coil.
-The anatomical T1w images were collected using a SPoiled Gradient-Recalled (SPGR) sequence
-sagittally with a flip angle of 8$^{\circ}$, echo time of 3.168ms,
-repetition time of 8.388ms, inversion time of 900ms, isometric voxel sizes of 1mm,
-[256x256] acquisition matrix with 196 slices, field of view 25.6cm x 25.6cm.
-The functional bold images were collected using a Gradient Echo sequence axially from
-the bottom up sequentially with a flip angle of 80$^{\circ}$, echo time of 30ms,
-repetition time of 2000ms, voxel sizes of 3.44x3.44x4.00 on a [64x64] acquisition matrix
-with 37 slices, field of view 22cm x 22cm.
-
-\subsection*{Preparing fMRI}
-\label{methods:fmriprep}
-
-Results included in this manuscript come from preprocessing performed
-using \emph{fMRIPrep} 1.5.7 (\cite{fmriprep1}; \cite{fmriprep2}; RRID:SCR\_016216),
-which is based on \emph{Nipype} 1.4.0
-(\cite{nipype1}; \cite{nipype2}; RRID:SCR\_002502).
-
-
-\subsubsection*{Anatomical data preprocessing}
-\label{methods:anat}
-
-The T1-weighted (T1w) image was corrected for intensity non-uniformity
-(INU) with \texttt{N4BiasFieldCorrection} \cite{n4}, distributed with
-ANTs 2.2.0 \cite[RRID:SCR\_004757]{ants}, and used as T1w-reference
-throughout the workflow.
-The T1w-reference was then skull-stripped with a \emph{Nipype} implementation
-of the \texttt{antsBrainExtraction.sh} workflow (from ANTs), using OASIS30ANTs
-as target template.
-Brain tissue segmentation of cerebrospinal fluid (CSF), white-matter (WM) and
-gray-matter (GM) was performed on the brain-extracted T1w using
-\texttt{fast} \cite{fsl_fast} [FSL 5.0.9, RRID:SCR\_002823,][].
-Brain surfaces were reconstructed using \texttt{recon-all} \cite{fs_reconall},
-[FreeSurfer 6.0.1, RRID:SCR\_001847,][] and the brain mask estimated
-previously was refined with a custom variation of the method to
-reconcile ANTs-derived and FreeSurfer-derived segmentations of the
-cortical gray-matter of Mindboggle \cite[RRID:SCR\_002438,]{mindboggle}.
-Volume-based spatial normalization to one standard space (MNI152NLin2009cAsym)
-was performed through nonlinear registration with \texttt{antsRegistration}
-(ANTs 2.2.0), using brain-extracted versions of both T1w reference and the T1w template.
-The following templates were selected for spatial normalization: \emph{ICBM 152 Nonlinear
-Asymmetrical template version 2009c} {[}\cite{mni152nlin2009casym},
-RRID:SCR\_008796; TemplateFlow ID: MNI152NLin2009cAsym{]}.
-
-\subsubsection*{Functional data preprocessing}
-\label{methods:func}
-
-For each of the 2 BOLD runs found per subject,
-the following preprocessing was performed.
-First, a reference volume and its skull-stripped version were generated
-using a custom methodology of \emph{fMRIPrep}.
-Susceptibility distortion correction (SDC) was omitted.
-The BOLD reference was then co-registered to the T1w reference using \texttt{bbregister}
-(FreeSurfer) which implements boundary-based registration \cite{bbr}.
-Co-registration was configured with six degrees of freedom.
-Head-motion parameters with respect to the BOLD reference (transformation matrices,
-and six corresponding rotation and translation parameters) are estimated before any
-spatiotemporal filtering using \texttt{mcflirt} \cite[FSL 5.0.9,]{mcflirt}.
-The BOLD time-series were resampled into a standard space, correspondingly
-generating the following \emph{spatially-normalized, preprocessed BOLD runs}:
-MNI152NLin2009cAsym.
-Several confounding time-series were calculated based on the \emph{preprocessed BOLD}:
-% only used a subset of the confounding variables
-framewise displacement (FD) and two region-wise global signals.
-FD was calculated for each functional run, using its
-implementation in \emph{Nipype} \cite[following the definitions
-by]{power_fd_dvars}.
-The two global signals were extracted within the
-cerebrospinal fluid and the white matter masks.
-High-pass filtering the \emph{preprocessed BOLD} time-series was done using
-a discrete cosine filter with 128s cut-off.
-The head-motion estimates calculated in
-the correction step were also placed within the corresponding confounds file. 
-Frames that exceeded a threshold of 0.5 mm FD or 1.5 standardised DVARS
-were annotated as motion outliers.
-An additional 4 frames at the beginning of each run were also
-annotated as outliers to allow the magnet to reach equilibrium.
-
-All resamplings can be performed with \emph{a single interpolation step} by composing all the pertinent
-transformations (i.e.~head-motion transform matrices, co-registrations to anatomical
-and output spaces).
-Gridded (volumetric) resamplings were performed using \texttt{antsApplyTransforms} (ANTs),
-configured with Lanczos interpolation to minimize the smoothing effects of other kernels
-\cite{lanczos}.
+Testing and validation of beta series correlations followed three stages.
+First, beta series correlations were tested in simulations across different
+optimized experimental designs.
+Second, beta series correlations were tested in simulations using an experimental
+design that was used to collect real data.
+Third, beta series correlations were validated in real task data collected from
+participants.
+Resting state data collected from the same participants was used as a null
+control for beta series correlations.
+Since there is no expectation of betaseries correlations to change
+during resting state, we can get a measure of spurious results found
+in beta series correlations.
 
 \subsection*{BetaSeries Correlations}
 \label{methods:bsc}
@@ -533,49 +458,35 @@ The number of volumes in each 4D image represents the number of events in that c
 The beta series 4D image for each condition in the task was subjected to
 an region of interest to region of interest (ROI-to-ROI) correlation analysis
 to produce condition-specific correlation matrices.
-Two atlases were used to generate ROI-to-ROI correlation matrices.
-The \cite[Schaefer Atlas (400 parcels, 17 networks)]{Schaefer2017} was
-used to comprehensively cover the cortex.
+For the simulation data, ROI-to-ROI correlations were calculated by
+treating each voxel as an ROI.
+In the real data; two atlases were used to generate ROI-to-ROI correlation matrices.
+We created an activation atlas representing regions that were
+consistently activated across event conditions (see \nameref{methods:task-switch}).
+This atlas has coverage across several cortical and subcortical regions.
+The second atlas, \cite[Schaefer Atlas (400 parcels, 17 networks)]{Schaefer2017}, was
+used to comprehensively cover the cortex and demonstrate robustness of results.
 
 Outlier beta estimate volumes were identified and discarded using a
 modified Nipype function for outlier detection
 (\href{https://github.com/HBClab/NiBetaSeries/blob/a45c0a1f/src/nibetaseries/interfaces/nilearn.py#L153}{see here}) ~\cite{Crosby1994}.
-The correlation coefficient estimator used for this
-step was empirical covariance, as implemented in Nilearn 0.4.2
-\cite{Abraham2014}. Correlation coefficients were converted to
-normally-distributed z-values using Fisher's r-to-z conversion
-\cite{Fisher1915}.
-
-
-\subsection*{Software Dependencies}
-\label{methods:software-dependencies}
-
-The results in this manuscript are dependent on many open source
-libraries, while we have inevitably missed providing all due credit,
-we would like to acknowledge some of the main libraries used in 
-\emph{fMRIPrep} and \emph{NiBetaSeries}.
-
-Many internal operations of \emph{fMRIPrep} use \emph{Nilearn} 0.6.1
-\cite[RRID:SCR\_001362]{nilearn}, mostly within the functional
-processing workflow. For more details of the pipeline, see
-\href{https://fmriprep.readthedocs.io/en/latest/workflows.html}{the
-section corresponding to workflows in \emph{fMRIPrep}'s documentation}.
-
-Additional libraries used in the \emph{NiBetaSeries} workflow include
-\emph{Pybids} 0.9.5 \cite{Yarkoni2019}, \emph{Niworkflows} 1.0.4,
-\emph{Nibabel} 2.4.1, \emph{Pandas} 0.24.2 \cite{McKinney2010}, and
-\emph{Numpy} 1.18.1 \cite{VanDerWalt2011, Oliphant2006}.
+The correlation coefficient estimator used for generating correlation matrices
+was empirical covariance, as implemented in Nilearn 0.4.2
+\cite{Abraham2014}.
+Correlation coefficients were converted to normally-distributed z-values using
+Fisher's r-to-z conversion \cite{Fisher1915}.
 
 \subsection*{Beta Series Correlation Simulations}
 \label{methods:bsc-simulations}
 
 To assess the validity and power of beta series correlations,
-we simulated two voxels of timeseries data and convolved short (0.2 second)
+we simulated two voxels of fMRI timeseries data and convolved short (0.2 second)
 task onsets with double gamma functions
 and added the responses to the timeseries~\cite{Glover1999,Welvaert2011}.
-We used \cite[fmrisim from the brainiak toolbox]{Ellis2020} to generate a two voxel timeseries
-containing drift, autocorrelation, phsysiological noise,
+We used \cite[fmrisim from the brainiak toolbox]{Ellis2020} to generate a
+two voxel fMRI timeseries containing drift, autocorrelation ($\rho$ = 0.5), phsysiological noise,
 task related movement, and scanner noise \ref{fig:simulation_example}.
+Noise features were all weighted equally in the simulations.
 
 \begin{figure}[H]
   \centering
@@ -591,15 +502,18 @@ task related movement, and scanner noise \ref{fig:simulation_example}.
 For all simulations the time of repetition was set at 2 seconds.
 We varied the contrast-to-noise ratio (CNR) using the amplitude of the activation
 divided by the standard deviation of the noise~\cite{Welvaert2013a}.
+In other words, we used the average of the beta estimates and divided by the standard
+deviation of the residuals output by the LSA model.
 Another parameter deemed critical by previous work is the standard deviation
-of the betas relative to the standard deviation of the noise~\cite{Abdulrahman2016},
+of the raw beta estimates relative to the standard deviation of the noise~\cite{Abdulrahman2016},
 so we varied that measure as well.
 \cite[Since Abdulrahman \& Henson (2016)]{Abdulrahman2016} also called their measure
-CNR, we've decided to rename it as Activation Variance to Noise Ratio (AVNR).
+CNR, we've decided to rename it as Activation Variance to Noise Ratio (AVNR), to
+contrast it with our definition of CNR.
 
 To generate realistic numbers for simulating timeseries at varying CNRs and AVNRs
-we used an unpublished dataset on task switching in older adults.
-We ran LSS/LSA on real data (N=40) to get both trial estimates of activation (i.e., betas)
+we used an unpublished dataset on task switching in older adults (N=40).
+We ran LSS/LSA to get both trial estimates of activation (i.e., betas)
 as well as residuals from the model.
 To calculate CNR, several steps were taken.
 First, we masked the betaseries using the Schaefer or Activation atlases (see \nameref{methods:atlas-corr-analysis}).
@@ -638,7 +552,7 @@ variance for bias, unlike LSA, which remains unbiased.
 We derived CNRs of 1 and 2 as and AVNRs of 1 and 2 as reasonable values from the dataset \ref{table1}.
 We can manipulate CNR and AVNR independently to determine whether variation of the betas
 impact beta series correlation's ability to recapture the true correlation.
-The choice of onset times was varied based on average inter-event-interval (IEI's).
+The choice of onset times was varied based on average inter-event-interval (IEIs).
 The IEI is the time from the previous event onset to the next event onset.
 We chose average IEIs at 2, 4, 6, and 8 seconds to reflect a common range of IEIs
 for fast event related design experiments ~\cite{Hennigan2015,Dichter2007,Goghari2009}.
@@ -680,34 +594,6 @@ This process was also repeated 10,000 times to establish power.
 Thus we detected how well correlation differences could be detected
 with different task design and noise parameters.
 
-%- Time Repetition = 2
-%- duration of experiment = variable
-%- intertrial interval = 2 - 8 seconds (exponential sampling)
-%- response scaled peak response is 1
-%- glover HRF
-% https://github.com/brainiak/brainiak/blob/dc12929a99529a69da3c3242e9c9fd31c308fbb0/brainiak/utils/fmrisim.py#L722
-%- the height of the voxel HRF responses was drawn from a multivariate normal distribution with mean 1 and standard deviation of 1.
-% https://github.com/jdkent/betaSeriesSimulations/blob/2fc45bcbc6873d395432d01359ba492b6f3b1458/beta_sim/interfaces/fmrisim.py#L204
-% https://github.com/jdkent/betaSeriesSimulations/blob/2fc45bcbc6873d395432d01359ba492b6f3b1458/beta_sim/interfaces/fmrisim.py#L170
-% - noise was added through:
-%     - snr: 40
-%     - sfnr: 60
-%     - task_sigma $1: Size of the variance of task specific noise
-%     - drift_sigma 1: Size of the variance of drift noise
-%     - auto_reg_sigma 0.5: Size of the variance of autoregressive
-%         noise. This is an ARMA process where the AR and MA components can be
-%         separately specified.
-%     - physiological_sigma 1: Size of the variance of physiological
-%         noise
-%     - auto_reg_rho [0.5]: The coefficients of the autoregressive
-%         components you are modeling
-%     - ma_rho [0.0]:The coefficients of the moving average components you
-%         are modeling
-%- voxels correlated at set correlation values (0.1, 0.2, 0.3)
-%- betas fit by least squares
-%- N=100 (for a given parameter)
-%- start and end of sessions were not ignored (optimal experimental design)
-%- highpass filter: 1/128 hz
 \subsection*{Real Data Validation}
 \label{methods:task-switch}
 
@@ -797,9 +683,9 @@ false discovery rate error control \ref{fig:stat_maps}.
 \end{figure}
 
 An activation atlas was generated based on an F-test across conditions
-to identify regions that were reliably activated for all participants.
+to identify regions that were reliably activated for all participants \ref{table:clusters}.
 5mm spheres were drawn around each statistical peak (20 peaks total)
-to form the activation atlas.
+to form the activation atlas \ref{fig:methroimap}.
 
 \begin{table}[H]
   \csvautotabular[separator=tab, no check column count]{./data/cluster_table.tsv}
@@ -825,9 +711,6 @@ to form the activation atlas.
   \label{fig:methroimap}
 \end{figure}
 
-\subsection*{Null Data Validation}
-\label{methods:null-bold}
-
 In addition to the task switching task, participants also completed
 two 8 minute resting state runs.
 We used the resting state runs as a null model for task switching.
@@ -837,9 +720,116 @@ In order to match the length of the resting state data with the task data, we co
 the two resting state runs while cutting off the first 10 volumes of the second run
 and interpolating 1 volume between the two runs, resulting in 471 volumes.
 The interpolation helps transition the bold series from one run to the next,
-analogous to interpolation performed when scrubbing high motion volumes. 
+analogous to interpolation performed when scrubbing high motion volumes \cite{Power2014a}. 
 This null task data was treated equivalently to the task switching data for the
 beta series correlation analysis.
+
+\subsection*{Scanner Parameters}
+\label{methods:scanner}
+
+MRI data were collected on a 3T GE Discovery 750w using a 32 channel head coil.
+The anatomical T1w images were collected using a SPoiled Gradient-Recalled (SPGR) sequence
+sagittally with a flip angle of 8$^{\circ}$, echo time of 3.168ms,
+repetition time of 8.388ms, inversion time of 900ms, isometric voxel sizes of 1mm,
+[256x256] acquisition matrix with 196 slices, field of view 25.6cm x 25.6cm.
+The functional bold images were collected using a Gradient Echo sequence axially from
+the bottom up sequentially with a flip angle of 80$^{\circ}$, echo time of 30ms,
+repetition time of 2000ms, voxel sizes of 3.44x3.44x4.00 on a [64x64] acquisition matrix
+with 37 slices, field of view 22cm x 22cm.
+
+\subsection*{Preparing fMRI}
+\label{methods:fmriprep}
+
+Results included in this manuscript come from preprocessing performed
+using \emph{fMRIPrep} 1.5.7 (\cite{fmriprep1}; \cite{fmriprep2}; RRID:SCR\_016216),
+which is based on \emph{Nipype} 1.4.0
+(\cite{nipype1}; \cite{nipype2}; RRID:SCR\_002502).
+
+
+\subsubsection*{Anatomical data preprocessing}
+\label{methods:anat}
+
+The T1-weighted (T1w) image was corrected for intensity non-uniformity
+(INU) with \texttt{N4BiasFieldCorrection} \cite{n4}, distributed with
+ANTs 2.2.0 \cite[RRID:SCR\_004757]{ants}, and used as T1w-reference
+throughout the workflow.
+The T1w-reference was then skull-stripped with a \emph{Nipype} implementation
+of the \texttt{antsBrainExtraction.sh} workflow (from ANTs), using OASIS30ANTs
+as target template.
+Brain tissue segmentation of cerebrospinal fluid (CSF), white-matter (WM) and
+gray-matter (GM) was performed on the brain-extracted T1w using
+\texttt{fast} \cite{fsl_fast} [FSL 5.0.9, RRID:SCR\_002823,][].
+Brain surfaces were reconstructed using \texttt{recon-all} \cite{fs_reconall},
+[FreeSurfer 6.0.1, RRID:SCR\_001847,][] and the brain mask estimated
+previously was refined with a custom variation of the method to
+reconcile ANTs-derived and FreeSurfer-derived segmentations of the
+cortical gray-matter of Mindboggle \cite[RRID:SCR\_002438,]{mindboggle}.
+Volume-based spatial normalization to one standard space (MNI152NLin2009cAsym)
+was performed through nonlinear registration with \texttt{antsRegistration}
+(ANTs 2.2.0), using brain-extracted versions of both T1w reference and the T1w template.
+The following templates were selected for spatial normalization: \emph{ICBM 152 Nonlinear
+Asymmetrical template version 2009c} {[}\cite{mni152nlin2009casym},
+RRID:SCR\_008796; TemplateFlow ID: MNI152NLin2009cAsym{]}.
+
+\subsubsection*{Functional data preprocessing}
+\label{methods:func}
+
+For each of the 2 BOLD runs found per subject,
+the following preprocessing was performed.
+First, a reference volume and its skull-stripped version were generated
+using a custom methodology of \emph{fMRIPrep}.
+Susceptibility distortion correction (SDC) was omitted.
+The BOLD reference was then co-registered to the T1w reference using \texttt{bbregister}
+(FreeSurfer) which implements boundary-based registration \cite{bbr}.
+Co-registration was configured with six degrees of freedom.
+Head-motion parameters with respect to the BOLD reference (transformation matrices,
+and six corresponding rotation and translation parameters) are estimated before any
+spatiotemporal filtering using \texttt{mcflirt} \cite[FSL 5.0.9,]{mcflirt}.
+The BOLD time-series were resampled into a standard space, correspondingly
+generating the following \emph{spatially-normalized, preprocessed BOLD runs}:
+MNI152NLin2009cAsym.
+Several confounding time-series were calculated based on the \emph{preprocessed BOLD}:
+% only used a subset of the confounding variables
+framewise displacement (FD) and two region-wise global signals.
+FD was calculated for each functional run, using its
+implementation in \emph{Nipype} \cite[following the definitions
+by]{power_fd_dvars}.
+The two global signals were extracted within the
+cerebrospinal fluid and the white matter masks.
+High-pass filtering the \emph{preprocessed BOLD} time-series was done using
+a discrete cosine filter with 128s cut-off.
+The head-motion estimates calculated in
+the correction step were also placed within the corresponding confounds file. 
+Frames that exceeded a threshold of 0.5 mm FD or 1.5 standardised DVARS
+were annotated as motion outliers.
+An additional 4 frames at the beginning of each run were also
+annotated as outliers to allow the magnet to reach equilibrium.
+
+All resamplings can be performed with \emph{a single interpolation step} by composing all the pertinent
+transformations (i.e.~head-motion transform matrices, co-registrations to anatomical
+and output spaces).
+Gridded (volumetric) resamplings were performed using \texttt{antsApplyTransforms} (ANTs),
+configured with Lanczos interpolation to minimize the smoothing effects of other kernels
+\cite{lanczos}.
+
+\subsection*{Software Dependencies}
+\label{methods:software-dependencies}
+
+The results in this manuscript are dependent on many open source
+libraries, while we have inevitably missed providing all due credit,
+we would like to acknowledge some of the main libraries used in 
+\emph{fMRIPrep} and \emph{NiBetaSeries}.
+
+Many internal operations of \emph{fMRIPrep} use \emph{Nilearn} 0.6.1
+\cite[RRID:SCR\_001362]{nilearn}, mostly within the functional
+processing workflow. For more details of the pipeline, see
+\href{https://fmriprep.readthedocs.io/en/latest/workflows.html}{the
+section corresponding to workflows in \emph{fMRIPrep}'s documentation}.
+
+Additional libraries used in the \emph{NiBetaSeries} workflow include
+\emph{Pybids} 0.9.5 \cite{Yarkoni2019}, \emph{Niworkflows} 1.0.4,
+\emph{Nibabel} 2.4.1, \emph{Pandas} 0.24.2 \cite{McKinney2010}, and
+\emph{Numpy} 1.18.1 \cite{VanDerWalt2011, Oliphant2006}.
 
 \subsection*{Real/Null Data Beta Series Correlation Analysis}
 \label{methods:data-bsc}
@@ -848,7 +838,7 @@ BSC generated correlation matrices for each condition (switch, repeat, single),
 each method, (LSA and LSS), each data type (taskswitch and null), and each participant (N=40).
 The first check performed was contrasting the taskswitch switch condition and null switch condition
 to ensure BSC from a task are different than BSC from null data.
-A ttest was run on each ROI-ROI pair for the Schaefer atlas, totaling 79,800 comparisons
+A ttest was run on each ROI-ROI pair for the Activation atlas, totaling 79,800 comparisons
 between task and null.
 The results were corrected for multiple comparisons (Benjamini/Hochberg).
 
@@ -1193,6 +1183,7 @@ and partially due to the more complex calculation of CNR used in this report
   \item all trial types were given a positive mean.
   \item miniblocking helps LSS
   \item subtraction was equivalent to subtracting the condition from one participant to another.
+  \item noise parameters in simulations were all weighed equally, likely not the case in real data. 
 \end{itemize}
 
 \subsection*{Future Directions}
