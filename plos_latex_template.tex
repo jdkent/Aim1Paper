@@ -166,7 +166,7 @@
 %% TEMPORARY FIGURES (REMOVE BEFORE SUBMISSION)
 % \usepackage[svgpath=./figs/]{svg}
 \usepackage{graphicx}
-\graphicspath{ {./figs/} }
+\graphicspath{{./betaSeriesSimulations/outputs/}{./BetaSeriesRealDataAnalysis/nibsAnalysis/outputs/}{./BetaSeriesRealDataAnalysis/firstLevelAnalysis/outputs/}{./BetaSeriesRealDataAnalysis/introductionFigures/outputs/}}
 \usepackage{float}
 \usepackage[caption=false]{subfig}
 \usepackage{csvsimple}
@@ -381,7 +381,7 @@ LSS attempts to reduce the model confusion by only having one single event estim
 so the non-target events have their beta influenced by multiple observations, loosening the
 constraint that adjacent events to the target event need to be orthogonal (i.e. independent) of each other.
 While previous work has simulated beta series and evaluated beta series on real data,
-several key gaps remain.
+several key gaps remain ~\cite{Mumford2014a,Mumford2012,Turner2012a,Abdulrahman2016,Cisler2012,Arco2018}.
 One, simulations have not taken into account realistic noise structure of fMRI data.
 Two, simulations have not used optimal fast event related designs, only random designs. 
 Three, empirical selections of signal to noise ratios have not been considered.
@@ -638,8 +638,6 @@ variance for bias, unlike LSA, which remains unbiased.
 We derived CNRs of 1 and 2 as and AVNRs of 1 and 2 as reasonable values from the dataset \ref{table1}.
 We can manipulate CNR and AVNR independently to determine whether variation of the betas
 impact beta series correlation's ability to recapture the true correlation.
-% display example of design
-% display example of simulated timeseries
 The choice of onset times was varied based on average inter-event-interval (IEI's).
 The IEI is the time from the previous event onset to the next event onset.
 We chose average IEIs at 2, 4, 6, and 8 seconds to reflect a common range of IEIs
@@ -817,10 +815,12 @@ to form the activation atlas.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{activation_roi_map}
+  \includegraphics[width=\textwidth]{stat-map-overall_resp_with_rois}
   \caption{
     ROIs drawn from the peak Z-score table, placing a sphere with a 5mm radius
     at each peak coordinate.
+    The clusters are identified in their approximate locations
+    with their ID.
   }
   \label{fig:methroimap}
 \end{figure}
@@ -883,7 +883,7 @@ holds.
   \centering
   \subfloat{\includegraphics[width=\textwidth]{avnr-1_fpr}}
 
-  \subfloat{\includegraphics[width=\textwidth]{avnr-10_fpr}}
+  \subfloat{\includegraphics[width=\textwidth]{avnr-2_fpr}}
 
   \caption{
     LSA/LSS both show a \%5 false positive rate for all conditions.
@@ -900,7 +900,7 @@ across all parameters.
   \centering
   \subfloat{\includegraphics[width=\textwidth]{avnr-1_smalldiff}}
 
-  \subfloat{\includegraphics[width=\textwidth]{avnr-10_smalldiff}}
+  \subfloat{\includegraphics[width=\textwidth]{avnr-2_smalldiff}}
 
   \caption{
     Detection power of a small difference between conditions (r=0.1).
@@ -933,12 +933,6 @@ Again, we established a 5\% false positive rate.
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{taskswitch-switchXrepeat_smalldiff}
-  \label{fig:task_smalldiff}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-    \includegraphics[width=\textwidth]{taskswitch-switchXrepeat_largediff}
   \caption{
     Simulating power to detect a correlation difference of 0.1 between
     conditions.
@@ -949,7 +943,7 @@ Again, we established a 5\% false positive rate.
     is maximal regardless of the true difference.
     With a small CNR, LSS has greater power to detect a difference.
   }
-  \label{fig:task_largediff}
+  \label{fig:task_smalldiff}
 \end{figure}
 
 \subsection*{Task Switching Beta Series Correlations}
@@ -967,7 +961,7 @@ regions differ between task and null data \ref{fig:taskvnull}.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{data-both_atlas-activation_contrast-taskXnull}
+  \includegraphics[width=\textwidth]{data-both_type-brain_atlas-activation_contrast-taskXnull}
   \caption{
     Task versus Rest. Correlation differences with a p-value less than 0.05.
     LSS (green), LSA (blue), and their overlap (yellow) are shown.
@@ -987,7 +981,7 @@ we can say this result provides evidence LSS is a more sensitive measure.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{data-task_atlas-activation_contrast-switchXsingle}
+  \includegraphics[width=\textwidth]{data-task_type-brain_atlas-activation_contrast-switchXsingle}
   \caption{
     Switch versus single. Correlation differences with a p-value less than 0.05.
     LSS (green), LSA (blue), and their overlap (yellow) are shown.
@@ -1000,7 +994,7 @@ and their overlap is 0 results.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{data-null_atlas-activation_contrast-repeatXsingle}
+  \includegraphics[width=\textwidth]{data-null_type-brain_atlas-activation_contrast-repeatXsingle}
   \caption{
     Switch versus single (null data). Correlation differences with a p-value less than 0.05.
     LSS (green), LSA (blue), and their overlap (yellow) are shown.
@@ -1016,7 +1010,7 @@ and their overlap is 1.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{data-task_atlas-activation_contrast-repeatXsingle}
+  \includegraphics[width=\textwidth]{data-task_type-brain_atlas-activation_contrast-repeatXsingle}
   \caption{
     Repeat versus single (real data). Correlation differences with a p-value less than 0.05.
     LSS (green), LSA (blue), and their overlap (yellow) are shown.
@@ -1029,7 +1023,7 @@ and their overlap is 1 result.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{data-null_atlas-activation_contrast-repeatXsingle}
+  \includegraphics[width=\textwidth]{data-null_type-brain_atlas-activation_contrast-repeatXsingle}
   \caption{
     Repeat versus single (null data). Correlation differences with a p-value less than 0.05.
     LSS (green), LSA (blue), and their overlap (yellow) are shown.
@@ -1045,7 +1039,7 @@ and their overlap is 0.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{data-task_atlas-activation_contrast-switchXrepeat}
+  \includegraphics[width=\textwidth]{data-task_type-brain_atlas-activation_contrast-switchXrepeat}
   \caption{
     switch versus repeat (real data). Correlation differences with a p-value less than 0.05.
     LSS (green), LSA (blue), and their overlap (yellow) are shown.
@@ -1058,7 +1052,7 @@ and their overlap is 0 result.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{data-null_atlas-activation_contrast-switchXrepeat}
+  \includegraphics[width=\textwidth]{data-null_type-brain_atlas-activation_contrast-switchXrepeat}
   \caption{
     Switch versus repeat (null data). Correlation differences with a p-value less than 0.05.
     LSS (green), LSA (blue), and their overlap (yellow) are shown.
@@ -1076,16 +1070,16 @@ and their overlap is 0.
     \item Schaefer Atlas
     \begin{itemize}
       \item Task versus Null: LSS $>$ LSA
-      \item Switch versus Single: LSS $<$ LSA
-      \item Repeat versus Single: LSS $<$ LSA
-      \item Switch versus Repeat: LSS $<$ LSA
+      \item Switch versus Single: LSS (1.49) $<$ LSA (1.62)
+      \item Repeat versus Single: LSS (0.73) $<$ LSA (1.66)
+      \item Switch versus Repeat: LSS (1.06) $<$ LSA (2.28)
     \end{itemize}
     \item Activation Atlas
     \begin{itemize}
       \item Task versus Null: LSS $>$ LSA
-      \item Switch versus Single: LSS $>$ LSA
-      \item Repeat versus Single: LSS $<$ LSA
-      \item Switch versus Repeat: LSS $=$ LSA
+      \item Switch versus Single: LSS (0.80) $>$ LSA (0.40)
+      \item Repeat versus Single: LSS (1.16) $<$ LSA (2.80)
+      \item Switch versus Repeat: LSS (0.00) $<$ LSA (0.50)
     \end{itemize}
   \end{itemize}
   \item All Participants (N=61)
@@ -1093,23 +1087,22 @@ and their overlap is 0.
     \item Schaefer Atlas
     \begin{itemize}
       \item Task versus Null: LSS $>$ LSA
-      \item Switch versus Single: LSS $>$ LSA
-      \item Repeat versus Single: LSS $<$ LSA
-      \item Switch versus Repeat: LSS $>$ LSA
+      \item Switch versus Single: LSS (1.40) $<$ LSA (1.87)
+      \item Repeat versus Single: LSS (0.81) $<$ LSA (1.42)
+      \item Switch versus Repeat: LSS (1.70) $>$ LSA (0.44)
     \end{itemize}
     \item Activation Atlas
     \begin{itemize}
       \item Task versus Null: LSS $>$ LSA
-      \item Switch versus Single: LSS $>$ LSA
-      \item Repeat versus Single: LSS $=$ LSA
-      \item Switch versus Repeat: LSS $>$ LSA
+      \item Switch versus Single: LSS (1.57) $>$ LSA (0.83)
+      \item Repeat versus Single: LSS (1.83) $<$ LSA (2.5)
+      \item Switch versus Repeat: LSS (1.50) $>$ LSA (0.00)
     \end{itemize}
   \end{itemize}
 \end{itemize}
 
-Total LSS "Wins": 9\\
-Total LSA "Wins": 5\\
-Total "Ties": 2\\
+Total LSS "Wins": 8\\
+Total LSA "Wins": 8\\
 
 Main takeaway from analysis:
 
@@ -1182,15 +1175,38 @@ in an event to occur for every "volume".
 The slow BOLD response for each event results in highly colinear regressors for both LSA and LSS.
 
 Our CNR estimates were much lower than the range reported by \cite[Welvaert]{Welvaert2013a}, likely
-due to their use of a Block design, and partially due to the more complex calculation
-used in this report.
+due to their use of a Block design versus our use of an event related design,
+and partially due to the more complex calculation of CNR used in this report
+(see \nameref{methods:bsc-simulations}).
+
 \begin{itemize}
   \item LSS and LSA perform similarly at low and high ITIs
-  \item LSS outperforms at 4 seconds ITI
+  \item LSS outperforms at 4, 6, and 8 seconds ITI
   \item fast(ish) event related design, use LSS
   \item mention Abdulrahman2016 because I did not set the trial variance to below 1.
+  \item schaefer atlas does not just give more false positives
+  \item perhaps insufficient power to detect differences between methods
+  \item increased "false positives" from null data from increased variability and wild estimates of betas
+  \item Very easy to get results from null data that may appear "good"
+  \item Need to add model fitting checks to assure adequate fit (CNR/AVNR can be misleading)
+  \item trial-to-trial variability not autocorrelated in simulations
+  \item all trial types were given a positive mean.
+  \item miniblocking helps LSS
+  \item subtraction was equivalent to subtracting the condition from one participant to another.
 \end{itemize}
 
+\subsection*{Future Directions}
+
+\begin{itemize}
+  \item Run beta series correlations on larger dataset with enough power to reliably detect an effect
+  \item Add ability to estimate CNR/AVNR in NiBetaSeries
+  \item use t-statistic as opposed to raw beta estimates
+  \item temporal/spatial analysis with Finite Impulse Responses \cite{Turner2012a}
+  \item Add ability to simulate possible condition relationships in NiBetaSeries
+  \item need to add "fake" mean hemodynamic response to normalize the data
+  \item extend Cole's work (compare residual correlations with LSA/LSS) 
+
+\end{itemize}
 \subsection*{Task Switching Conclusions}
 \begin{itemize}
   \item Simulations suggested LSS would improve sensitivity of results (while maintaining a \%5 false positive rate)
@@ -1198,7 +1214,31 @@ used in this report.
   \item The task versus rest contrast showed more results for LSS,
         suggesting even the most lenient was not large enough
         to have parity between LSA and LSS.
+  \item Validation important for studies looking at task connectomics ~\cite{Di2019a}.
 \end{itemize}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics{lss_lsa_noise_relationship}
+  \caption{
+    The average correlation between LSA/LSS beta series across
+    all ROIs in the activation atlas.
+    Orange dots represent 21 participants that were not included
+    in the original analysis and blue dots are the 40
+    participants that were included.
+    The size of the dots represent the temporal signal to noise
+    ratio (TSNR), higher is better.
+    The general pattern shows good correspondence between LSA and LSS
+    when the average framewise displacement is low and TSNR is high.
+  }
+  \label{fig:lss_lsa_correlation}
+\end{figure}
+
+An interesting pattern emerges correlating the beta series between LSS and LSA.
+LSS and LSA have a relatively high correlation when certain metrics of noise
+are low (average framewise displacement and temporal signal to noise ratio).
+
+
 
 \subsection{Limitations}
 \section*{Conclusion}
