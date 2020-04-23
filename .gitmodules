@@ -1,0 +1,6 @@
+[submodule "BetaSeriesRealDataAnalysis"]
+	path = BetaSeriesRealDataAnalysis
+	url = https://github.com/jdkent/BetaSeriesRealDataAnalysis.git
+[submodule "betaSeriesSimulations"]
+	path = betaSeriesSimulations
+	url = https://github.com/jdkent/betaSeriesSimulations.git
