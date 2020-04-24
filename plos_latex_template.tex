@@ -1404,6 +1404,24 @@ less than 0.2mm that have a high correlation between LSS and LSA.
   \label{fig:lss_lsa_correlation}
 \end{figure}
 
+It could be argued the resting state data does not provide an adequate null model
+to compare to the real task data because there is presumably no BOLD response at any
+of the onset times.
+Trying to model the BOLD response with no expectation of a BOLD response existing could lead
+to large misfits and deviating beta estimates.
+To test this, we evaluated average CNR and AVNR within the Schaefer and activation atlases in
+the null data and compared it to the CNR and AVNR in the real data.
+If the null data had much larger deviations in beta estimates, CNR and AVNR would be higher
+in the null data relative to the real data.
+For both LSS and LSA, the Schaefer atlas had statistically significantly higher
+CNR/CVNR in the null data relative to the real data, whereas the activation atlas
+did not show a statistically significant difference between null and real data.
+This suggests model misfit may be a driving factor for spurious results.
+We protected against extreme beta estimates by detecting and removing outliers, but model misfit
+could still drive spurious results.
+A proper null model would have bold responses at the onset times, but the bold responses
+would be the same amplitude at every event.
+
 \subsection*{Future Directions}
 
 \begin{itemize}
