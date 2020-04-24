@@ -444,12 +444,12 @@ a single GLM would have 4 event regressors, 1 for the target
 event, and 3 for the remaining conditions.
 
 The LSA model was generated following the method described in
-\cite[Rissman 2004]{Rissman2004}, using Nistats 0.0.1b2.
+\cite[Rissman (2004)]{Rissman2004}, using Nistats 0.0.1b2.
 Each event was given its own regressor in a single GLM, such that
 if the experiment had 100 events, there would be 100 regressors in the GLM.
 
-Each event regressor was convolved with a \cite[glover hemodynamic response
-function]{Glover1999}.
+Each event regressor was convolved with a glover hemodynamic response
+function\cite{Glover1999}.
 In addition to event regressors, average white matter signal, average csf signal,
 cosine basis set high pass regressors, the initial four non stead state volumes, 
 and motion outliers were included
@@ -477,7 +477,7 @@ In the real data; two atlases were used to generate ROI-to-ROI correlation matri
 We created an activation atlas representing regions that were
 consistently activated across event conditions (see \nameref{methods:task-switch}).
 This atlas has coverage across several cortical and subcortical regions.
-The second atlas, \cite[Schaefer Atlas (400 parcels, 17 networks)]{Schaefer2017}, was
+The second atlas, Schaefer Atlas (400 parcels, 17 networks)\cite{Schaefer2017}, was
 used to comprehensively cover the cortex and demonstrate robustness of results.
 
 Outlier beta estimate volumes were identified and discarded using a
@@ -510,7 +510,7 @@ To assess the validity and power of beta series correlations,
 we simulated two voxels of fMRI timeseries data and convolved short (0.2 second)
 task onsets with double gamma functions
 and added the responses to the timeseries~\cite{Glover1999,Welvaert2011}.
-We used \cite[fmrisim from the brainiak toolbox]{Ellis2020} to generate a
+We used fmrisim from the brainiak toolbox\cite{Ellis2020} to generate a
 two voxel fMRI timeseries containing drift, autocorrelation ($\rho$ = 0.5), phsysiological noise,
 task related movement, and scanner noise \ref{fig:simulation_example}.
 Noise features were all weighted equally in the simulations.
@@ -521,7 +521,7 @@ Noise features were all weighted equally in the simulations.
   \caption{
     Example of predicted BOLD from a task design (thick grey line), real BOLD
     from a participant (see \nameref{methods:task-switch}), and simulated BOLD
-    from \cite[fmrisim]{Ellis2020}.
+    from fmrisim\cite{Ellis2020}.
   }
   \label{fig:simulation_example}
 \end{figure}
@@ -534,7 +534,7 @@ deviation of the residuals output by the LSA model.
 Another parameter deemed critical by previous work is the standard deviation
 of the raw beta estimates relative to the standard deviation of the noise~\cite{Abdulrahman2016},
 so we varied that measure as well.
-\cite[Since Abdulrahman \& Henson (2016)]{Abdulrahman2016} also called their measure
+Since Abdulrahman \& Henson (2016)\cite{Abdulrahman2016} also called their measure
 CNR, we've decided to rename it as Activation Variance to Noise Ratio (AVNR), to
 contrast it with our definition of CNR.
 
@@ -654,8 +654,11 @@ Prior to any experimentation, participants provided verbal and written consent
 to participate in the research presented in this manuscript, which was approved
 by the University of Iowa's Institution Review Board.
 21 participants were excluded in the primary analysis for having a
-framewise displacement of over 0.5mm for over a 100 volumes,
+framewise displacement of over 0.5mm for a 100 volumes or more,
 resulting in a final N of 40.
+We chose 100 volumes to keep the number of regressors in LSA
+(which already includes as many regressors as events) a reasonable size
+for single trial beta estimation.
 The task switch task was a mixed block/event related design containing
 5 blocks (2 single task blocks and 3 mixed task blocks).
 There was a 30 second rest between each block.
@@ -699,33 +702,25 @@ false discovery rate error control \ref{fig:stat_maps}.
 
 \begin{figure}[H]
   \centering
-  \subfloat{
-    \includegraphics[width=\textwidth]{stat-map-single}
-  }
+  \includegraphics[width=\textwidth]{stat-map-single}
+  \label{fig:single}
 \end{figure}
 
 \begin{figure}[H]
-  \ContinuedFloat
   \centering
-  \subfloat{
-    \includegraphics[width=\textwidth]{stat-map-repeat}
-  }
+  \includegraphics[width=\textwidth]{stat-map-repeat}
+  \label{fig:repeat}
 \end{figure}
 
 \begin{figure}[H]
-  \ContinuedFloat
   \centering
-  \subfloat{
-    \includegraphics[width=\textwidth]{stat-map-switch}
-  }
+  \includegraphics[width=\textwidth]{stat-map-switch}
+  \label{fig:switch}
 \end{figure}
 
 \begin{figure}[H]
-  \ContinuedFloat
   \centering
-  \subfloat{
-    \includegraphics[width=\textwidth]{stat-map-switchXrepeat}
-  }
+  \includegraphics[width=\textwidth]{stat-map-switchXrepeat}
   \caption{
     Univariate statistical maps of second level results representing
     each condition relative to baseline, an F-test over all conditions,
@@ -844,8 +839,8 @@ Several confounding time-series were calculated based on the \emph{preprocessed 
 % only used a subset of the confounding variables
 framewise displacement (FD) and two region-wise global signals.
 FD was calculated for each functional run, using its
-implementation in \emph{Nipype} \cite[following the definitions
-by]{power_fd_dvars}.
+implementation in \emph{Nipype} following the definitions
+by Power et al. (2014)\cite{power_fd_dvars}.
 The two global signals were extracted within the
 cerebrospinal fluid and the white matter masks.
 High-pass filtering the \emph{preprocessed BOLD} time-series was done using
@@ -1354,10 +1349,10 @@ This would likely impact LSA more than LSS, since LSA already has
 a large number of regressors representing each event.
 
 Our CNR and AVNR values did not go as high as other manuscripts ~\cite{Mumford2012,Abdulrahman2016,Welvaert2013a}.
-\cite[Welvaert]{Welvaert2013a} specifically calculated a range of CNRs using real data from a block design,
+Welvaert (2013)\cite{Welvaert2013a} specifically calculated a range of CNRs using real data from a block design,
 and got higher values than reported in this manuscript (values ranging from 0.01 - 95.73).
 
-\cite[Abdulrahman \& Henson]{Abdulrahman2016} found when the noise between voxels has a higher correlation (i.e., coherence)
+Abdulrahman \& Henson (2016)\cite{Abdulrahman2016} found when the noise between voxels has a higher correlation (i.e., coherence)
 than the BOLD responses between voxels.
 While we did not vary scan noise coherence relative to BOLD reponse coherence,
 the average noise correlation between voxels is a Pearson's r of 0.67.
