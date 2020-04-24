@@ -757,6 +757,7 @@ The interpolation helps transition the bold series from one run to the next,
 analogous to interpolation performed when scrubbing high motion volumes \cite{Power2014a}. 
 This null task data was treated equivalently to the task switching data for the
 beta series correlation analysis.
+(\href{https://github.com/jdkent/validateBetaSeries/tree/195ad5b4201971038dbbf8f73a3c537caf032743}{see relevant code here})
 
 \subsection*{Scanner Parameters}
 \label{methods:scanner}
@@ -886,10 +887,13 @@ jupyter notebooks \cite{Kluyver2016a}, and the packages they depend on.
 \subsection*{Beta Series Correlation Simulations}
 \label{results:bsc-simulations}
 
+The first stage of BSC testing focused on simulations with varying event numbers,
+IEIs, CNRs, AVNRs, and estimation method.
 For proper interpretation of the power analyses, we first established whether
-a 5\% false positive rate was found.
-Across all ITIs, trial numbers, CNRs, and AVNRs, the false positive rate of 5\%
-holds.
+a 5\% false positive rate was found across all combinations of
+event numbers, IEIs, CNRs, AVNRs, and estimation method.
+We found a nominal \%5 false positive rate held across all combinations
+of parameters \ref{fig:res_sim_fpr}.
 
 \begin{figure}[H]
   \centering
@@ -905,8 +909,8 @@ holds.
   \label{fig:res_sim_fpr}
 \end{figure}
 
-Next we observed how detectable a correlation difference of 0.1 was
-across all parameters.
+With the false positive rate established, we next observed how detectable a
+correlation difference of 0.1 was across all parameters.
 
 \begin{figure}[H]
   \centering
@@ -927,6 +931,21 @@ across all parameters.
   \label{fig:res_sim_smalldiff}
 \end{figure}
 
+While the IEI is 2, there is no discernable difference between LSS and LSA.
+Since the simulated data were sampled at 2 second intervals, the result
+corresponds to effectively presenting a stimulus during each sample.
+With such overlapping simulated BOLD responses detecting a difference between conditions
+is unlikely.
+From an IEI of 4 seconds and upwards, LSS has an advantage over LSA.
+Adding additional events above 30 appears to only help if the CNR is greater than 1.
+Increasing the CNR improves power more than increasing the CVNR, although increasing either
+provides a marked boost in detection power.
+For LSS, the 8 second IEI does not appear to boost detection power beyond a 6 second IEI,
+whereas LSA has a boost when AVNR and CNR are higher.
+It's worth noting that even for 50 participants; not one power analysis showed
+a power of 80\%, suggesting that larger sample sizes are required to detect a Pearson's r
+difference of 0.1.
+
 \subsection*{Task Switch Beta Series Correlation Simulations}
 \label{results:bsc-taskswitch-simulations}
 
@@ -934,13 +953,18 @@ To make the simulations and the real data as analogous as possible
 for comparison, we ran simulations using the same experimental design
 that was used to collect the real data.
 
-Again, we established a 5\% false positive rate.
+Again, we established a 5\% false positive rate \ref{fig:task_fpr}.
 
 \begin{figure}[H]
   \centering
     \includegraphics[width=\textwidth]{taskswitch-switchXrepeat_fpr}
   \label{fig:task_fpr}
 \end{figure}
+
+With the false positive rate established, we next simulated the same 0.1 Pearson's r difference
+between conditions \ref{fig:task_smalldiff}.
+We compared the event conditions switch and repeat, but the results are similar for other
+condition contrasts.
 
 \begin{figure}[H]
   \centering
@@ -958,18 +982,46 @@ Again, we established a 5\% false positive rate.
   \label{fig:task_smalldiff}
 \end{figure}
 
+Using this task design, AVNR has a minimal impact on detection power, while
+doubling CNR nearly doubles detection power.
+Again, we see LSS has an advantage over LSA in all conditions.
+With this experimental design, 40 simulated participants were enough to achieve
+a power of over 80\%, suggesting experimental design plays a large role in
+detection power.
+
 \subsection*{Task Switching Beta Series Correlations}
 \label{results:bsc-taskswitch}
 
 We looked at task switching data from multiple perspectives to
-observe the performance of LSA and LSS, as well as beta series correlations
+observe the performance of LSA and LSS, as well as BSCs
 to detect an effect at all relative to null data.
 
-\subsubsection*{Task versus Null}
+\subsubsection*{Real versus Null}
 \label{results:bsc-taskswitchXNull}
 
-We demonstrate a widespread pattern where the correlation between pairs of
-regions differ between task and null data \ref{fig:taskvnull}.
+We demonstrate a broad pattern where the correlation between pairs of
+regions differ between task and null data using the Schaefer atlas,
+and a more modest pattern using the activation atlas \ref{fig:act_taskvnull}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{data-both_atlas-schaefer_contrast-taskXnull}
+  \caption{
+    Task versus Rest. Correlation differences with a p-value less than 0.05.
+    LSS (green), LSA (blue), and their overlap (yellow) are shown.
+  }
+  \label{fig:sch_taskvnull}
+\end{figure}
+
+We used the switch condition in the real data to evaluate the most cognitively demanding condition
+relative to null data.
+We see a broad pattern of results.
+Qualitatively, both LSS and LSA show statistical significance between the Control B network and
+Dorsal Attention A/B and Somatomotor A networks.
+After FDR correction, LSS maintained 1,333 statistically significant differences,
+whereas LSA only had 386 statistically significant differences.
+The comparison using the Schaefer atlas give LSS a large advantage.
+However, the pattern is much weaker using the activation atlas \ref{fig:act_taskvnull}.
 
 \begin{figure}[H]
   \centering
@@ -978,104 +1030,181 @@ regions differ between task and null data \ref{fig:taskvnull}.
     Task versus Rest. Correlation differences with a p-value less than 0.05.
     LSS (green), LSA (blue), and their overlap (yellow) are shown.
   }
-  \label{fig:taskvnull}
+  \label{fig:act_taskvnull}
 \end{figure}
 
-The most lenient comparison is to compare the switch condition from task switching to the null data.
-LSA has a total of 16 significant results, LSS has a total of 24,
-and their overlap is 7.
-A number of the significant correlations are undoubtably false positives, but
-since we are interested in comparing LSS and LSA and not making strong theoretical claims,
-we can say this result provides evidence LSS is a more sensitive measure.
-
+Using the activation atlas, LSA has a total of 16 significant results,
+LSS has a total of 24, and their overlap is 7.
+No statistically significant findings survive FDR correction, providing
+weak evidence for the advantage of LSS.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% SWITCH V SINGLE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection*{Switch versus Single}
 \label{results:bsc-switchXsingle}
 
+For this section and the remaining subsections, we will compare
+the number of positives found in the real data relative to to null data for
+the same condition contrasts.
+If an estimation method identifies more positive results in both real and null data,
+then the method may have good sensitivity, but poor specificity.
+
+Within the Schaefer atlas, LSS and LSA perform similarly, with LSS showing more unique
+results in the Somatomotor A network, and LSS showing more results in the Central
+and Peripheral Visual networks \ref{fig:sch_switchvsingle}.
+The real/null positive rate for LSS is 1.49 and for LSS it is 1.63.
+
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{data-task_type-brain_atlas-activation_contrast-switchXsingle}
+  \subfloat{
+    \includegraphics[width=0.5\textwidth]{data-task_atlas-schaefer_contrast-switchXsingle}
+  }
+  \subfloat{
+    \includegraphics[width=0.5\textwidth]{data-null_atlas-schaefer_contrast-switchXsingle}
+  }
   \caption{
     Switch versus single. Correlation differences with a p-value less than 0.05.
     LSS (green), LSA (blue), and their overlap (yellow) are shown.
   }
-  \label{fig:switchvsingle}
+  \label{fig:sch_switchvsingle}
 \end{figure}
 
-LSA has a total of 4 significant results, LSS has a total of 4,
-and their overlap is 0 results.
+The activation atlas for the contrast of $switch - single$
+shows a slight advantage for the specificity of LSS relative to LSA \ref{fig:act_switchvsingle}.
+LSS has a real/null positive ratio of 0.8 and LSA has a ratio of 0.4.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{data-null_type-brain_atlas-activation_contrast-repeatXsingle}
+  \subfloat{
+    \includegraphics[width=\textwidth]{data-task_type-brain_atlas-activation_contrast-switchXsingle}
+  }
+  \qquad
+  \subfloat{
+    \includegraphics[width=\textwidth]{data-null_type-brain_atlas-activation_contrast-switchXsingle}
+  }
   \caption{
-    Switch versus single (null data). Correlation differences with a p-value less than 0.05.
+    Switch versus single. Correlation differences with a p-value less than 0.05.
     LSS (green), LSA (blue), and their overlap (yellow) are shown.
   }
-  \label{fig:restswitchvsingle}
+  \label{fig:act_switchvsingle}
 \end{figure}
 
-LSA has a total of 9 significant results and LSS has a total of 4,
-and their overlap is 1.
+While the schaefer atlas shows evidence of BSC
+identifying potentially real correlation differences,
+the activation atlas had more null results than real results.
+Having more null results relative to real results gives less
+confidence in BSCs overall.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% REPEAT V SINGLE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection*{Repeat versus Single}
 \label{results:bsc-repeatXsingle}
 
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=\textwidth]{data-task_type-brain_atlas-activation_contrast-repeatXsingle}
-  \caption{
-    Repeat versus single (real data). Correlation differences with a p-value less than 0.05.
-    LSS (green), LSA (blue), and their overlap (yellow) are shown.
-  }
-  \label{fig:repeatvsingle}
-\end{figure}
-
-LSA has a total of 13 significant results, LSS has a total of 7,
-and their overlap is 1 result.
+LSA shows a strong advantage over LSS with real/null positive ratio of 1.66,
+relative to LSS with a ratio of 0.73.
+Again LSA appears to find many statistically significant positives within the
+Central and Peripheral Visual networks. 
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{data-null_type-brain_atlas-activation_contrast-repeatXsingle}
+  \subfloat{
+    \includegraphics[width=0.5\textwidth]{data-task_atlas-schaefer_contrast-repeatXsingle}
+  }
+  \subfloat{
+    \includegraphics[width=0.5\textwidth]{data-null_atlas-schaefer_contrast-repeatXsingle}
+  }
   \caption{
-    Repeat versus single (null data). Correlation differences with a p-value less than 0.05.
+    Repeat versus single. Correlation differences with a p-value less than 0.05.
     LSS (green), LSA (blue), and their overlap (yellow) are shown.
   }
-  \label{fig:restrepeatvsingle}
+  \label{fig:sch_repeatvsingle}
 \end{figure}
 
-LSA has a total of 5 significant results and LSS has a total of 6,
-and their overlap is 0.
+The activation atlas for the contrast of $repeat - single$
+mirrors the result found with the Schaefer atlas, namely LSA appears
+more sensitive and specific relative to LSS \ref{fig:act_repeatvsingle}.
+LSA has a real/null ratio of 2.80, while LSS has a ratio of 1.16.
 
+\begin{figure}[H]
+  \centering
+  \subfloat{
+    \includegraphics[width=\textwidth]{data-task_type-brain_atlas-activation_contrast-repeatXsingle}
+  }
+  \qquad
+  \subfloat{
+    \includegraphics[width=\textwidth]{data-null_type-brain_atlas-activation_contrast-repeatXsingle}
+  }
+  \caption{
+    Repeat versus single. Correlation differences with a p-value less than 0.05.
+    LSS (green), LSA (blue), and their overlap (yellow) are shown.
+  }
+  \label{fig:act_repeatvsingle}
+\end{figure}
+
+Across the Schaefer and activation atlas in the $repeat - single$ contrast,
+LSA appears to outperform LSS.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% SWITCH V REPEAT
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection*{Switch versus Repeat}
 \label{results:bsc-switchXrepeat}
 
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=\textwidth]{data-task_type-brain_atlas-activation_contrast-switchXrepeat}
-  \caption{
-    switch versus repeat (real data). Correlation differences with a p-value less than 0.05.
-    LSS (green), LSA (blue), and their overlap (yellow) are shown.
-  }
-  \label{fig:switchvrepeat}
-\end{figure}
+$Switch - Repeat$ is the most intriguing contrast because it is the most relevant
+to many event related designs.
+Whereas the previous contrasts did had events originating in different event blocks,
+the switch and repeat conditions occur in close proximity to each other in the same block.
 
-LSA has a total of 1 significant results, LSS has a total of 0,
-and their overlap is 0 result.
+The Schaefer atlas shows LSS has more sensitivity but less specificity, whereas LSA
+has less sensitivity but more specificity.
+LSA has a real/null positive ratio of 2.28, and LSS has a real/null
+positive ratio of 1.06.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{data-null_type-brain_atlas-activation_contrast-switchXrepeat}
+  \subfloat{
+    \includegraphics[width=0.5\textwidth]{data-task_atlas-schaefer_contrast-switchXrepeat}
+  }
+  \subfloat{
+    \includegraphics[width=0.5\textwidth]{data-null_atlas-schaefer_contrast-switchXrepeat}
+  }
   \caption{
-    Switch versus repeat (null data). Correlation differences with a p-value less than 0.05.
+    Switch versus single. Correlation differences with a p-value less than 0.05.
     LSS (green), LSA (blue), and their overlap (yellow) are shown.
   }
-  \label{fig:restswitchvrepeat}
+  \label{fig:sch_switchvrepeat}
 \end{figure}
 
-LSA has a total of 2 significant results and LSS has a total of 0,
-and their overlap is 0.
+The activation atlas, on the other hand, shows that LSA has more sensitivity over LSS.
+LSS does not find any statistically significant results in the activation atlas.
+\begin{figure}[H]
+  \centering
+  \subfloat{
+    \includegraphics[width=\textwidth]{data-task_type-brain_atlas-activation_contrast-switchXrepeat}
+  }
+  \qquad
+  \subfloat{
+    \includegraphics[width=\textwidth]{data-null_type-brain_atlas-activation_contrast-switchXrepeat}
+  }
+  \caption{
+    Switch versus repeat. Correlation differences with a p-value less than 0.05.
+    LSS (green), LSA (blue), and their overlap (yellow) are shown.
+  }
+  \label{fig:act_switchvrepeat}
+\end{figure}
+
+Overall, LSA is once again found to be a better estimator relative LSS in real data.
 
 \subsection*{Debate on Results (not actually in paper)}
+While the simulations reliably found LSS to be a better estimation method,
+in the real data the results are mixed and in the most relevant contrast for
+many event related designs $switch - repeat$,
+LSA had the advantage over LSS.
+The results become more muddied when the originally excluded data are included
+in the analysis, then LSS appears to have a slight advantage over LSA in the
+real data.
+
 \begin{itemize}
   \item Good participants (N=40)
   \begin{itemize} 
