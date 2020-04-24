@@ -671,7 +671,7 @@ all identified motion outliers as regressors in the first level model for each p
 in addition to event onsets convolved with a double gamma function ~\cite{Glover1999}.
 Each image was smoothed with a 6mm full-wide half-max kernel.
 We derived all condition versus baseline contrasts: single, repeat, switch, as well as
-additional contrasts for switch - repeat and an F-test of all task conditions.
+additional contrasts for $switch - repeat$ and an F-test of all task conditions.
 We ignored correctness of the participant's response since this was not important to
 separate the impact of condition and error processing to validate BSC.
 
@@ -957,7 +957,10 @@ Again, we established a 5\% false positive rate \ref{fig:task_fpr}.
 
 \begin{figure}[H]
   \centering
-    \includegraphics[width=\textwidth]{taskswitch-switchXrepeat_fpr}
+  \includegraphics[width=\textwidth]{taskswitch-switchXrepeat_fpr}
+  \caption{
+    FPR
+  }
   \label{fig:task_fpr}
 \end{figure}
 
@@ -1202,8 +1205,8 @@ in the real data the results are mixed and in the most relevant contrast for
 many event related designs $switch - repeat$,
 LSA had the advantage over LSS.
 The results become more muddied when the originally excluded data are included
-in the analysis, then LSS appears to have a slight advantage over LSA in the
-real data.
+in the analysis, then LSS appears to be more sensitive, but less specific, and LSA
+becomes less sensitive.
 
 \begin{itemize}
   \item Good participants (N=40)
@@ -1244,17 +1247,6 @@ real data.
 
 Total LSS "Wins": 8\\
 Total LSA "Wins": 8\\
-
-Main takeaway from analysis:
-
-Including "noisier" data appears to boost
-the advantage of LSS to detect effects,
-
-while only having clean data appears to give
-LSA the advantage.
-
-The simulations, however, suggest LSS should
-always have an advantage.
 
 % \begin{table}[!ht]
 % \begin{adjustwidth}{-2.25in}{0in} % Comment out/remove adjustwidth environment if table fits in text column.
@@ -1304,61 +1296,70 @@ always have an advantage.
 \subsection*{Simulation Conclusions}
 \label{discussion:simulation-conclusions}
 
-The results are surprisingly non-overlapping between LSS and LSA in the real data,
-although they are designed to measure the same phenomenom.
+The main finding from the simulations is that LSS has greater detection power than LSA,
+supporting other findings from the literature comparing LSS and LSA using MVPA and other
+similar methods ~\cite{Mumford2012,Mumford2014a,Abdulrahman2016,Turner2012a}.
+We found the best way to increase detection power is to increase IEI to 6 seconds and
+have at least 30 trials per condition.
 
-We found both LSS and LSA produce expected false positive rates of \%5
-across all experimental designs and data parameters.
-A large advantage of LSS over LSA occurs when the IEI is 4 seconds, but is eliminated
-when the IEI is either 2 seconds or more than 4 seconds.
-This is likely because the sampling rate was simulated to be 2 seconds, resulting
-in an event to occur for every "volume".
-The slow BOLD response for each event results in highly colinear regressors for both LSA and LSS.
+differences between simulations and real data:::\\
+As mentioned in \nameref{methods:bsc-simulations}, each simulation represents
+either a different participant or separate runs from the same participant.
+The contrasts in the simulations are therefore most analogous to the $real - null$
+contrast in \nameref{results:bsc-taskswitchXNull}.
+Additionally, each simulation contains two conditions whose BOLD responses
+are independent of each other.
+There is likely temporal autocorrelation of BOLD responses across events,
+which is not represented in the simulations ~\cite{Abdulrahman2016}.
 
-Our CNR estimates were much lower than the range reported by \cite[Welvaert]{Welvaert2013a}, likely
-due to their use of a Block design versus our use of an event related design,
-and partially due to the more complex calculation of CNR used in this report
-(see \nameref{methods:bsc-simulations}).
+The simulations contained physiological noise, task related motion, and drift.
+however, all were all given equal weighting, which is unlikely how noise in real data
+is represented.
 
-\begin{itemize}
-  \item LSS and LSA perform similarly at low and high ITIs
-  \item LSS outperforms at 4, 6, and 8 seconds ITI
-  \item fast(ish) event related design, use LSS
-  \item mention Abdulrahman2016 because I did not set the trial variance to below 1.
-  \item schaefer atlas does not just give more false positives
-  \item perhaps insufficient power to detect differences between methods
-  \item increased "false positives" from null data from increased variability and wild estimates of betas
-  \item Very easy to get results from null data that may appear "good"
-  \item Need to add model fitting checks to assure adequate fit (CNR/AVNR can be misleading)
-  \item trial-to-trial variability not autocorrelated in simulations
-  \item all trial types were given a positive mean.
-  \item miniblocking helps LSS
-  \item subtraction was equivalent to subtracting the condition from one participant to another.
-  \item noise parameters in simulations were all weighed equally, likely not the case in real data. 
-\end{itemize}
+We also did not simulate variations in HRF onset, which is likely to occur
+as all BOLD responses to a stimulus do not occur at the time the stimulus onset.
 
-\subsection*{Future Directions}
+While the simulations represented data without any preprocessing applied,
+the real data had motion outliers, non steady state volumes,
+CSF, and white matter signals accounted for in the model.
+The additional regressors in the model reduce the degrees of freedom
+and could impact the ability of the model to fit the data.
+This would likely impact LSA more than LSS, since LSA already has
+a large number of regressors representing each event.
 
-\begin{itemize}
-  \item Run beta series correlations on larger dataset with enough power to reliably detect an effect
-  \item Add ability to estimate CNR/AVNR in NiBetaSeries
-  \item use t-statistic as opposed to raw beta estimates
-  \item temporal/spatial analysis with Finite Impulse Responses \cite{Turner2012a}
-  \item Add ability to simulate possible condition relationships in NiBetaSeries
-  \item need to add "fake" mean hemodynamic response to normalize the data
-  \item extend Cole's work (compare residual correlations with LSA/LSS)
-  \item investigate graph theoretical measures to validate between task conditions and task/null.
+Our CNR and AVNR values did not go as high as other manuscripts ~\cite{Mumford2012,Abdulrahman2016,Welvaert2013a}.
+\cite[Welvaert]{Welvaert2013a} specifically calculated a range of CNRs using real data from a block design,
+and got higher values than reported in this manuscript (values ranging from 0.01 - 95.73).
 
-\end{itemize}
+\cite[Abdulrahman \& Henson]{Abdulrahman2016} found when the noise between voxels has a higher correlation (i.e., coherence)
+than the BOLD responses between voxels.
+While we did not vary scan noise coherence relative to BOLD reponse coherence,
+the average noise correlation between voxels is a Pearson's r of 0.67.
+While the BOLD response correlations varied from a Pearson's r from (0.0-0.9).
+The majority of the correlations simulated have greater noise coherence relative to
+BOLD response coherence, yet the results suggest LSS has greater detection power regardless
+if the relationship.
+
 \subsection*{Task Switching Conclusions}
-\begin{itemize}
-  \item Simulations suggested LSS would improve sensitivity of results (while maintaining a \%5 false positive rate)
-  \item (Especially if the CNR was low)
-  \item The task versus rest contrast showed more results for LSS,
-        suggesting even the most lenient was not large enough
-        to have parity between LSA and LSS.
-  \item Validation important for studies looking at task connectomics ~\cite{Di2019a}.
-\end{itemize}
+\label{discussion:taskswitching-conclusions}
+
+The real data results were much less clear.
+In combination with the analysis that used all the data;
+the general statement could be that LSS is more sensitive and less specific
+relative to LSA.
+
+A surprising result is the lack of overlap between LSS and LSA results.
+The lack of overlap is suprising because both LSS and LSA are purported to
+measure the same underlying process.
+An interesting relationship appears when we correlated the beta series from
+LSA to LSS and plot average framewise displacement \ref{fig:lss_lsa_correlation}.
+As the average framewise displacement increases and temporal signal to noise (TSNR)
+decreases, the agreement between LSS and LSA decreases.
+In other words, as noise in the data increases, the more divergent LSS and LSA become.
+This suggests one reason for the disagreement is the noise still present in the included
+data.
+There appears to be a cluster of particpants with an average framewise displacement of
+less than 0.2mm that have a high correlation between LSS and LSA.
 
 \begin{figure}[H]
   \centering
@@ -1377,9 +1378,19 @@ and partially due to the more complex calculation of CNR used in this report
   \label{fig:lss_lsa_correlation}
 \end{figure}
 
-An interesting pattern emerges correlating the beta series between LSS and LSA.
-LSS and LSA have a relatively high correlation when certain metrics of noise
-are low (average framewise displacement and temporal signal to noise ratio).
+\subsection*{Future Directions}
+
+\begin{itemize}
+  \item Run beta series correlations on larger dataset with enough power to reliably detect an effect
+  \item Add ability to estimate CNR/AVNR in NiBetaSeries
+  \item use t-statistic as opposed to raw beta estimates
+  \item temporal/spatial analysis with Finite Impulse Responses \cite{Turner2012a}
+  \item Add ability to simulate possible condition relationships in NiBetaSeries
+  \item need to add "fake" mean hemodynamic response to normalize the data
+  \item extend Cole's work (compare residual correlations with LSA/LSS)
+  \item investigate graph theoretical measures to validate between task conditions and task/null.
+  \item simulate variable onset of BOLD responses
+\end{itemize}
 
 
 
