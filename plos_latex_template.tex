@@ -882,6 +882,23 @@ In addition to the data analysis, visualization of results depended
 on matplotlib \cite{Hunter2007}, seaborn \cite{Waskom2020}, nilearn,
 jupyter notebooks \cite{Kluyver2016a}, and the packages they depend on.
 
+\subsection*{Permutation Tests}
+Since we do not have a ground truth for which ROI-ROI pairs should be different between conditions,
+we used permutation tests on the correlation matrices to ascertain whether we observed a greater number
+of statistically significant ROI-ROI pairs than would be expected.
+We shuffled each ROI-ROI pair within each participant such that any ROI-ROI correlation would remain
+in their own condition, or be swapped.
+We shuffled every participants' ROI-ROI pairs for 1000 iterations and ran a paired ttest on every ROI-ROI pair
+for each iteration.
+We then summed the total number of statistically significant ROI-ROI pairs for each iteration and used
+to form the distribution of expected results.
+For example, if we observed 10 significant ROI-ROI pairs in our real data, we could permute the data
+with 5 iterations resulting in $[5, 3, 12, 7, 10]$.
+To determine our p-value, we would count the number of permuted results that at least as large as
+our observed number and divide that number by the total number of iterations.
+In this example, 2 values are at least as large as our observed result (10 and 12), so our
+p-value would be $2/5$ or 0.4.
+Since we are using 1000 iterations, our p-values will provide a more exact estimates than the example.
 % For figure citations, please use "Fig" instead of "Figure".
 % Nulla mi mi, Fig~\ref{fig1} venenatis sed ipsum varius, volutpat euismod diam. Proin rutrum vel massa non gravida. Quisque tempor sem et dignissim rutrum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi at justo vitae nulla elementum commodo eu id massa. In vitae diam ac augue semper tincidunt eu ut eros. Fusce fringilla erat porttitor lectus cursus, \nameref{S1_Video} vel sagittis arcu lobortis. Aliquam in enim semper, aliquam massa id, cursus neque. Praesent faucibus semper libero.
 
@@ -891,7 +908,9 @@ jupyter notebooks \cite{Kluyver2016a}, and the packages they depend on.
 % Figure caption text here, please use this space for the figure panel descriptions instead of using subfigure commands. A: Lorem ipsum dolor sit amet. B: Consectetur adipiscing elit.}
 % \label{fig1}
 % \end{figure}
-
+%%%%%%%%%%%%%%%%%%%%%%%%
+%% RESULTS
+%%%%%%%%%%%%%%%%%%%%%%%%
 % Results and Discussion can be combined.
 \section*{Results}
 \label{results}
