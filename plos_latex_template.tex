@@ -977,53 +977,6 @@ It's worth noting that even for 50 participants; not one power analysis showed
 a power of 80\%, suggesting that larger sample sizes are required to detect a Pearson's r
 difference of 0.1.
 
-\subsection*{Task Switch Beta Series Correlation Simulations}
-\label{results:bsc-taskswitch-simulations}
-
-To make the simulations and the real data as analogous as possible
-for comparison, we ran simulations using the same experimental design
-that was used to collect the real data.
-
-Again, we established a 5\% false positive rate \ref{fig:task_fpr}.
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=\textwidth]{taskswitch-switchXrepeat_fpr}
-  \caption{
-    LSA/LSS both show a \%5 false positive rate for CNRs and AVNRs of 1 and 2. 
-    Each bar represents a sample of 50 pairs of correlations (with no true difference)
-    randomly pulled from a distribution of correlations 10,000 times.
-  }
-  \label{fig:task_fpr}
-\end{figure}
-
-With the false positive rate established, we next simulated the same 0.1 Pearson's r difference
-between conditions \ref{fig:task_smalldiff}.
-We compared the event conditions switch and repeat, but the results are similar for other
-condition contrasts.
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=\textwidth]{taskswitch-switchXrepeat_smalldiff}
-  \caption{
-    Simulating power to detect a correlation difference of 0.1 between
-    conditions.
-    Each power plot represents a sample of 40 pairs of correlations
-    randomly pulled from a distribution of correlations 10,000 times.
-    The correlation pairs had a true difference 0.1.
-    With a large CNR, the power for both LSS and LSA
-    is maximal regardless of the true difference.
-    With a small CNR, LSS has greater power to detect a difference.
-  }
-  \label{fig:task_smalldiff}
-\end{figure}
-
-Using this task design, AVNR has a minimal impact on detection power, while
-doubling CNR nearly doubles detection power.
-Again, we see LSS has an advantage over LSA in all conditions.
-With this experimental design, 40 simulated participants were enough to achieve
-a power of over 80\%, suggesting experimental design plays a large role in
-detection power.
 
 \subsection*{Task Switching Beta Series Correlations}
 \label{results:bsc-taskswitch}
@@ -1288,6 +1241,35 @@ becomes less sensitive.
 Total LSS "Wins": 8\\
 Total LSA "Wins": 8\\
 
+\begin{itemize}
+  \item Good participants (N=40)
+  \begin{itemize} 
+    \item Activation Atlas
+    \begin{itemize}
+      \item Task versus Null: LSS (n=36; p<0.001) $==$ LSA (n=31; p=0.001)
+      \item Switch versus Single: LSS R:(n=11; p=0.581) N:(n=15; p=0.223) $==$ LSA R:(n=12; p=0.477) N:(n=14; p=0.359)
+      \item Repeat versus Single: LSS R:(n=19; p=0.047) N:(n=13; p=0.331)$=<$ LSA (n=24; p=0.005) N:(n=11; p=0.58)
+      \item Switch versus Repeat: LSS R:(n=7; p=0.958) N:(n=4; p=0.990) $=<$ LSA R:(n=16; p=0.102) N:(n=13; p=0.149)
+    \end{itemize}
+  \end{itemize}
+  \item All Participants (N=61)
+  \begin{itemize} 
+    \item Activation Atlas
+    \begin{itemize}
+      \item Task versus Null: LSS (n=24; p=0.001) $==$ LSA (n=23; p=0.003)
+      \item Switch versus Single: LSS R:(n=16; p=0.101) N:(n=10; p=0.605) $>=$ LSA R:(n=11; p=0.566) N:(n=13; p=0.270)
+      \item Repeat versus Single: LSS R:(n=19; p=0.033) N:(n=11; p=0.599) $==$ LSA R:(n=19; p=0.029) N:(n=13; p=0.347)
+      \item Switch versus Repeat: LSS R:(n=12; p=0.36) N:(n=5; p=0.982) $>=$ LSA R:(n=6; p=0.943) N:(n=17; p=0.025)
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+Using paired ttests and permutations changed the conclusions such that there does appear to be
+a difference between the detection power of LSS and LSA.
+Both appear to detect significant differences between a task and a null condition as well as
+$repeat - single$, but not $switch - single$ or $switch - repeat$.
+
+While simulations indicate LSS would be a more powerful method, the real data do not suggest an advantage.
 % \begin{table}[!ht]
 % \begin{adjustwidth}{-2.25in}{0in} % Comment out/remove adjustwidth environment if table fits in text column.
 % \centering
