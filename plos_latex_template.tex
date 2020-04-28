@@ -992,6 +992,51 @@ performed the same contrast in the null data to measure the specificity of each 
 The activation atlas is visualized using a glass brain to provide the reader a better sense
 of the anatomy.
 
+We found both LSS and LSA had a larger number of statistically significant ROI-ROI pairs
+for the contrasts $task - null$ (LSS: 12.86\%; p < 0.001, LSA: 10.48\%; p = 0.001)
+and $repeat - switch$ (LSS: 7.62\%; p = 0.047, LSA: 10.00\%; p = 0.005) \ref{fig:main-result}.
+Those two contrasts indicate the success of LSS and LSA to measure
+condition specific difference in ROI-ROI correlations.
+
+\begin{figure}[H]
+  \includegraphics[width=\textwidth]{data-real_atlas-activation_participants-filtered_permutation_summary}
+  \caption{
+    Percentage of statistically significant ROI-ROI pairs observed in the activation atlas
+    plotted against a null distribution for the contrasts $task - null$, $switch - single$,
+    $repeat - single$, and $switch - repeat$.
+    The large dots represent the observed percentage of statistically significant ROI-ROI pairs.
+    The violin plots represent 1000 permutations of the data reflecting the null distribution
+    of observing statistically significant ROI-ROI pairs.
+    The red dashed line represents the expected 5\% false positive rate.
+  }
+  \label{fig:main-result}
+\end{figure}
+
+Although both LSS and LSA detected condition specific correlation differences;
+the significant ROI-ROI pairs found with LSS are largely non-overlapping with LSA.
+
+\begin{figure}[H]
+  \centering
+  \subfloat{\includegraphics[width=\textwidth]{data-both_type-brain_atlas-activation_contrast-taskXnull}}
+
+  \subfloat{\includegraphics[width=\textwidth]{data-task_type-brain_atlas-activation_contrast-repeatXsingle}}
+
+  \caption{
+   The statistically significant contrasts $task - null$ and $repeat - single$
+   in the real data.
+   The glass brains show the anatomical locations of each ROI,
+   labelled with its identifying number.
+   The edges between ROIs represent significant correlation differences
+   between conditions for LSA (blue), LSS (green), or both (yellow).
+   The contrast $task - null$ has 22 statistically significant ROI-ROI
+   pairs for LSA, 27 statistically significant ROI-ROI pairs
+   for LSS with 9 overlapping ROI-ROI pairs for both LSS and LSA.
+   The contrast $repeat - single$ has 21 statistically significant ROI-ROI
+   pairs for LSA, 16 statistically significant ROI-ROI pairs
+   for LSS with 3 overlapping ROI-ROI pairs for both LSS and LSA. 
+  }
+  \label{fig:significant-contrasts}
+\end{figure}
 
 \subsection*{Debate on Results (not actually in paper)}
 While the simulations reliably found LSS to be a better estimation method,
