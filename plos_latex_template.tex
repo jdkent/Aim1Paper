@@ -1165,8 +1165,8 @@ While simulations indicate LSS would be a more powerful method, the real data do
 \label{discussion:simulation-conclusions}
 
 The main finding from the simulations is that LSS has greater detection power than LSA,
-supporting other findings from the literature comparing LSS and LSA using MVPA and other
-similar methods ~\cite{Mumford2012,Mumford2014a,Abdulrahman2016,Turner2012a}.
+supporting other findings from the literature comparing LSS and LSA using MVPA, RSA,
+and related measures ~\cite{Mumford2012,Mumford2014a,Abdulrahman2016,Turner2012a}.
 We found the best way to increase detection power is to increase IEI to 6 seconds and
 have at least 30 trials per condition.
 
@@ -1181,7 +1181,7 @@ There is likely temporal autocorrelation of BOLD responses across events,
 which is not represented in the simulations ~\cite{Abdulrahman2016}.
 
 The simulations contained physiological noise, task related motion, and drift.
-however, all were all given equal weighting, which is unlikely how noise in real data
+However, all were all given equal weighting, which is unlikely how noise in real data
 is represented.
 
 We also did not simulate variations in HRF onset, which is likely to occur
@@ -1211,14 +1211,12 @@ if the relationship.
 \subsection*{Task Switching Conclusions}
 \label{discussion:taskswitching-conclusions}
 
-The real data results were much less clear.
-In combination with the analysis that used all the data;
-the general statement could be that LSS is more sensitive and less specific
-relative to LSA.
-
-A surprising result is the lack of overlap between LSS and LSA results.
+The real data results suggest LSS and LSA perform similarly.
+Based on the number of significant ROI-ROI pairs alone, LSS and lsa
+cannot be distinguished.
+However, a surprising result is the lack of overlap between LSS and LSA results.
 The lack of overlap is suprising because both LSS and LSA are purported to
-measure the same underlying process.
+measure the same underlying process of task related connectivity.
 An interesting relationship appears when we correlated the beta series from
 LSA to LSS and plot average framewise displacement \ref{fig:lss_lsa_correlation}.
 As the average framewise displacement increases and temporal signal to noise (TSNR)
