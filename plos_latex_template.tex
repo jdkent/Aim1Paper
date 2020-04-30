@@ -273,20 +273,20 @@ The field of human imaging neuroscience has moved towards interrogating networks
 over individual brain regions.
 Broadly defined, a brain network is a collection of widespread brain regions who share information ~\cite{Uddin2019}.
 Brain networks have primarily been investigated while participants are at rest, there
-is a raising popularity to observe brain networks while participants perform tasks ~\cite{Cole2014a}.
-There is also a rising popularity to measure dynamic brain networks where brain regions change
+is rising popularity to observe brain networks while participants perform tasks ~\cite{Cole2014a}.
+There is also rising popularity to measure dynamic brain networks where brain regions change
 what network they participate in over time ~\cite{Sakoglu2008,Hindriks2016}.
 However, There has not been significant validation and investigation of brain networks
 when participants engage in tasks with interleaved conditions that could induce
-different brain networks dynamically.
-In other words, brain networks have not been investigated within fast event related designs ~\cite{Buckner1998}.
+different brain networks dynamically ~\cite{Di2019a}.
+In other words, measuring brain networks have not been validated within fast event related designs ~\cite{Buckner1998}.
 We seek to validate and compare two methods that can measure brain responses to events that occur
 close in time.
 
 The overarching method being investigated is beta series correlations (BSC) ~\cite{Rissman2004,Mumford2012,Turner2012a,Abdulrahman2016}
 There are two main approaches to estimate the Beta Series for BSC: Least Squares All (LSA) and Least Squares Separate (LSS) ~\cite{Mumford2012}.
-Both approaches of beta series estimation seek to derive single event estimates that represent a brain region's activity
-at each individual event.
+Both approaches of beta series estimation seek to derive single event estimates that represent a brain region's
+(or voxel's) activity at each individual event.
 An event is defined as "a stimulus or participant response recorded during a task." ~\cite{Gorgolewski2016}
 Where task is defined as "a set of structured activities performed by the participant." ~\cite{Gorgolewski2016}
 The single event estimates become difficult to estimate when trials are close together,
@@ -309,25 +309,27 @@ the sluggish BOLD response \ref{fig:introhrf}.
 \end{figure}
 
 The BOLD response is an indirect measure of neuronal activity that take approximately 6 seconds to
-peak and around 16-32 seconds to effectively resolve.
+peak and around 16-32 seconds to effectively resolve ~\cite{Glover1999}.
 If events are occurring (on average) 4 seconds apart, the difficulty of single event estimation
 becomes apparent.
 One does not know whether BOLD activity should be attributed to a target event or an
 adjacent event.
 LSA and LSS approach this problem differently.
-LSA, namely, ignores this problem providing a high variance, but low bias measure; while LSS provides
-a lower variance; but more biased measure.
-To understand how LSA and LSS tackle single event estimation, it is necessary to introduce
+LSA, namely, ignores this problem by calculating a high variance, but low bias measure;
+while LSS calculates a lower variance; but more biased measure.
+To understand how LSA and LSS approach single event estimation, it is necessary to introduce
 the General Linear Model (GLM).
 GLMs are a mainstay in the neuroimaging literature, allowing researchers to model
-a response that approximates the BOLD response shape and linearly scale the response
-to best match the data.
+a curve that approximates the BOLD response shape and linearly scale the curve
+to best match the data ~\cite{Friston1995}.
 The multiplicative that linearly scales the model BOLD response is known as a beta.
-The beta in the GLM is where the beta in beta series comes from.
-This beta is often interpreted as the amplitude of the response.
+The beta in the GLM is where the "beta" in beta series comes from.
+This beta is often interpreted as the amplitude of the response, which is true when the
+model approximates the shape of the BOLD response well, and becomes less clear when
+the model does not.
 In a traditional GLM, events of the same type will be grouped together
 to provide a robust estimate of whether a particular region or set of regions are
-active relative to some other baseline.
+active relative to some baseline or another condition ~\ref{fig:introGLM}.
 
 \begin{figure}[H]
   \centering
@@ -341,8 +343,10 @@ active relative to some other baseline.
   \label{fig:introGLM}
 \end{figure}
 
-That approach, however, does not tell you which regions are acting in concert
+Grouping together events of the same type, however, does not tell you which regions are acting in concert
 in response to the event type.
+The traditional GLM outputs a single beta estimate per event type, to measure which which regions
+are acting in concert; you would need a beta estimate per event.
 It could be the case that for half of the events of the same type two regions are active,
 and for the other half, another two regions are active.
 The traditional GLM will not be able differentiate the different pairs of regions.
@@ -369,6 +373,9 @@ estimate for a group of events, each event gets it's own beta estimate in a sing
 
 LSS differs from LSA by fitting a separate GLM for each event, where in each model a target
 event is fit and the rest of the events are grouped together and given separate beta estimates ~\ref{fig:introlss}.
+Placing all other events into a single regressor is how LSS was introduced, but as shown in \ref{fig:introlss},
+each event type has it's own regressor, which is referred to as LSS-N in other papers.
+We will refer to LSS-N as LSS for the remainder of the manuscript.
 
 \begin{figure}[H]
   \centering
@@ -396,15 +403,17 @@ Harkening back to the sluggish BOLD response, LSA suffers when the events are cl
 since the GLM cannot reliably attribute which BOLD response should correspond to which event ~\ref{fig:introGLM}.
 LSS attempts to reduce the model confusion by only having one single event estimate per model,
 so the non-target events have their beta influenced by multiple observations, loosening the
-constraint that adjacent events to the target event need to be orthogonal (i.e. independent) of each other.
+constraint that adjacent events to the target event need to be orthogonal (i.e., independent) of each other.
 While previous work has simulated beta series and evaluated beta series on real data,
 several key gaps remain ~\cite{Mumford2014a,Mumford2012,Turner2012a,Abdulrahman2016,Cisler2012,Arco2018}.
-One, simulations have not taken into account realistic noise structure of fMRI data.
-Two, simulations have not used optimal fast event related designs, only random designs. 
-Three, empirical selections of signal to noise ratios have not been considered.
-Four, a quantitative comparison/validation of LSA and LSS estimation for BSC has not been done.
+One, simulations have not taken into account realistic noise structure of fMRI data such as autocorrelations, movement, and phsyiological noise.
+Two, simulations have not used optimized fast event related designs, only randomly selected designs. 
+Three, empirical selections of signal to noise ratios have not been considered,
+ratios were chosen without justification in previous work.
+Four, a quantitative comparison/validation of LSA and LSS condition contrasts for BSC has not been done.
 The present work fills these gaps and provides recommendations for further research
 using LSA and LSS.
+
 
 \section*{Materials and methods}
 \label{methods}
@@ -460,7 +469,7 @@ for temporal autocorrelation.
 After fitting each model, the parameter estimate (i.e., beta) map
 associated with the target event's regressor was retained and
 concatenated into a 4D image with all other events from the same
-condition, resulting in a set of X 4D images where X refers to the
+condition, resulting in a set of $X$ 4D images where $X$ refers to the
 number of conditions in the task.
 The number of volumes in each 4D image represents the number of events in that condition.
 
@@ -493,15 +502,28 @@ In the participant data, BSC generated correlation matrices for each condition (
 each method, (LSA and LSS), each data type (real and null), and each participant (N=40).
 The first check performed was contrasting the real switch condition and null switch condition
 to ensure BSC from a task are different than BSC from null data.
-A ttest was run on each ROI-ROI pair for the activation atlas, totaling 190 comparisons
+A paired ttest was run on each ROI-ROI pair for the activation atlas, totaling 210 comparisons
 between task and null.
-The results were corrected for multiple comparisons (Benjamini/Hochberg).
-(\href{https://github.com/jdkent/BetaSeriesRealDataAnalysis/blob/90fafb5b83b2e1bfade61a9fb1a87f225efaa95f/nibsAnalysis/BetaSeriesAnalysis.ipynb}{see here for relevant code})
-
 We next contrasted $switch - single$, $repeat - single$, and $switch - repeat$, for LSS/LSA in both
 real and null data.
-Positive rates were calculated for LSA and LSS by dividing the number of positive results (p < 0.05)
-in the real data with the number of positives found in the null data.
+
+Since we do not have a ground truth for which ROI-ROI pairs should be different between conditions,
+we used permutation tests on the correlation matrices to ascertain whether we observed a greater number
+of statistically significant ROI-ROI pairs than would be expected.
+We shuffled each ROI-ROI pair within each participant such that any ROI-ROI correlation would remain
+in their own condition, or be swapped.
+We shuffled every participants' ROI-ROI pairs for 1000 iterations and ran a paired ttest on every ROI-ROI pair
+for each iteration.
+We then summed the total number of statistically significant ROI-ROI pairs for each iteration and used
+to form the distribution of expected results.
+For example, if we observed 10 significant ROI-ROI pairs in our real data, we could permute the data
+with 5 iterations resulting in $[5, 3, 12, 7, 10]$.
+To determine our p-value, we would count the number of permuted results that at least as large as
+our observed number and divide that number by the total number of iterations.
+In this example, 2 values are at least as large as our observed result (10 and 12), so our
+p-value would be $2/5$ or 0.4.
+Since we are using 1000 iterations, our p-values will provide a more exact estimates than the example.
+(\href{https://github.com/jdkent/BetaSeriesRealDataAnalysis/blob/90fafb5b83b2e1bfade61a9fb1a87f225efaa95f/nibsAnalysis/BetaSeriesAnalysis.ipynb}{see here for relevant code})
 
 \subsection*{Beta Series Correlation Simulations}
 \label{methods:bsc-simulations}
@@ -781,7 +803,7 @@ repetition time of 8.388ms, inversion time of 900ms, isometric voxel sizes of 1m
 [256x256] acquisition matrix with 196 slices, field of view 25.6cm x 25.6cm.
 The functional bold images were collected using a Gradient Echo sequence axially from
 the bottom up sequentially with a flip angle of 80$^{\circ}$, echo time of 30ms,
-repetition time of 2000ms, voxel sizes of 3.44x3.44x4.00 on a [64x64] acquisition matrix
+repetition time of 2000ms, voxel sizes of 3.44x3.44x4.00mm on a [64x64] acquisition matrix
 with 37 slices, field of view 22cm x 22cm.
 
 \subsection*{Preparing fMRI}
@@ -882,23 +904,6 @@ In addition to the data analysis, visualization of results depended
 on matplotlib \cite{Hunter2007}, seaborn \cite{Waskom2020}, nilearn,
 jupyter notebooks \cite{Kluyver2016a}, and the packages they depend on.
 
-\subsection*{Permutation Tests}
-Since we do not have a ground truth for which ROI-ROI pairs should be different between conditions,
-we used permutation tests on the correlation matrices to ascertain whether we observed a greater number
-of statistically significant ROI-ROI pairs than would be expected.
-We shuffled each ROI-ROI pair within each participant such that any ROI-ROI correlation would remain
-in their own condition, or be swapped.
-We shuffled every participants' ROI-ROI pairs for 1000 iterations and ran a paired ttest on every ROI-ROI pair
-for each iteration.
-We then summed the total number of statistically significant ROI-ROI pairs for each iteration and used
-to form the distribution of expected results.
-For example, if we observed 10 significant ROI-ROI pairs in our real data, we could permute the data
-with 5 iterations resulting in $[5, 3, 12, 7, 10]$.
-To determine our p-value, we would count the number of permuted results that at least as large as
-our observed number and divide that number by the total number of iterations.
-In this example, 2 values are at least as large as our observed result (10 and 12), so our
-p-value would be $2/5$ or 0.4.
-Since we are using 1000 iterations, our p-values will provide a more exact estimates than the example.
 % For figure citations, please use "Fig" instead of "Figure".
 % Nulla mi mi, Fig~\ref{fig1} venenatis sed ipsum varius, volutpat euismod diam. Proin rutrum vel massa non gravida. Quisque tempor sem et dignissim rutrum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi at justo vitae nulla elementum commodo eu id massa. In vitae diam ac augue semper tincidunt eu ut eros. Fusce fringilla erat porttitor lectus cursus, \nameref{S1_Video} vel sagittis arcu lobortis. Aliquam in enim semper, aliquam massa id, cursus neque. Praesent faucibus semper libero.
 
