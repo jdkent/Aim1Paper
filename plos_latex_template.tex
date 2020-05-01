@@ -289,7 +289,7 @@ Both approaches of beta series estimation seek to derive single event estimates 
 (or voxel's) activity at each individual event.
 An event is defined as "a stimulus or participant response recorded during a task." ~\cite{Gorgolewski2016}
 Where task is defined as "a set of structured activities performed by the participant." ~\cite{Gorgolewski2016}
-The single event estimates become difficult to estimate when trials are close together,
+The single event estimates become difficult to estimate when events are close together,
 in other words, less than the time it takes for the Blood Oxygen Level Dependent (BOLD) response to resolve \ref{fig:introhrf}.
 Such designs are called fast event related designs.
 The reason these single events are difficult to estimate in fast event related designs comes from
@@ -398,7 +398,7 @@ We will refer to LSS-N as LSS for the remainder of the manuscript.
   \label{fig:introlss}
 \end{figure}
 
-The target trial estimate for each model is taken to form a beta series.
+The target event estimate for each model is taken to form a beta series.
 Harkening back to the sluggish BOLD response, LSA suffers when the events are close together,
 since the GLM cannot reliably attribute which BOLD response should correspond to which event ~\ref{fig:introGLM}.
 LSS attempts to reduce the model confusion by only having one single event estimate per model,
@@ -562,12 +562,12 @@ contrast it with our definition of CNR.
 
 To generate realistic numbers for simulating timeseries at varying CNRs and AVNRs
 we used an unpublished dataset on task switching in older adults (N=40).
-We ran LSS/LSA to get both trial estimates of activation (i.e., betas)
+We ran LSS/LSA to get both event estimates of activation (i.e., betas)
 as well as residuals from the model.
 To calculate CNR, several steps were taken.
 First, we masked the betaseries using the Schaefer or Activation atlases (see \nameref{methods:atlas-corr-analysis}).
 Second, we took the absolute value of all masked beta estimates for a participant.
-Third, we took the median beta estimates over all trial volumes resulting
+Third, we took the median beta estimates over all event volumes resulting
 in a median beta estimate amplitude for all ROIs.
 Fourth, we took the standard deviation of the residuals for each ROI.
 Fifth, we divided the median amplitude beta estimates by the standard deviation of the residuals
@@ -669,7 +669,7 @@ False positive rate and power were evaluated using the same procedure as the oth
 \label{methods:task-switch}
 
 To validate the betaseries simulations we used an unpublished dataset
-of older adults (N=61, 31 female, age=71.75$\pm$4.77, education=17.07$\pm$2.66)
+of older adults ($N$=61, 31 female, age=71.75$\pm$4.77, education=17.07$\pm$2.66)
 performing a mixed task switching task.
 Numbers reported are mean$\pm$standard deviation.
 Prior to any experimentation, participants provided verbal and written consent
@@ -677,26 +677,26 @@ to participate in the research presented in this manuscript, which was approved
 by the University of Iowa's Institution Review Board.
 21 participants were excluded in the primary analysis for having a
 framewise displacement of over 0.5mm for a 100 volumes or more,
-resulting in a final N of 40.
+resulting in a final $N$ of 40.
 We chose 100 volumes to keep the number of regressors in LSA
 (which already includes as many regressors as events) a reasonable size
-for single trial beta estimation.
+for single event beta estimation.
 The task switch task was a mixed block/event related design containing
 5 blocks (2 single task blocks and 3 mixed task blocks).
 There was a 30 second rest between each block.
-There were 30 trials during each single trial block,
-and for the 3 mixed blocks there were 48 repeat trials and 40 switch trials total.
+There were 30 events during each single event block,
+and for the 3 mixed blocks there were 48 repeat events and 40 switch events total.
 The single tasks consisted of identifying a number between
-1 and 10 excluding 5 as high/low or odd/even, using their left and right index fingers
+1 and 10 (excluding 5) as high/low or odd/even, using their left and right index fingers
 on a fiber optic response pad.
 Participants were cued to which task they were performing by the color of the square
-the number was presented on.
+the number was presented on (blue or pink).
 Each stimulus was presented for 1.5 seconds, and participants were allowed
 to respond within 2.0 seconds of stimulus onset.
 The average IEI was 3.5 seconds following an exponential distribution.
 All stimuli were presented using E-Prime.
 Participants practiced an abridged version of this task in a mock scanner
-prior to the real scan and had 4 practice trials in the real scanner immediately
+prior to the real scan and had 4 practice events in the real scanner immediately
 prior to performing the task to ensure proper finger placement and data acquisition.
 
 Participants' average accuracy and reaction time were:
@@ -715,9 +715,9 @@ Each image was smoothed with a 6mm full-wide half-max kernel.
 We derived all condition versus baseline contrasts: single, repeat, switch, as well as
 additional contrasts for $switch - repeat$ and an F-test of all task conditions.
 We ignored correctness of the participant's response since this was not important to
-separate the impact of condition and error processing to validate BSC.
+separate condition and error processing to validate BSC.
 
-Second level analysis took a summary of the first level results presenting which
+Second level analysis were a summary of the first level results presenting which
 regions were robustly activated between participants.
 For each contrast, the alpha was set to 0.01 with a cluster threshold of 10 voxels using
 false discovery rate error control \ref{fig:stat_maps}.
@@ -973,8 +973,8 @@ corresponds to effectively presenting a stimulus during each sample.
 With such overlapping simulated BOLD responses detecting a difference between conditions
 is unlikely.
 From an IEI of 4 seconds and upwards, LSS has an advantage over LSA.
-Adding additional events above 30 appears to only help if the CNR is greater than 1.
-Increasing the CNR improves power more than increasing the CVNR, although increasing either
+Adding additional events above 30 appears to help only if the CNR is greater than 1.
+Increasing the CNR improves detection power more than increasing the CVNR, although increasing either
 provides a marked boost in detection power.
 For LSS, the 8 second IEI does not appear to boost detection power beyond a 6 second IEI,
 whereas LSA has a boost when AVNR and CNR are higher.
@@ -990,7 +990,7 @@ We simulated data using the taskswitching design and found comparable
 results to the simulations, with LSS outperforming LSA.
 We looked at task switching data from the most lenient
 contrast ($real - null$) to the most conserative contrast ($switch - repeat$)
-to assess how well LSS and LSA detect correlational differences between conditions.
+to assess how well LSS and LSA detect ROI-ROI correlation differences between conditions.
 For the contrasts $switch - single$, $repeat - single$, and $switch - repeat$ we also
 performed the same contrast in the null data to measure the specificity of each method.
 
@@ -1043,84 +1043,84 @@ the significant ROI-ROI pairs found with LSS are largely non-overlapping with LS
   \label{fig:significant-contrasts}
 \end{figure}
 
-\subsection*{Debate on Results (not actually in paper)}
-While the simulations reliably found LSS to be a better estimation method,
-in the real data the results are mixed and in the most relevant contrast for
-many event related designs $switch - repeat$,
-LSA had the advantage over LSS.
-The results become more muddied when the originally excluded data are included
-in the analysis, then LSS appears to be more sensitive, but less specific, and LSA
-becomes less sensitive.
+% \subsection*{Debate on Results (not actually in paper)}
+% While the simulations reliably found LSS to be a better estimation method,
+% in the real data the results are mixed and in the most relevant contrast for
+% many event related designs $switch - repeat$,
+% LSA had the advantage over LSS.
+% The results become more muddied when the originally excluded data are included
+% in the analysis, then LSS appears to be more sensitive, but less specific, and LSA
+% becomes less sensitive.
 
-\begin{itemize}
-  \item Good participants (N=40)
-  \begin{itemize} 
-    \item Schaefer Atlas
-    \begin{itemize}
-      \item Task versus Null: LSS $>$ LSA
-      \item Switch versus Single: LSS (1.49) $<$ LSA (1.62)
-      \item Repeat versus Single: LSS (0.73) $<$ LSA (1.66)
-      \item Switch versus Repeat: LSS (1.06) $<$ LSA (2.28)
-    \end{itemize}
-    \item Activation Atlas
-    \begin{itemize}
-      \item Task versus Null: LSS $>$ LSA
-      \item Switch versus Single: LSS (0.80) $>$ LSA (0.40)
-      \item Repeat versus Single: LSS (1.16) $<$ LSA (2.80)
-      \item Switch versus Repeat: LSS (0.00) $<$ LSA (0.50)
-    \end{itemize}
-  \end{itemize}
-  \item All Participants (N=61)
-  \begin{itemize} 
-    \item Schaefer Atlas
-    \begin{itemize}
-      \item Task versus Null: LSS $>$ LSA
-      \item Switch versus Single: LSS (1.40) $<$ LSA (1.87)
-      \item Repeat versus Single: LSS (0.81) $<$ LSA (1.42)
-      \item Switch versus Repeat: LSS (1.70) $>$ LSA (0.44)
-    \end{itemize}
-    \item Activation Atlas
-    \begin{itemize}
-      \item Task versus Null: LSS $>$ LSA
-      \item Switch versus Single: LSS (1.57) $>$ LSA (0.83)
-      \item Repeat versus Single: LSS (1.83) $<$ LSA (2.5)
-      \item Switch versus Repeat: LSS (1.50) $>$ LSA (0.00)
-    \end{itemize}
-  \end{itemize}
-\end{itemize}
+% \begin{itemize}
+%   \item Good participants (N=40)
+%   \begin{itemize} 
+%     \item Schaefer Atlas
+%     \begin{itemize}
+%       \item Task versus Null: LSS $>$ LSA
+%       \item Switch versus Single: LSS (1.49) $<$ LSA (1.62)
+%       \item Repeat versus Single: LSS (0.73) $<$ LSA (1.66)
+%       \item Switch versus Repeat: LSS (1.06) $<$ LSA (2.28)
+%     \end{itemize}
+%     \item Activation Atlas
+%     \begin{itemize}
+%       \item Task versus Null: LSS $>$ LSA
+%       \item Switch versus Single: LSS (0.80) $>$ LSA (0.40)
+%       \item Repeat versus Single: LSS (1.16) $<$ LSA (2.80)
+%       \item Switch versus Repeat: LSS (0.00) $<$ LSA (0.50)
+%     \end{itemize}
+%   \end{itemize}
+%   \item All Participants (N=61)
+%   \begin{itemize} 
+%     \item Schaefer Atlas
+%     \begin{itemize}
+%       \item Task versus Null: LSS $>$ LSA
+%       \item Switch versus Single: LSS (1.40) $<$ LSA (1.87)
+%       \item Repeat versus Single: LSS (0.81) $<$ LSA (1.42)
+%       \item Switch versus Repeat: LSS (1.70) $>$ LSA (0.44)
+%     \end{itemize}
+%     \item Activation Atlas
+%     \begin{itemize}
+%       \item Task versus Null: LSS $>$ LSA
+%       \item Switch versus Single: LSS (1.57) $>$ LSA (0.83)
+%       \item Repeat versus Single: LSS (1.83) $<$ LSA (2.5)
+%       \item Switch versus Repeat: LSS (1.50) $>$ LSA (0.00)
+%     \end{itemize}
+%   \end{itemize}
+% \end{itemize}
 
-Total LSS "Wins": 8\\
-Total LSA "Wins": 8\\
+% Total LSS "Wins": 8\\
+% Total LSA "Wins": 8\\
 
-\begin{itemize}
-  \item Good participants (N=40)
-  \begin{itemize} 
-    \item Activation Atlas
-    \begin{itemize}
-      \item Task versus Null: LSS (n=36; p<0.001) $==$ LSA (n=31; p=0.001)
-      \item Switch versus Single: LSS R:(n=11; p=0.581) N:(n=15; p=0.223) $==$ LSA R:(n=12; p=0.477) N:(n=14; p=0.359)
-      \item Repeat versus Single: LSS R:(n=19; p=0.047) N:(n=13; p=0.331)$=<$ LSA (n=24; p=0.005) N:(n=11; p=0.58)
-      \item Switch versus Repeat: LSS R:(n=7; p=0.958) N:(n=4; p=0.990) $=<$ LSA R:(n=16; p=0.102) N:(n=13; p=0.149)
-    \end{itemize}
-  \end{itemize}
-  \item All Participants (N=61)
-  \begin{itemize} 
-    \item Activation Atlas
-    \begin{itemize}
-      \item Task versus Null: LSS (n=24; p=0.001) $==$ LSA (n=23; p=0.003)
-      \item Switch versus Single: LSS R:(n=16; p=0.101) N:(n=10; p=0.605) $>=$ LSA R:(n=11; p=0.566) N:(n=13; p=0.270)
-      \item Repeat versus Single: LSS R:(n=19; p=0.033) N:(n=11; p=0.599) $==$ LSA R:(n=19; p=0.029) N:(n=13; p=0.347)
-      \item Switch versus Repeat: LSS R:(n=12; p=0.36) N:(n=5; p=0.982) $>=$ LSA R:(n=6; p=0.943) N:(n=17; p=0.025)
-    \end{itemize}
-  \end{itemize}
-\end{itemize}
+% \begin{itemize}
+%   \item Good participants (N=40)
+%   \begin{itemize} 
+%     \item Activation Atlas
+%     \begin{itemize}
+%       \item Task versus Null: LSS (n=36; p<0.001) $==$ LSA (n=31; p=0.001)
+%       \item Switch versus Single: LSS R:(n=11; p=0.581) N:(n=15; p=0.223) $==$ LSA R:(n=12; p=0.477) N:(n=14; p=0.359)
+%       \item Repeat versus Single: LSS R:(n=19; p=0.047) N:(n=13; p=0.331)$=<$ LSA (n=24; p=0.005) N:(n=11; p=0.58)
+%       \item Switch versus Repeat: LSS R:(n=7; p=0.958) N:(n=4; p=0.990) $=<$ LSA R:(n=16; p=0.102) N:(n=13; p=0.149)
+%     \end{itemize}
+%   \end{itemize}
+%   \item All Participants (N=61)
+%   \begin{itemize} 
+%     \item Activation Atlas
+%     \begin{itemize}
+%       \item Task versus Null: LSS (n=24; p=0.001) $==$ LSA (n=23; p=0.003)
+%       \item Switch versus Single: LSS R:(n=16; p=0.101) N:(n=10; p=0.605) $>=$ LSA R:(n=11; p=0.566) N:(n=13; p=0.270)
+%       \item Repeat versus Single: LSS R:(n=19; p=0.033) N:(n=11; p=0.599) $==$ LSA R:(n=19; p=0.029) N:(n=13; p=0.347)
+%       \item Switch versus Repeat: LSS R:(n=12; p=0.36) N:(n=5; p=0.982) $>=$ LSA R:(n=6; p=0.943) N:(n=17; p=0.025)
+%     \end{itemize}
+%   \end{itemize}
+% \end{itemize}
 
-Using paired ttests and permutations changed the conclusions such that there does appear to be
-a difference between the detection power of LSS and LSA.
-Both appear to detect significant differences between a task and a null condition as well as
-$repeat - single$, but not $switch - single$ or $switch - repeat$.
+% Using paired ttests and permutations changed the conclusions such that there does appear to be
+% a difference between the detection power of LSS and LSA.
+% Both appear to detect significant differences between a task and a null condition as well as
+% $repeat - single$, but not $switch - single$ or $switch - repeat$.
 
-While simulations indicate LSS would be a more powerful method, the real data do not suggest an advantage.
+% While simulations indicate LSS would be a more powerful method, the real data do not suggest an advantage.
 % \begin{table}[!ht]
 % \begin{adjustwidth}{-2.25in}{0in} % Comment out/remove adjustwidth environment if table fits in text column.
 % \centering
@@ -1173,24 +1173,53 @@ The main finding from the simulations is that LSS has greater detection power th
 supporting other findings from the literature comparing LSS and LSA using MVPA, RSA,
 and related measures ~\cite{Mumford2012,Mumford2014a,Abdulrahman2016,Turner2012a}.
 We found the best way to increase detection power is to increase IEI to 6 seconds and
-have at least 30 trials per condition.
+have at least 30 events per condition.
 
-differences between simulations and real data:::\\
+In relation to Abdulrahman \& Henson (2016)\cite{Abdulrahman2016}, increasing
+the IEI beyond 6 seconds does not appear to help their measure, "precision of sample correlation".
+Precision of sample correlation measures how accurate the estimated correlation is to the true
+simulated correlation.
+Another main conclusion from Abdulrahman \& Henson (2016)\cite{Abdulrahman2016} suggested to
+use LSS when event variability (AVNR) is greater than scan noise.
+None of our simulations had AVNR less than scan noise, but we did test
+when AVNR and scan noise were equal (e.g., AVNR=1, CNR=1), and we saw
+LSS still significantly outperformed LSA in terms of detection power.
+We also have a discrepency from Abdulrahman \& Henson (2016)\cite{Abdulrahman2016}
+about the coherency of CVNR and noise.
+Namely, when scan noise is more coherent across voxels than event variability (AVNR),
+their work states LSA should perform better than LSS.
+However, they only investigated perfect coherency or no coherency.
+In the present simulations, beta series "coherence" was varied between 0.0 and 0.9 Pearson's R,
+and the scan noise coherency remained around 0.67 Pearson's R.
+For the majority of our simulations, scan noise coherency was greater than beta series
+coherence, yet LSS maintained better detection power.
+It may be the case scan noise must be identical or near identical between voxels
+for LSA to perform better than LSS.
+
+Unlike previous simulation work, we included simulated
+motion noise, physiological noise, drfift, and autocorrelation of the signal.
+However, all were all given equal weighting, which is unlikely how noise in real data
+is represented.
+Future work should estimate the relative weightings of each component of noise
+so they can be incorporated appropriately (has this already been done?).
+
 As mentioned in \nameref{methods:bsc-simulations}, each simulation represents
 either a different participant or separate runs from the same participant.
 The contrasts in the simulations are therefore most analogous to the $real - null$
-contrast in \nameref{results:bsc-taskswitchXNull}.
+contrast in \nameref{fig:significant-contrasts}.
 Additionally, each simulation contains two conditions whose BOLD responses
 are independent of each other.
 There is likely temporal autocorrelation of BOLD responses across events,
-which is not represented in the simulations ~\cite{Abdulrahman2016}.
-
-The simulations contained physiological noise, task related motion, and drift.
-However, all were all given equal weighting, which is unlikely how noise in real data
-is represented.
+which is not represented in our simulations ~\cite{Abdulrahman2016}.
 
 We also did not simulate variations in HRF onset, which is likely to occur
 as all BOLD responses to a stimulus do not occur at the time the stimulus onset.
+Model mismatch through variations has been found detrimental to the beta series estimation, 
+but there is no reason to believe that LSA would be differentially impacted relative to LSS ~\cite{Turner2012a}.
+Future work could investigate HRF mismatch and including derivatives for each regressor to account for
+HRF mismatch.
+Including derivatives could make the LSA unsolvable since every event would have 3 regressors, meaning
+there must be more than 3 times the volumes than events collected during the BOLD run.
 
 While the simulations represented data without any preprocessing applied,
 the real data had motion outliers, non steady state volumes,
@@ -1204,15 +1233,6 @@ Our CNR and AVNR values did not go as high as other manuscripts ~\cite{Mumford20
 Welvaert (2013)\cite{Welvaert2013a} specifically calculated a range of CNRs using real data from a block design,
 and got higher values than reported in this manuscript (values ranging from 0.01 - 95.73).
 
-Abdulrahman \& Henson (2016)\cite{Abdulrahman2016} found when the noise between voxels has a higher correlation (i.e., coherence)
-than the BOLD responses between voxels.
-While we did not vary scan noise coherence relative to BOLD reponse coherence,
-the average noise correlation between voxels is a Pearson's r of 0.67.
-While the BOLD response correlations varied from a Pearson's r from (0.0-0.9).
-The majority of the correlations simulated have greater noise coherence relative to
-BOLD response coherence, yet the results suggest LSS has greater detection power regardless
-if the relationship.
-
 \subsection*{Task Switching Conclusions}
 \label{discussion:taskswitching-conclusions}
 
@@ -1223,14 +1243,17 @@ However, a surprising result is the lack of overlap between LSS and LSA results.
 The lack of overlap is suprising because both LSS and LSA are purported to
 measure the same underlying process of task related connectivity.
 An interesting relationship appears when we correlated the beta series from
-LSA to LSS and plot average framewise displacement \ref{fig:lss_lsa_correlation}.
+LSA to LSS and plot average framewise displacement for all participants ($N$=61) \ref{fig:lss_lsa_correlation}.
 As the average framewise displacement increases and temporal signal to noise (TSNR)
 decreases, the agreement between LSS and LSA decreases.
 In other words, as noise in the data increases, the more divergent LSS and LSA become.
-This suggests one reason for the disagreement is the noise still present in the included
+This suggests one reason for the disagreement is the noise present in the included
 data.
 There appears to be a cluster of particpants with an average framewise displacement of
 less than 0.2mm that have a high correlation between LSS and LSA.
+The simulation results would suggest when LSS and LSA disagree, the estimate for LSS should be
+trusted, but since we observed a significant number of condition modulated ROI-ROI pairs for both
+LSS and LSA, it is difficult to say which measure would be "correct".
 
 \begin{figure}[H]
   \centering
@@ -1261,7 +1284,7 @@ in the null data relative to the real data.
 For both LSS and LSA, the Schaefer atlas had statistically significantly higher
 CNR/CVNR in the null data relative to the real data, whereas the activation atlas
 did not show a statistically significant difference between null and real data.
-This suggests model misfit may be a driving factor for spurious results.
+This suggests model misfit may be a driving factor for spurious results in the Schaefer atlas.
 We protected against extreme beta estimates by detecting and removing outliers, but model misfit
 could still drive spurious results.
 A proper null model would have bold responses at the onset times, but the bold responses
@@ -1279,11 +1302,20 @@ would be the same amplitude at every event.
   \item extend Cole's work (compare residual correlations with LSA/LSS)
   \item investigate graph theoretical measures to validate between task conditions and task/null.
   \item simulate variable onset of BOLD responses
+  \item use ds00030 to validate results on publically available dataset already analyzed with BSC ~\cite{Di2019a}
 \end{itemize}
 
 
 
 \subsection{Limitations}
+
+\begin{itemize}
+  \item Mixing of noise parameters may not be representative of real data
+  \item The contrasts in the simulated data do not represent a true mixing of different event types
+  \item Did not have enough participants to measure a robust effect (other studies had fewer participants)
+  \item The preprocessing of the MRI data was minimal, (data could potentially be made less noisy)
+\end{itemize}
+
 \section*{Conclusion}
 
 % CO\textsubscript{2} Maecenas convallis mauris sit amet sem ultrices gravida. Etiam eget sapien nibh. Sed ac ipsum eget enim egestas ullamcorper nec euismod ligula. Curabitur fringilla pulvinar lectus consectetur pellentesque. Quisque augue sem, tincidunt sit amet feugiat eget, ullamcorper sed velit. 
