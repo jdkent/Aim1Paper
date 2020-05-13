@@ -238,20 +238,23 @@ Michelle Voss\textsuperscript{1},
 \end{flushleft}
 % Please keep the abstract below 300 words
 \section*{Abstract}
-Understanding how networks dynamically organizing during different conditions
-of a task is under validated.
-An increasing popular measure to estimate which brain regions correlate with
-each other during different task conditions is beta series correlations.
-In combination with an increasing number of fast event related designs to
-increase behavioral and statistical efficiency, the need to validate
-beta series correlations is growing.
+Cognitive tasks drive discovery in cognitive neuroscience by connecting behavior and representation
+of the behavior in the brain.
+Taking a network perspective is undeniably important to identify the representations.
+Beta series correlations are an increasingly popular measure to estimate which brain regions correlate with
+each other during different task conditions within an MRI scanner.
+The region to region correlations serve as a marker for the brain network representation
+for the task condition.
 Two common ways to generate beta series are Least Squares All (LSA) and
 Least Squares Separate (LSS).
-Our simulations show LSS outperforms LSA across a variety of inter event
+However, LSS and LSA have not been systematically compared with simulations and real data
+to identify which method is more sensitive to detect region to region correlation differences
+between task conditions.
+We compared LSA and LSS by simulating responses across a variety of
+experimental designs and testing LSS and LSA performance on a real dataset.
+Our simulations show LSS outperforms LSA across a variety of inter-event
 intervals and numbers of total events.
-However, real data presents a less straight forward interpretation
-where LSS may show more sensitivity, but less specificity relative to
-LSA.
+In contrast, real data does not show an advantage of one method over the other.
 This research shows the importance of validation using both simulations
 and real data and impacts how future studies should design their tasks
 to improve detectability of conditional organization of brain networks.
@@ -414,6 +417,25 @@ Four, a quantitative comparison/validation of LSA and LSS condition contrasts fo
 The present work fills these gaps and provides recommendations for further research
 using LSA and LSS.
 
+\begin{table}[H]
+  \begin{adjustwidth}{0in}{0in} % Comment out/remove adjustwidth environment if table fits in text column.
+  \centering
+  \caption{
+  {\bf Acronym Definitions}}
+  \begin{tabular}{|l|l|p{60mm}|}
+  \hline
+  Name & Acronym & Definition\\ \thickhline
+  Least Squares All & $LSA$ & beta estimation method where each event gets a regressor in the same model\\ \hline
+  Least Squares Separate & $LSS$ & beta estimation method where each event gets a separate model\\ \hline
+  Contrast Noise Ratio & $CNR$ & $A_S/\sigma_N$, amplitude of signal ($A_S$) divided by standard deviation of the noise ($\sigma_N$)\\ \hline
+  Activation Variation Noise Ratio & $AVNR$ & $\sigma_S/\sigma_N$, standard deviation of signal ($\sigma_S$) divided by standard deviation of the noise ($\sigma_N$)\\ \hline
+  \end{tabular}
+
+  Definitions of the main acronyms use in this paper.
+  $CNR$ and $AVNR$ definitions are found in Welvaert (2013)~\cite{Welvaert2013a}.
+  \label{table0}
+  \end{adjustwidth}
+  \end{table}
 
 \section*{Materials and methods}
 \label{methods}
@@ -984,6 +1006,8 @@ for the contrasts $task - null$ (LSS: 12.86\%; p < 0.001, LSA: 10.48\%; p = 0.00
 and $repeat - switch$ (LSS: 7.62\%; p = 0.047, LSA: 10.00\%; p = 0.005) \ref{fig:main-result}.
 Those two contrasts indicate the success of LSS and LSA to measure
 condition specific difference in ROI-ROI correlations.
+The schaefer atlas has qualitatively similar results (PLACEHOLDER).
+
 
 \begin{figure}[H]
   \includegraphics[width=\textwidth]{data-real_atlas-activation_participants-filtered_permutation_summary}
@@ -1152,22 +1176,20 @@ the significant ROI-ROI pairs found with LSS are largely non-overlapping with LS
 \label{discussion:simulation-conclusions}
 
 The main finding from the simulations is that LSS has greater detection power than LSA,
-supporting other findings from the literature comparing LSS and LSA using MVPA, RSA,
-and related measures ~\cite{Mumford2012,Mumford2014a,Abdulrahman2016,Turner2012a}.
+supporting other findings from the literature comparing LSS and LSA using related methods such as
+multivariate pattern analysis, representational similarity analysis, and precision of correlations~\cite{Mumford2012,Mumford2014a,Abdulrahman2016,Turner2012a}.
 We found the best way to increase detection power is to increase IEI to 6 seconds and
 have at least 30 events per condition.
 
 In relation to Abdulrahman \& Henson (2016)\cite{Abdulrahman2016}, increasing
-the IEI beyond 6 seconds does not appear to help their measure, "precision of sample correlation".
+the IEI beyond 6 seconds does not appear to help their measure, precision of sample correlation.
 Precision of sample correlation measures how accurate the estimated correlation is to the true
 simulated correlation.
 Another main conclusion from Abdulrahman \& Henson (2016)\cite{Abdulrahman2016} suggested to
 use LSS when event variability (AVNR) is greater than scan noise.
-None of our simulations had AVNR less than scan noise, but we did test
-when AVNR and scan noise were equal (e.g., AVNR=1, CNR=1), and we saw
-LSS still significantly outperformed LSA in terms of detection power.
-We also have a discrepency from Abdulrahman \& Henson (2016)\cite{Abdulrahman2016}
-about the coherency of CVNR and noise.
+All of our simulations had AVNR greater than or equal to scan noise and we saw
+LSS still significantly outperformed LSA for our measure of detection power.
+We observed a discrepency of AVNR and noise coherency between our results and those of Abdulrahman \& Henson (2016)\cite{Abdulrahman2016}.
 Namely, when scan noise is more coherent across voxels than event variability (AVNR),
 their work states LSA should perform better than LSS.
 However, they only investigated perfect coherency or no coherency.
@@ -1179,18 +1201,20 @@ It may be the case scan noise must be identical or near identical between voxels
 for LSA to perform better than LSS.
 
 Unlike previous simulation work, we included simulated
-motion noise, physiological noise, drfift, and autocorrelation of the signal.
-However, all were all given equal weighting, which is unlikely how noise in real data
-is represented.
+motion noise, physiological noise, drift, and signal autocorrelation.
+However, all noise sources were given equal weighting, which is unlikely to be true with real data.
 Future work should estimate the relative weightings of each component of noise
-so they can be incorporated appropriately (has this already been done?).
+so they can be incorporated appropriately.
 
-As mentioned in \nameref{methods:bsc-simulations}, each simulation represents
-either a different participant or separate runs from the same participant.
 The contrasts in the simulations are therefore most analogous to the $real - null$
 contrast in \nameref{fig:significant-contrasts}.
+As mentioned in \nameref{methods:bsc-simulations}, each simulation represents
+either a different participant or separate runs from the same participant.
+The $real$ and $null$ conditions come from the taskswitching task and resting state,
+respectively, representing two runs.
 Additionally, each simulation contains two conditions whose BOLD responses
-are independent of each other.
+are independent of each other, that is, the BOLD response for one event
+does not influence the BOLD response for a subsequent event.
 There is likely temporal autocorrelation of BOLD responses across events,
 which is not represented in our simulations ~\cite{Abdulrahman2016}.
 
@@ -1200,15 +1224,16 @@ Model mismatch through variations has been found detrimental to the beta series 
 but there is no reason to believe that LSA would be differentially impacted relative to LSS ~\cite{Turner2012a}.
 Future work could investigate HRF mismatch and including derivatives for each regressor to account for
 HRF mismatch.
-Including derivatives could make the LSA unsolvable since every event would have 3 regressors, meaning
-there must be more than 3 times the volumes than events collected during the BOLD run.
+Including derivatives could make LSA unsolvable since every event would have 3 regressors, meaning
+there must be more than 3 times the volumes than events collected during the BOLD run
+for the GLM to be solvable.
 
 While the simulations represented data without any preprocessing applied,
-the real data had motion outliers, non steady state volumes,
-CSF, and white matter signals accounted for in the model.
+the real data had several variables included in the model: motion outliers, non-steady state volumes,
+CSF, and white matter signals.
 The additional regressors in the model reduce the degrees of freedom
 and could impact the ability of the model to fit the data.
-This would likely impact LSA more than LSS, since LSA already has
+This would likely impact LSA more than LSS, since LSA already contains
 a large number of regressors representing each event.
 
 Our CNR and AVNR values did not go as high as other manuscripts ~\cite{Mumford2012,Abdulrahman2016,Welvaert2013a}.
