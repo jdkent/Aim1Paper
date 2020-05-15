@@ -746,7 +746,7 @@ false discovery rate error control \ref{fig:stat_maps}.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{contrast_summary}
+  \includegraphics[width=\textwidth,height=0.8\paperheight,keepaspectratio]{contrast_summary}
   \caption{
     Univariate statistical maps of second level results representing
     each condition relative to baseline, an F-test over all conditions,
@@ -1171,6 +1171,10 @@ the significant ROI-ROI pairs found with LSS are largely non-overlapping with LS
 \section*{Discussion}
 \label{discussion}
 
+We compared LSA and LSS through simulations and a real dataset.
+While the simulations suggested LSS is a more powerful measure,
+the results from the real dataset do not show a clear winner.
+
 % Nulla mi mi, venenatis sed ipsum varius, Table~\ref{table1} volutpat euismod diam. Proin rutrum vel massa non gravida. Quisque tempor sem et dignissim rutrum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi at justo vitae nulla elementum commodo eu id massa. In vitae diam ac augue semper tincidunt eu ut eros. Fusce fringilla erat porttitor lectus cursus, vel sagittis arcu lobortis. Aliquam in enim semper, aliquam massa id, cursus neque. Praesent faucibus semper libero~\cite{bib3}.
 \subsection*{Simulation Conclusions}
 \label{discussion:simulation-conclusions}
@@ -1178,40 +1182,54 @@ the significant ROI-ROI pairs found with LSS are largely non-overlapping with LS
 The main finding from the simulations is that LSS has greater detection power than LSA,
 supporting other findings from the literature comparing LSS and LSA using related methods such as
 multivariate pattern analysis, representational similarity analysis, and precision of correlations~\cite{Mumford2012,Mumford2014a,Abdulrahman2016,Turner2012a}.
-We found the best way to increase detection power is to increase IEI to 6 seconds and
-have at least 30 events per condition.
+While we cannot control AVNR and CNR in our experiments, we can control the experimental design.
+Thus we can offer several suggestions for designing your next experiment based on our simulations.
+1) Increasing the IEI up to six seconds improves detection power between conditions substantially,
+but increasing the IEI above six seconds only offers modest improvement in detection power.
+2) Increasing the number of events per condition to 30 offers the largest benefit in detection power.
+It is important to note these recommendations are based on optimized designs made with neurodesign,
+and may not generalize to completely random designs.
 
-In relation to Abdulrahman \& Henson (2016)\cite{Abdulrahman2016}, increasing
-the IEI beyond 6 seconds does not appear to help their measure, precision of sample correlation.
+Abdulrahman \& Henson's (2016) work has also measured various IEIs and varied AVNR and noise coherency between voxels
+revealing several key intersections with the present paper.
+Increasing the IEI beyond 6 seconds does not appear to help their measure, precision of sample correlation.
 Precision of sample correlation measures how accurate the estimated correlation is to the true
 simulated correlation.
-Another main conclusion from Abdulrahman \& Henson (2016)\cite{Abdulrahman2016} suggested to
-use LSS when event variability (AVNR) is greater than scan noise.
-All of our simulations had AVNR greater than or equal to scan noise and we saw
-LSS still significantly outperformed LSA for our measure of detection power.
-We observed a discrepency of AVNR and noise coherency between our results and those of Abdulrahman \& Henson (2016)\cite{Abdulrahman2016}.
-Namely, when scan noise is more coherent across voxels than event variability (AVNR),
+If the error of the observed correlation is evenly distributed around the
+true correlation, then precision of sample correlations would closely mirror our measure of observing
+a significant correlation difference between task conditions.
+However, if there was a systematic bias in the observed correlations, then precision of sample correlation
+would be low, but the correlation difference between task conditions could still be high.
+For example, if the true correlations were 0.2 for condition $A$ and 0.3 for condition $B$, but
+the observed correlations were 0.1 and 0.2, respectively, then precision of sample correlations would
+decrease, but the difference between conditions remains the same.
+
+Another conclusion from Abdulrahman \& Henson's (2016)\cite{Abdulrahman2016} paper suggested to
+use LSA when event variability is greater than scan noise (AVNR $>$ 1) for short IEIs (2-5 seconds).
+All of our simulations had AVNR greater than or equal to scan noise (AVNR $>=$ 1) and we saw
+LSS significantly outperformed LSA for our measure of detection power for IEIs greater than 2 seconds.
+Theoretically when AVNR is 1, LSS and LSA would perform similarly, but in our simulations,
+LSS still had more power to detect a difference between conditions.
+The difference in conclusions could be due to our different measures (i.e., precision of sample correlations versus condition difference)
+or from our simulation methods (i.e., guassian noise with random designs versus autocorrelated noise with optimized designs).
+
+Signal and noise coherency did not impact results as they did in the work of Abdulrahman \& Henson (2016)\cite{Abdulrahman2016}.
+Namely, when scan noise is more coherent across voxels than event variability,
 their work states LSA should perform better than LSS.
-However, they only investigated perfect coherency or no coherency.
-In the present simulations, beta series "coherence" was varied between 0.0 and 0.9 Pearson's R,
-and the scan noise coherency remained around 0.67 Pearson's R.
+However, their paper only investigated perfect coherency or no coherency.
+In the present simulations, beta series "coherence" was varied between 0.0 and 0.9 Pearson's R correlation,
+and the scan noise coherency remained around 0.67 Pearson's R correlation.
 For the majority of our simulations, scan noise coherency was greater than beta series
-coherence, yet LSS maintained better detection power.
+coherence, yet LSS was better at detecting differences between conditions.
 It may be the case scan noise must be identical or near identical between voxels
 for LSA to perform better than LSS.
 
-Unlike previous simulation work, we included simulated
-motion noise, physiological noise, drift, and signal autocorrelation.
-However, all noise sources were given equal weighting, which is unlikely to be true with real data.
-Future work should estimate the relative weightings of each component of noise
-so they can be incorporated appropriately.
-
-The contrasts in the simulations are therefore most analogous to the $real - null$
-contrast in \nameref{fig:significant-contrasts}.
 As mentioned in \nameref{methods:bsc-simulations}, each simulation represents
 either a different participant or separate runs from the same participant.
 The $real$ and $null$ conditions come from the taskswitching task and resting state,
 respectively, representing two runs.
+The contrasts in the simulations are therefore most analogous to the $real - null$
+contrast in \nameref{fig:significant-contrasts}.
 Additionally, each simulation contains two conditions whose BOLD responses
 are independent of each other, that is, the BOLD response for one event
 does not influence the BOLD response for a subsequent event.
@@ -1220,7 +1238,7 @@ which is not represented in our simulations ~\cite{Abdulrahman2016}.
 
 We also did not simulate variations in HRF onset, which is likely to occur
 as all BOLD responses to a stimulus do not occur at the time the stimulus onset.
-Model mismatch through variations has been found detrimental to the beta series estimation, 
+Model mismatch through variations has been found detrimental to beta estimation, 
 but there is no reason to believe that LSA would be differentially impacted relative to LSS ~\cite{Turner2012a}.
 Future work could investigate HRF mismatch and including derivatives for each regressor to account for
 HRF mismatch.
@@ -1298,6 +1316,12 @@ A proper null model would have bold responses at the onset times, but the bold r
 would be the same amplitude at every event.
 
 \subsection*{Future Directions}
+
+Unlike previous simulation work, we included simulated
+motion noise, physiological noise, drift, and signal autocorrelation.
+However, all noise sources were given equal weighting, which is unlikely to be true with real data.
+Future work should estimate the relative weightings of each component of noise
+so they can be incorporated appropriately.
 
 \begin{itemize}
   \item Run beta series correlations on larger dataset with enough power to reliably detect an effect
