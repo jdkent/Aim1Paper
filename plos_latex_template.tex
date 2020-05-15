@@ -242,14 +242,14 @@ Cognitive tasks drive discovery in cognitive neuroscience by connecting behavior
 of the behavior in the brain.
 Taking a network perspective is undeniably important to identify the representations.
 Beta series correlations are an increasingly popular measure to estimate which brain regions correlate with
-each other during different task conditions within an MRI scanner.
+each other during different event conditions within an MRI scanner.
 The region to region correlations serve as a marker for the brain network representation
-for the task condition.
+for the event condition.
 Two common ways to generate beta series are Least Squares All (LSA) and
 Least Squares Separate (LSS).
 However, LSS and LSA have not been systematically compared with simulations and real data
 to identify which method is more sensitive to detect region to region correlation differences
-between task conditions.
+between event conditions.
 We compared LSA and LSS by simulating responses across a variety of
 experimental designs and testing LSS and LSA performance on a real dataset.
 Our simulations show LSS outperforms LSA across a variety of inter-event
@@ -532,6 +532,9 @@ real and null data.
 Since we do not have a ground truth for which ROI-ROI pairs should be different between conditions,
 we used permutation tests on the correlation matrices to ascertain whether we observed a greater number
 of statistically significant ROI-ROI pairs than would be expected.
+We did not use false discovery rate correction on the observed p-values since we were not interested in
+which specific ROI-ROI pair correlations were likely to be true positives, but rather if the number of positives
+observed would be expected by chance alone or if LSS/LSA likely detected an overall difference between event conditions
 We shuffled each ROI-ROI pair within each participant such that any ROI-ROI correlation would remain
 in their own condition, or be swapped.
 We shuffled every participants' ROI-ROI pairs for 1000 iterations and ran a paired ttest on every ROI-ROI pair
@@ -735,7 +738,7 @@ all identified motion outliers as regressors in the first level model for each p
 in addition to event onsets convolved with a double gamma function ~\cite{Glover1999}.
 Each image was smoothed with a 6mm full-wide half-max kernel.
 We derived all condition versus baseline contrasts: single, repeat, switch, as well as
-additional contrasts for $switch - repeat$ and an F-test of all task conditions.
+additional contrasts for $switch - repeat$ and an F-test of all event conditions.
 We ignored correctness of the participant's response since this was not important to
 separate condition and error processing to validate BSC.
 
@@ -1197,9 +1200,9 @@ Precision of sample correlation measures how accurate the estimated correlation 
 simulated correlation.
 If the error of the observed correlation is evenly distributed around the
 true correlation, then precision of sample correlations would closely mirror our measure of observing
-a significant correlation difference between task conditions.
+a significant correlation difference between event conditions.
 However, if there was a systematic bias in the observed correlations, then precision of sample correlation
-would be low, but the correlation difference between task conditions could still be high.
+would be low, but the correlation difference between event conditions could still be high.
 For example, if the true correlations were 0.2 for condition $A$ and 0.3 for condition $B$, but
 the observed correlations were 0.1 and 0.2, respectively, then precision of sample correlations would
 decrease, but the difference between conditions remains the same.
@@ -1226,7 +1229,7 @@ for LSA to perform better than LSS.
 
 The current simulations have improved on previous work by incorporating a more
 realistic noise structure using fmrisim and used CNR/AVNR values calculated with real data.
-However, the simulations we performed differ from real data in several key areas: the contrasts between task conditions,
+However, the simulations we performed differ from real data in several key areas: the contrasts between event conditions,
 variation in BOLD response onset, and preprocessing of the signal.
 As mentioned in \nameref{methods:bsc-simulations}, each simulation represents
 either a different participant or separate runs from the same participant.
