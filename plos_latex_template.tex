@@ -1214,7 +1214,7 @@ The difference in conclusions could be due to our different measures (i.e., prec
 or from our simulation methods (i.e., guassian noise with random designs versus autocorrelated noise with optimized designs).
 
 Signal and noise coherency did not impact results as they did in the work of Abdulrahman \& Henson (2016)\cite{Abdulrahman2016}.
-Namely, when scan noise is more coherent across voxels than event variability,
+When scan noise is more coherent across voxels than event variability,
 their work states LSA should perform better than LSS.
 However, their paper only investigated perfect coherency or no coherency.
 In the present simulations, beta series "coherence" was varied between 0.0 and 0.9 Pearson's R correlation,
@@ -1224,6 +1224,10 @@ coherence, yet LSS was better at detecting differences between conditions.
 It may be the case scan noise must be identical or near identical between voxels
 for LSA to perform better than LSS.
 
+The current simulations have improved on previous work by incorporating a more
+realistic noise structure using fmrisim and used CNR/AVNR values calculated with real data.
+However, the simulations we performed differ from real data in several key areas: the contrasts between task conditions,
+variation in BOLD response onset, and preprocessing of the signal.
 As mentioned in \nameref{methods:bsc-simulations}, each simulation represents
 either a different participant or separate runs from the same participant.
 The $real$ and $null$ conditions come from the taskswitching task and resting state,
@@ -1236,12 +1240,12 @@ does not influence the BOLD response for a subsequent event.
 There is likely temporal autocorrelation of BOLD responses across events,
 which is not represented in our simulations ~\cite{Abdulrahman2016}.
 
-We also did not simulate variations in HRF onset, which is likely to occur
+We also did not simulate variations in BOLD response onset, which is likely to occur
 as all BOLD responses to a stimulus do not occur at the time the stimulus onset.
 Model mismatch through variations has been found detrimental to beta estimation, 
 but there is no reason to believe that LSA would be differentially impacted relative to LSS ~\cite{Turner2012a}.
-Future work could investigate HRF mismatch and including derivatives for each regressor to account for
-HRF mismatch.
+Future work could investigate variable BOLD responses and include derivatives for each regressor to account for
+the variable BOLD responses.
 Including derivatives could make LSA unsolvable since every event would have 3 regressors, meaning
 there must be more than 3 times the volumes than events collected during the BOLD run
 for the GLM to be solvable.
@@ -1253,10 +1257,8 @@ The additional regressors in the model reduce the degrees of freedom
 and could impact the ability of the model to fit the data.
 This would likely impact LSA more than LSS, since LSA already contains
 a large number of regressors representing each event.
-
-Our CNR and AVNR values did not go as high as other manuscripts ~\cite{Mumford2012,Abdulrahman2016,Welvaert2013a}.
-Welvaert (2013)\cite{Welvaert2013a} specifically calculated a range of CNRs using real data from a block design,
-and got higher values than reported in this manuscript (values ranging from 0.01 - 95.73).
+Future work could use fmrisim to simulate entire brains and preprocess them with fmriprep,
+which would make the processing pipeline between simulated and real data closer.
 
 \subsection*{Task Switching Conclusions}
 \label{discussion:taskswitching-conclusions}
