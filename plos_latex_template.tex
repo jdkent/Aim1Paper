@@ -1260,17 +1260,17 @@ a large number of regressors representing each event.
 Future work could use fmrisim to simulate entire brains and preprocess them with fmriprep,
 which would make the processing pipeline between simulated and real data closer.
 
-\subsection*{Task Switching Conclusions}
+\subsection*{Real Data Conclusions}
 \label{discussion:taskswitching-conclusions}
 
-The real data results suggest LSS and LSA perform similarly.
-Based on the number of significant ROI-ROI pairs alone, LSS and lsa
-cannot be distinguished.
-However, a surprising result is the lack of overlap between LSS and LSA results.
+The real data suggests LSS and LSA perform similarly.
+Based on the number of statistically significantly different ROI-ROI pair correlations alone,
+LSS and LSA cannot be distinguished.
+A surprising result is the lack of overlap between LSS and LSA significant ROI-ROI pair correlation differences.
 The lack of overlap is suprising because both LSS and LSA are purported to
 measure the same underlying process of task related connectivity.
-An interesting relationship appears when we correlated the beta series from
-LSA to LSS and plot average framewise displacement for all participants ($N$=61) \ref{fig:lss_lsa_correlation}.
+We correlated the beta series from LSA to LSS and plotted that relationship with
+average framewise displacement and temporal signal to noise (TSNR) for all participants ($N$=61) to investigate this surprising result. \ref{fig:lss_lsa_correlation}.
 As the average framewise displacement increases and temporal signal to noise (TSNR)
 decreases, the agreement between LSS and LSA decreases.
 In other words, as noise in the data increases, the more divergent LSS and LSA become.
@@ -1279,8 +1279,8 @@ data.
 There appears to be a cluster of particpants with an average framewise displacement of
 less than 0.2mm that have a high correlation between LSS and LSA.
 The simulation results would suggest when LSS and LSA disagree, the estimate for LSS should be
-trusted, but since we observed a significant number of condition modulated ROI-ROI pairs for both
-LSS and LSA, it is difficult to say which measure would be "correct".
+trusted, but since we observed a significant number of condition modulated ROI-ROI pair correlations for both
+LSS and LSA, it is difficult to say whether LSA or LSS would be "correct".
 
 \begin{figure}[H]
   \centering
@@ -1299,6 +1299,8 @@ LSS and LSA, it is difficult to say which measure would be "correct".
   \label{fig:lss_lsa_correlation}
 \end{figure}
 
+Another interesting aspect of our analysis of the real data was the inclusion of
+null (resting state) data where the participants simply stared at a fixation cross.
 It could be argued the resting state data does not provide an adequate null model
 to compare to the real task data because there is presumably no BOLD response at any
 of the onset times.
@@ -1310,12 +1312,35 @@ If the null data had much larger deviations in beta estimates, CNR and AVNR woul
 in the null data relative to the real data.
 For both LSS and LSA, the Schaefer atlas had statistically significantly higher
 CNR/CVNR in the null data relative to the real data, whereas the activation atlas
-did not show a statistically significant difference between null and real data.
-This suggests model misfit may be a driving factor for spurious results in the Schaefer atlas.
+did not show a statistically significant difference between null and real data \ref{table2}.
+
+\begin{table}[H]
+  \begin{adjustwidth}{0in}{0in} % Comment out/remove adjustwidth environment if table fits in text column.
+  \centering
+  \caption{
+  {\bf Differences in CNR/AVNR between real and null data}}
+  \begin{tabular}{|l+l+l|l|l|l|}
+  \hline
+  Atlas & Method & CNR (t-value) & CNR (p-value) & AVNR (t-value) & AVNR (p-value)\\ \thickhline
+  $Schaefer$ & $LSS$ & 3.163 & \textbf{0.003} & 3.659 & \textbf{0.001}\\ \hline
+  $Activation$ & $LSS$ & 0.105 & 0.917 & 1.528 & 0.134\\ \hline
+  $Schaefer$ & $LSA$ & 2.740 & \textbf{0.009} & 2.893 & \textbf{0.006}\\ \hline
+  $Activation$ & $LSA$ & 0.306 & 0.761 & 0.927 & 0.360\\ \hline
+  \end{tabular}
+  A t-test comparing average CNR/AVNR across all ROIs between real data and null data.
+  A statistically significant p-value ($p < 0.05$) suggests the CNR/AVNR value in the real data
+  is different from the null data.
+  Only CNR/AVNR from the Schaefer atlas shows statistically significant results.
+  \label{table2}
+  \end{adjustwidth}
+  \end{table}
+
+The table suggests model misfit may be a driving factor for spurious results in the Schaefer atlas.
 We protected against extreme beta estimates by detecting and removing outliers, but model misfit
 could still drive spurious results.
 A proper null model would have bold responses at the onset times, but the bold responses
-would be the same amplitude at every event.
+would be the same amplitude at every event, such that the only deviance in the simulated
+BOLD responses would come from the underlying resting state fluctuations.
 
 \subsection*{Future Directions}
 
