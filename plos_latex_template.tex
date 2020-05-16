@@ -986,7 +986,7 @@ provides a marked boost in detection power.
 For LSS, the 8 second IEI does not appear to boost detection power beyond a 6 second IEI,
 whereas LSA has a boost when AVNR and CNR are higher.
 It's worth noting that even for 50 participants; not one power analysis showed
-a power of 80\%, suggesting that larger sample sizes are required to detect a Pearson's r
+a power of 80\%, suggesting that larger sample sizes are required to detect a Pearson's R
 difference of 0.1.
 
 
@@ -1264,10 +1264,39 @@ The table suggests model misfit may be a driving factor for spurious results in 
 We protected against extreme beta estimates by detecting and removing outliers, but model misfit
 could still drive spurious results.
 A proper null model would have bold responses at the onset times, but the bold responses
-would be the same amplitude at every event, such that the only deviance in the simulated
+would be the same amplitude at every event such that the only deviance in the simulated
 BOLD responses would come from the underlying resting state fluctuations.
 
 \subsection*{Future Directions}
+
+There are several immediate next steps that could be taken to provide a more concrete answer
+on when one should use LSA or LSS when looking at ROI-ROI pair correlation differences between event
+conditions.
+
+With the publically available NiBetaSeries package, researchers could replicate the
+results on their own data using the same methods in this paper.
+Furthermore, there are several analytical choices that could be varied using NiBetaSeries such as:
+using a t-statistic instead of a raw beta estimate, including derivatives of the hemodynamic response function,
+testing different hemodynamic response functions, and performing a spatial-temporal analysis using finite impulse responses.
+The benefit of using a t-statistic is the added stability of the estimates.
+The t-tstatistic will scale outlier beta estimates with large uncertainty giving more stability
+towards the beta series estimates.
+No other tool has the option to calculate the t-statistic instead of the raw beta estimate to the knowlege
+of the authors.
+Another straight-forward addition would be adding temporal and/or dispersion derivatives to each beta
+estimate to account for potential BOLD response delays ~\cite{Calhoun2004,Gottlich2015}.
+This strategy may work well for populations with variable BOLD responses or when the onset of the BOLD
+response is not precisely known.
+Related to including derivatives, researchers could test whether the Glover or SPM hemodynamic response function
+parameters impact detection of condition specific correlation differences ~\cite{Friston1998,Glover1999}.
+SPM or Glover may be a better model to fit certain brain regions, which could change the interpretation
+of the results.
+Finally, a more complex but potentially fruitful option is to use the finite impulse response model.
+Finite impulse responses allow the researcher to observe both the spatial and temporal pattern of
+condition specific correlation without imposing an expected shape of the hemodynamic response ~\cite{Turner2012a}.
+For example, the researcher could be able to determine the relationship between two event conditions
+two, four, six, and eight seconds post stimulus, and identify how that relationship changes across
+that time frame.
 
 Unlike previous simulation work, we included simulated
 motion noise, physiological noise, drift, and signal autocorrelation.
