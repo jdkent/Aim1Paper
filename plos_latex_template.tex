@@ -261,13 +261,6 @@ This research shows the importance of validation using both simulations
 and real data and impacts how future studies should design their tasks
 to improve detectability of conditional organization of brain networks.
 
-
-% Please keep the Author Summary between 150 and 200 words
-% Use first person. PLOS ONE authors please skip this step. 
-% Author Summary not valid for PLOS ONE submissions.   
-% \section*{Author summary}
-% Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eget porta erat. Morbi consectetur est vel gravida pretium. Suspendisse ut dui eu ante cursus gravida non sed sem. Nullam sapien tellus, commodo id velit id, eleifend volutpat quam. Phasellus mauris velit, dapibus finibus elementum vel, pulvinar non tellus. Nunc pellentesque pretium diam, quis maximus dolor faucibus id. Nunc convallis sodales ante, ut ullamcorper est egestas vitae. Nam sit amet enim ultrices, ultrices elit pulvinar, volutpat risus.
-
 \linenumbers
 
 % Use "Eq" instead of "Equation" for equation citations.
@@ -418,6 +411,7 @@ ratios were chosen without justification in previous work.
 Four, a quantitative comparison/validation of LSA and LSS condition contrasts for BSC has not been done.
 The present work fills these gaps and provides recommendations for further research
 using LSA and LSS.
+Important terms used used throughout the paper are presented \ref{table0}.
 
 \begin{table}[H]
   \begin{adjustwidth}{0in}{0in} % Comment out/remove adjustwidth environment if table fits in text column.
@@ -452,7 +446,7 @@ participants.
 Resting state data collected from the same participants was used as a null
 control for beta series correlations.
 Since there is no expectation of betaseries correlations to change
-during resting state, we can get a measure of spurious results found
+during resting state, we can get a measure of expected spurious results found
 in beta series correlations.
 
 \subsection*{BetaSeries Correlations}
@@ -1098,9 +1092,12 @@ the significant ROI-ROI pairs found with LSS are largely non-overlapping with LS
 \section*{Discussion}
 \label{discussion}
 
-We compared LSA and LSS through simulations and a real dataset.
+We provided the first in depth comparison between LSS and LSA to detect condition differences.
+We compared LSA and LSS through realistic simulations and a real dataset.
 While the simulations suggested LSS is a more powerful measure,
 the results from the real dataset do not show a clear winner.
+We detail the conclusions from the simulations and the real data, and provide
+suggestions for future avenues of research.
 
 % Nulla mi mi, venenatis sed ipsum varius, Table~\ref{table1} volutpat euismod diam. Proin rutrum vel massa non gravida. Quisque tempor sem et dignissim rutrum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi at justo vitae nulla elementum commodo eu id massa. In vitae diam ac augue semper tincidunt eu ut eros. Fusce fringilla erat porttitor lectus cursus, vel sagittis arcu lobortis. Aliquam in enim semper, aliquam massa id, cursus neque. Praesent faucibus semper libero~\cite{bib3}.
 \subsection*{Simulation Conclusions}
@@ -1160,7 +1157,7 @@ either a different participant or separate runs from the same participant.
 The $real$ and $null$ conditions come from the taskswitching task and resting state,
 respectively, representing two runs.
 The contrasts in the simulations are therefore most analogous to the $real - null$
-contrast in \nameref{fig:significant-contrasts}.
+contrast in \ref{fig:significant-contrasts}.
 Additionally, each simulation contains two conditions whose BOLD responses
 are independent of each other, that is, the BOLD response for one event
 does not influence the BOLD response for a subsequent event.
@@ -1192,7 +1189,14 @@ which would make the processing pipeline between simulated and real data closer.
 
 The real data suggests LSS and LSA perform similarly.
 Based on the number of statistically significantly different ROI-ROI pair correlations alone,
-LSS and LSA cannot be distinguished.
+LSS and LSA cannot be easily distinguished.
+Overall, we have evidence LSA and LSS are able to detect differences between
+blocks of events ($task - null$ and $repeat - single$), but not within blocks of events ($switch - repeat$).
+The latter contrast would be a common contrast seen in fast event-related designs suggesting
+great care should be taken to determine if you have enough power to detect differences
+between conditions.
+
+Contrary to the simulations, there is some evidence of LSS 
 A surprising result is the lack of overlap between LSS and LSA significant ROI-ROI pair correlation differences.
 The lack of overlap is suprising because both LSS and LSA are purported to
 measure the same underlying process of task related connectivity.
@@ -1279,26 +1283,29 @@ With the publically available NiBetaSeries package, researchers could replicate 
 results on their own data using the same methods in this paper.
 Furthermore, there are several analytical choices that could be varied using NiBetaSeries such as:
 using a t-statistic instead of a raw beta estimate, including derivatives of the hemodynamic response function,
-testing different hemodynamic response functions, and performing a spatial-temporal analysis using finite impulse responses.
+and performing a spatial-temporal analysis using finite impulse responses.
 The benefit of using a t-statistic is the added stability of the estimates.
 The t-tstatistic will scale outlier beta estimates with large uncertainty giving more stability
 towards the beta series estimates.
+Since LSA is more likely to produce high variance beta estimates, using a t-statistic would likely impact
+how well LSA performs.
 No other tool has the option to calculate the t-statistic instead of the raw beta estimate to the knowlege
 of the authors.
 Another straight-forward addition would be adding temporal and/or dispersion derivatives to each beta
 estimate to account for potential BOLD response delays ~\cite{Calhoun2004,Gottlich2015}.
 This strategy may work well for populations with variable BOLD responses or when the onset of the BOLD
 response is not precisely known.
-Related to including derivatives, researchers could test whether the Glover or SPM hemodynamic response function
-parameters impact detection of condition specific correlation differences ~\cite{Friston1998,Glover1999}.
-SPM or Glover may be a better model to fit certain brain regions, which could change the interpretation
-of the results.
+Including derivates would also likely impact LSA more than LSS since there would be either twice or
+three times the number of regressors included in the LSA model, which in a fast event-related design
+would heavily impact the degrees of freedom in the model.
 Finally, a more complex but potentially fruitful option is to use the finite impulse response model.
 Finite impulse responses allow the researcher to observe both the spatial and temporal pattern of
 condition specific correlation without imposing an expected shape of the hemodynamic response ~\cite{Turner2012a}.
 For example, the researcher could be able to determine the relationship between two event conditions
 two, four, six, and eight seconds post stimulus, and identify how that relationship changes across
 that time frame.
+The finite impulse response model can only be estimated using LSS, giving LSS the advantage if researchers
+want to perform this type of analysis.
 
 Network measures of brain organization are becoming widely adopted ~\cite{Rubinov2010}.
 Network measures offer a perspective on the total organization of ROI-ROI pairs, instead of
@@ -1307,7 +1314,8 @@ Previous work has found greater global efficiency, smaller mean clustering coeff
 task relative to rest ~\cite{Di2013}.
 However, this finding has not been replicated using beta series correlations and has just begun
 to be investigated between tasks and event conditions within a task ~\cite{Di2019a}.
-
+The largely non-overlapping results from LSS and LSA suggest that LSS and LSA may differ
+in their network measures as well.
 % \begin{itemize}
 %   \item Run beta series correlations on larger dataset with enough power to reliably detect an effect
 %   \item Add ability to estimate CNR/AVNR in NiBetaSeries
@@ -1320,9 +1328,6 @@ to be investigated between tasks and event conditions within a task ~\cite{Di201
 %   \item simulate variable onset of BOLD responses
 %   \item use ds00030 to validate results on publically available dataset already analyzed with BSC ~\cite{Di2019a}
 % \end{itemize}
-
-
-
 % \subsection{Limitations}
 
 % \begin{itemize}
@@ -1333,6 +1338,13 @@ to be investigated between tasks and event conditions within a task ~\cite{Di201
 % \end{itemize}
 
 \section*{Conclusion}
+In conclusion, while our simulations suggested LSS has more power than LSA to
+detect differences between conditions, the real data does not support that claim.
+LSS may be worse at detecting differences between conditions when they are interspersed
+with each other and not separated by blocks.
+The null data also suggest inflated positives when the data are between blocks,
+suggesting the differences between blocks could be driven by something other than
+task evoked BOLD response variability.
 
 % CO\textsubscript{2} Maecenas convallis mauris sit amet sem ultrices gravida. Etiam eget sapien nibh. Sed ac ipsum eget enim egestas ullamcorper nec euismod ligula. Curabitur fringilla pulvinar lectus consectetur pellentesque. Quisque augue sem, tincidunt sit amet feugiat eget, ullamcorper sed velit. 
 
@@ -1370,6 +1382,8 @@ This work could not have been completed without the support of several persons/r
 First, the simulation analyses were supported in part through computational resources provided by The University of Iowa, Iowa City, Iowa.
 Second, the design and support of the study providing the real data was given by Hyku Lee, funded by grant INSERT GRANT NUMBER.
 Third, Chris Oeler and Adriana-Rivera Dompencial collected the real data used in the data analysis.
+
+\section*{Author Contributions}
 JK and MV conceptualized this work, CB and MV funded the study collecting the real data,
 JK performed the analyses, and JK wrote the manuscript.
 
