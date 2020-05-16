@@ -193,6 +193,7 @@
 % Insert author names, affiliations and corresponding author email (do not include titles, positions, or degrees).
 \\
 James Kent\textsuperscript{1*},
+Chandramallika Basak\textsuperscript{2}
 Michelle Voss\textsuperscript{1},
 %Name3 Surname\textsuperscript{2,3\textcurrency},
 %Name4 Surname\textsuperscript{2},
@@ -203,6 +204,7 @@ Michelle Voss\textsuperscript{1},
 \\
 \bigskip
 \textbf{1} Psychology Department, University of Iowa, Iowa City, Iowa, United States
+\textbf{2} School of Behavioral and Brain Science, University of Texas at Dallas, Dallas, Texas, United States
 %\\
 %\textbf{2} Affiliation Dept/Program/Center, Institution Name, City, State, Country
 %\\
@@ -1298,35 +1300,37 @@ For example, the researcher could be able to determine the relationship between 
 two, four, six, and eight seconds post stimulus, and identify how that relationship changes across
 that time frame.
 
-Unlike previous simulation work, we included simulated
-motion noise, physiological noise, drift, and signal autocorrelation.
-However, all noise sources were given equal weighting, which is unlikely to be true with real data.
-Future work should estimate the relative weightings of each component of noise
-so they can be incorporated appropriately.
+Network measures of brain organization are becoming widely adopted ~\cite{Rubinov2010}.
+Network measures offer a perspective on the total organization of ROI-ROI pairs, instead of
+interrogating individual ROI-ROI pairs as we did in the present work.
+Previous work has found greater global efficiency, smaller mean clustering coefficients, and lower modularity in
+task relative to rest ~\cite{Di2013}.
+However, this finding has not been replicated using beta series correlations and has just begun
+to be investigated between tasks and event conditions within a task ~\cite{Di2019a}.
 
-\begin{itemize}
-  \item Run beta series correlations on larger dataset with enough power to reliably detect an effect
-  \item Add ability to estimate CNR/AVNR in NiBetaSeries
-  \item use t-statistic as opposed to raw beta estimates
-  \item temporal/spatial analysis with Finite Impulse Responses \cite{Turner2012a}
-  \item Add ability to simulate possible condition relationships in NiBetaSeries
-  \item need to add "fake" mean hemodynamic response to normalize the data
-  \item extend Cole's work (compare residual correlations with LSA/LSS)
-  \item investigate graph theoretical measures to validate between task conditions and task/null.
-  \item simulate variable onset of BOLD responses
-  \item use ds00030 to validate results on publically available dataset already analyzed with BSC ~\cite{Di2019a}
-\end{itemize}
+% \begin{itemize}
+%   \item Run beta series correlations on larger dataset with enough power to reliably detect an effect
+%   \item Add ability to estimate CNR/AVNR in NiBetaSeries
+%   \item use t-statistic as opposed to raw beta estimates
+%   \item temporal/spatial analysis with Finite Impulse Responses \cite{Turner2012a}
+%   \item Add ability to simulate possible condition relationships in NiBetaSeries
+%   \item need to add "fake" mean hemodynamic response to normalize the data
+%   \item extend Cole's work (compare residual correlations with LSA/LSS)
+%   \item investigate graph theoretical measures to validate between task conditions and task/null.
+%   \item simulate variable onset of BOLD responses
+%   \item use ds00030 to validate results on publically available dataset already analyzed with BSC ~\cite{Di2019a}
+% \end{itemize}
 
 
 
-\subsection{Limitations}
+% \subsection{Limitations}
 
-\begin{itemize}
-  \item Mixing of noise parameters may not be representative of real data
-  \item The contrasts in the simulated data do not represent a true mixing of different event types
-  \item Did not have enough participants to measure a robust effect (other studies had fewer participants)
-  \item The preprocessing of the MRI data was minimal, (data could potentially be made less noisy)
-\end{itemize}
+% \begin{itemize}
+%   \item Mixing of noise parameters may not be representative of real data
+%   \item The contrasts in the simulated data do not represent a true mixing of different event types
+%   \item Did not have enough participants to measure a robust effect (other studies had fewer participants)
+%   \item The preprocessing of the MRI data was minimal, (data could potentially be made less noisy)
+% \end{itemize}
 
 \section*{Conclusion}
 
@@ -1362,11 +1366,13 @@ so they can be incorporated appropriately.
 % {\bf Lorem ipsum.} Maecenas convallis mauris sit amet sem ultrices gravida. Etiam eget sapien nibh. Sed ac ipsum eget enim egestas ullamcorper nec euismod ligula. Curabitur fringilla pulvinar lectus consectetur pellentesque.
 
 \section*{Acknowledgments}
-%Cras egestas velit mauris, eu mollis turpis pellentesque sit amet. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nam id pretium nisi. Sed ac quam id nisi malesuada congue. Sed interdum aliquet augue, at pellentesque quam rhoncus vitae.
-\begin{itemize}
-  \item "This research was supported in part through computational resources provided by The University of Iowa, Iowa City, Iowa."
-  \item Data/people from the BETTER study 
-\end{itemize}
+This work could not have been completed without the support of several persons/resources.
+First, the simulation analyses were supported in part through computational resources provided by The University of Iowa, Iowa City, Iowa.
+Second, the design and support of the study providing the real data was given by Hyku Lee, funded by grant INSERT GRANT NUMBER.
+Third, Chris Oeler and Adriana-Rivera Dompencial collected the real data used in the data analysis.
+JK and MV conceptualized this work, CB and MV funded the study collecting the real data,
+JK performed the analyses, and JK wrote the manuscript.
+
 \nolinenumbers
 
 \bibliography{plos}
