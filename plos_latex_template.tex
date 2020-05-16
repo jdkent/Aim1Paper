@@ -267,17 +267,15 @@ to improve detectability of conditional organization of brain networks.
 \section*{Introduction}
 \label{intro}
 
-The field of human imaging neuroscience has moved towards interrogating networks of brain regions
-over individual brain regions.
-Broadly defined, a brain network is a collection of widespread brain regions who share information ~\cite{Uddin2019}.
-Brain networks have primarily been investigated while participants are at rest, there
+The field of human neuroimaging has moved towards interrogating networks of brain regions.
+Broadly defined, a brain network is a collection of brain regions who share information ~\cite{Uddin2019}.
+Brain networks have primarily been investigated while at rest, but there
 is rising popularity to observe brain networks while participants perform tasks ~\cite{Cole2014a}.
-There is also rising popularity to measure dynamic brain networks where brain regions change
-what network they participate in over time ~\cite{Sakoglu2008,Hindriks2016}.
+There is also rising popularity to measure dynamic features of brain networks over time ~\cite{Sakoglu2008,Hindriks2016}.
 However, There has not been significant validation and investigation of brain networks
 when participants engage in tasks with interleaved conditions that could induce
 different brain networks dynamically ~\cite{Di2019a}.
-In other words, measuring brain networks have not been validated within fast event related designs ~\cite{Buckner1998}.
+In other words measuring brain networks have not been validated within fast event-related designs ~\cite{Buckner1998}.
 We seek to validate and compare two methods that can measure brain responses to events that occur
 close in time.
 
@@ -288,10 +286,8 @@ Both approaches of beta series estimation seek to derive single event estimates 
 An event is defined as "a stimulus or participant response recorded during a task." ~\cite{Gorgolewski2016}
 Where task is defined as "a set of structured activities performed by the participant." ~\cite{Gorgolewski2016}
 The single event estimates become difficult to estimate when events are close together,
-in other words, less than the time it takes for the Blood Oxygen Level Dependent (BOLD) response to resolve \ref{fig:introhrf}.
-Such designs are called fast event related designs.
-The reason these single events are difficult to estimate in fast event related designs comes from
-the sluggish BOLD response \ref{fig:introhrf}.
+in other words, less than the time it takes for the Blood Oxygen Level Dependent (BOLD) response to return to baseline.
+Such designs are called fast event related designs which are commonly used in cognitive neuroscience \ref{fig:introhrf}.
 
 \begin{figure}[H]
   \centering
@@ -350,7 +346,7 @@ and for the other half, another two regions are active.
 The traditional GLM will not be able differentiate the different pairs of regions.
 LSS and LSA, on the other hand, propose to be able to separate the different pairs of regions.
 LSA takes a variant of the traditional GLM whereby instead of providing a beta
-estimate for a group of events, each event gets it's own beta estimate in a single GLM ~\ref{fig:introlsa}.
+estimate for a group of events, each event gets its own beta estimate in a single GLM ~\ref{fig:introlsa}.
 
 \begin{figure}[H]
   \centering
@@ -372,7 +368,7 @@ estimate for a group of events, each event gets it's own beta estimate in a sing
 LSS differs from LSA by fitting a separate GLM for each event, where in each model a target
 event is fit and the rest of the events are grouped together and given separate beta estimates ~\ref{fig:introlss}.
 Placing all other events into a single regressor is how LSS was introduced, but as shown in \ref{fig:introlss},
-each event type has it's own regressor, which is referred to as LSS-N in other papers.
+each event type has its own regressor, which is referred to as LSS-N in other papers.
 We will refer to LSS-N as LSS for the remainder of the manuscript.
 
 \begin{figure}[H]
@@ -1165,13 +1161,13 @@ There is likely temporal autocorrelation of BOLD responses across events,
 which is not represented in our simulations ~\cite{Abdulrahman2016}.
 
 We also did not simulate variations in BOLD response onset, which is likely to occur
-as all BOLD responses to a stimulus do not occur at the time the stimulus onset.
+as all BOLD responses to a stimulus do not occur at the time the stimulus onset ~\cite{DEsposito2003}.
 Model mismatch through variations has been found detrimental to beta estimation, 
 but there is no reason to believe that LSA would be differentially impacted relative to LSS ~\cite{Turner2012a}.
 Future work could investigate variable BOLD responses and include derivatives for each regressor to account for
 the variable BOLD responses.
-Including derivatives could make LSA unsolvable since every event would have 3 regressors, meaning
-there must be more than 3 times the volumes than events collected during the BOLD run
+Including derivatives could make LSA unsolvable since every event would have at least two regressors, meaning
+there must be more than twice the volumes than events collected during the BOLD run
 for the GLM to be solvable.
 
 While the simulations represented data without any preprocessing applied,
@@ -1196,7 +1192,15 @@ The latter contrast would be a common contrast seen in fast event-related design
 great care should be taken to determine if you have enough power to detect differences
 between conditions.
 
-Contrary to the simulations, there is some evidence of LSS 
+Contrary to the simulations where LSS was found to be more powerful,
+there is some evidence of LSS having fewer statistically significant ROI-ROI pairs than expected through chance alone
+for the contrast $switch - repeat$.
+This result either suggests there are not many ROI-ROI pairs that do change their correlation
+between the two conditions, or that LSS has poor sensitivity to detect those differences.
+Since there is not a strong theoretical backing to say the pattern of results
+in LSS is closer to the ground truth than LSA, we cannot say which
+explanation above is more likely.
+
 A surprising result is the lack of overlap between LSS and LSA significant ROI-ROI pair correlation differences.
 The lack of overlap is suprising because both LSS and LSA are purported to
 measure the same underlying process of task related connectivity.
@@ -1338,13 +1342,16 @@ in their network measures as well.
 % \end{itemize}
 
 \section*{Conclusion}
+
 In conclusion, while our simulations suggested LSS has more power than LSA to
-detect differences between conditions, the real data does not support that claim.
+detect differences between conditions, the real data suggests LSA and LSS perform similarly.
+LSA may be better suited 
 LSS may be worse at detecting differences between conditions when they are interspersed
 with each other and not separated by blocks.
 The null data also suggest inflated positives when the data are between blocks,
-suggesting the differences between blocks could be driven by something other than
+suggesting the differences between blocks are likely partially driven by something other than
 task evoked BOLD response variability.
+
 
 % CO\textsubscript{2} Maecenas convallis mauris sit amet sem ultrices gravida. Etiam eget sapien nibh. Sed ac ipsum eget enim egestas ullamcorper nec euismod ligula. Curabitur fringilla pulvinar lectus consectetur pellentesque. Quisque augue sem, tincidunt sit amet feugiat eget, ullamcorper sed velit. 
 
