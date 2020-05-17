@@ -343,8 +343,8 @@ Grouping together events of the same type, however, does not tell you which regi
 in response to the event type.
 The traditional GLM outputs a single beta estimate per event type, but to measure which regions
 are acting in concert; you would need a beta estimate per event.
-For example, it could be the case that for half of the events of the same type two regions are active,
-and for the other half, another two regions are active.
+For example, it could be the case that for half of the events of the same type 2 regions are active,
+and for the other half, another 2 regions are active.
 The traditional GLM will not be able differentiate the different pairs of regions.
 LSS and LSA, on the other hand, propose to be able to separate the different pairs of regions.
 LSA takes a variant of the traditional GLM whereby instead of providing a beta
@@ -358,9 +358,9 @@ estimate for a group of events, each event gets its own beta estimate in a singl
     Since we receive a beta estimate per column, we end up with as many beta estimates as there
     are events.
     We can combine those beta estimates to create a beta series (Right) for each condition.
-    In this example we measured beta series for two voxels, allowing us to
+    In this example we measured beta series for 2 voxels, allowing us to
     correlate the betaseries from one voxel to another.
-    We can perform the correlation for the two conditions.
+    We can perform the correlation for the 2 conditions.
     The arrows on the design matrix (left) correspond to the beta estimates of those events
     on the shaded regions (right).
   }
@@ -385,9 +385,9 @@ We will refer to LSS-N as LSS for the remainder of the manuscript.
     Since we receive a beta estimate per model, we end up with as many beta estimates as there
     are events.
     We can combine those beta estimates to create a beta series (Right) for each condition.
-    In this example we measured beta series for two voxels, allowing us to
+    In this example we measured beta series for 2 voxels, allowing us to
     correlate the betaseries from one voxel to another.
-    We can perform the correlation for the two conditions.
+    We can perform the correlation for the 2 conditions.
     The arrows on the design matrix (left) correspond to the beta estimates of those events
     on the shaded regions (right).
   }
@@ -451,11 +451,11 @@ in beta series correlations.
 \label{methods:bsc-simulations}
 
 To assess the validity and power of beta series correlations,
-we simulated two voxels of fMRI time-series data and convolved short (0.2 second)
+we simulated 2 voxels of fMRI time-series data and convolved short (0.2 second)
 task onsets with double gamma functions
 and added the responses to the time-series~\cite{Glover1999,Welvaert2011}.
 We used fmrisim from the brainiak toolbox\cite{Ellis2020} to generate a
-two voxel fMRI time-series containing drift, autocorrelation ($\rho$ = 0.5), physiological noise,
+2 voxel fMRI time-series containing drift, autocorrelation ($\rho$ = 0.5), physiological noise,
 task related movement, and scanner noise \ref{fig:simulation_example}.
 Noise features were all weighted equally in the simulations.
 
@@ -470,7 +470,7 @@ Noise features were all weighted equally in the simulations.
   \label{fig:simulation_example}
 \end{figure}
 
-For all simulations the time of repetition was set to two seconds.
+For all simulations the time of repetition was set to 2 seconds.
 We varied the contrast-to-noise ratio (CNR) using the amplitude of the activation
 divided by the standard deviation of the noise~\cite{Welvaert2013a}.
 In other words, we used the average of the beta estimates and divided by the standard
@@ -528,7 +528,7 @@ impact beta series correlation's ability to recapture the true correlation or if
 response magnitude is more important.
 The choice of onset times was varied based on average inter-event-interval (IEIs).
 The IEI is the time from the previous event onset to the next event onset.
-We chose average IEIs at two, four, six, and eight seconds to reflect a common range of IEIs
+We chose average IEIs at 2, 4, 6, and 8 seconds to reflect a common range of IEIs
 for fast event related design experiments ~\cite{Hennigan2015,Dichter2007,Goghari2009}.
 We also varied the number of events, choosing 15, 30, 45, and 60 events per condition,
 which also appears to be common selections for fast event-related design experiments.
@@ -540,13 +540,13 @@ that the simulation results would be an artifact of idiosyncrasies
 of the optimized experimental design.
 
 The beta weights for each voxel were chosen from a multivariate normal distribution
-with a mean of one and with a fixed ground truth correlation between the two voxels 
-(varying between 0.0-0.9) with AVNR of either one or two.
+with a mean of 1 and with a fixed ground truth correlation between the 2 voxels 
+(varying between 0.0-0.9) with AVNR of either 1 or 2.
 The ground truth correlation was varied to ensure the ground truth correlations were above
-and below the correlations of the noise time-series between the two voxels,
+and below the correlations of the noise time-series between the 2 voxels,
 since both voxels had shared noise sources from simulated motion.
 The beta weights were convolved with a hemodynamic response function and scaled
-relative to the noise standard deviation to CNRs of one or two.
+relative to the noise standard deviation to CNRs of 1 or 2.
 (\href{https://github.com/jdkent/betaSeriesSimulations/tree/38dfbf2d83a8ab742d134c490b850ad893c8b4c7/beta_sim}{see here for simulation code})
 
 200 simulations were run for each combination of event number
@@ -557,12 +557,12 @@ resulting in 256,000 total simulations.
 Within each 200 simulation combination, the 20 top task designs specified by
 neurodesign were evenly applied to the simulations, resulting in 10 simulations
 using the same design.
-Each simulation of two voxels can be imagined as a unique participant or run from
+Each simulation of 2 voxels can be imagined as a unique participant or run from
 the same participant.
 
 To ensure interpretability of our power analyses, we tested
 the expected false positive rate when there is no difference between samples.
-we took two samples (n=50) with the same ground truth correlation (e.g., 0.1)
+we took 2 samples (n=50) with the same ground truth correlation (e.g., 0.1)
 matching on event number, IEI, CNR, and AVNR, and ran a t-test to measure if the samples
 were statistically significantly different (p $<$ 0.05).
 Since the ground truth correlation is the same between samples,
@@ -572,7 +572,7 @@ the number of statistically significant t-tests.
 
 Once the false positive rate was established, we established power with the same method as above,
 but with samples containing different ground truth correlations.
-We selected two samples where there was 0.1 (Pearson's r) difference between the samples.
+We selected 2 samples where there was 0.1 (Pearson's r) difference between the samples.
 0.1 difference was chosen based on reported differences found in other published
 reports as well as the task used in this report ~\cite{Katsura2014,Lee2017,Turner2017,Lin2019,Huang2019}.
 This process was also repeated 10,000 times to establish power.
@@ -688,7 +688,7 @@ to form the activation atlas \ref{fig:methroimap}.
 \end{figure}
 
 In addition to the task switching task, participants also completed
-two eight minute resting state runs.
+two 8 minute resting state runs.
 We used the resting state runs as a null model for task switching.
 While the task switch data had 471 volumes, each resting state run only had
 240 volumes.
@@ -741,7 +741,7 @@ Brain surfaces were reconstructed using \texttt{recon-all} \cite{fs_reconall},
 previously was refined with a custom variation of the method to
 reconcile ANTs-derived and FreeSurfer-derived segmentations of the
 cortical gray-matter of Mindboggle \cite[RRID:SCR\_002438,]{mindboggle}.
-Volume-based spatial normalization to one standard space (MNI152NLin2009cAsym)
+Volume-based spatial normalization to standard space (MNI152NLin2009cAsym)
 was performed through nonlinear registration with \texttt{antsRegistration}
 (ANTs 2.2.0), using brain-extracted versions of both T1w reference and the T1w template.
 The following templates were selected for spatial normalization: \emph{ICBM 152 Nonlinear
@@ -758,9 +758,9 @@ using a custom methodology of \emph{fMRIPrep}.
 Susceptibility distortion correction (SDC) was omitted.
 The BOLD reference was then co-registered to the T1w reference using \texttt{bbregister}
 (FreeSurfer) which implements boundary-based registration \cite{bbr}.
-Co-registration was configured with six degrees of freedom.
+Co-registration was configured with 6 degrees of freedom.
 Head-motion parameters with respect to the BOLD reference (transformation matrices,
-and six corresponding rotation and translation parameters) are estimated before any
+and 6 corresponding rotation and translation parameters) are estimated before any
 spatiotemporal filtering using \texttt{mcflirt} \cite[FSL 5.0.9,]{mcflirt}.
 The BOLD time-series were resampled into a standard space, correspondingly
 generating the following \emph{spatially-normalized, preprocessed BOLD runs}:
@@ -806,9 +806,9 @@ For each event, preprocessed data were subjected to a GLM
 in which the event was modeled with its own regressor, while
 all other events from that condition were modeled in a second regressor,
 and other conditions were modeled in their own regressors.
-So if the task has three conditions, 
-a single GLM would have four event regressors, one for the target
-event, and three for the remaining conditions.
+So if the task has 3 conditions, 
+a single GLM would have 4 event regressors, 1 for the target
+event, and 3 for the remaining conditions.
 
 The LSA model was generated following the method described in
 \cite[Rissman (2004)]{Rissman2004}, using Nistats 0.0.1b2.
@@ -818,7 +818,7 @@ if the experiment had 100 events, there would be 100 regressors in the GLM.
 Each event regressor was convolved with a glover hemodynamic response
 function\cite{Glover1999}.
 In addition to event regressors, average white matter signal, average csf signal,
-cosine basis set high pass regressors, the initial four non stead state volumes, 
+cosine basis set high pass regressors, the initial four non steady-state volumes, 
 and motion outliers were included
 in the model as calculated in \nameref{methods:func}.
 AR(1) prewhitening was applied in each model to account
@@ -1095,8 +1095,8 @@ the significant ROI-ROI pairs found with LSS are largely non-overlapping with LS
 
 We provided the first in depth comparison between LSS and LSA to detect condition differences.
 We compared LSA and LSS through realistic simulations and a real dataset.
-While the simulations suggested LSS is a more powerful measure,
-the results from the real dataset do not show a clear winner.
+While the simulations suggested LSS is a more powerful method,
+the results from the real data do not show a clear winner.
 We detail the conclusions from the simulations and the real data, and provide
 suggestions for future avenues of research.
 
@@ -1105,24 +1105,24 @@ suggestions for future avenues of research.
 \label{discussion:simulation-conclusions}
 
 The main finding from the simulations is that LSS has greater detection power than LSA,
-supporting other findings from the literature comparing LSS and LSA using related methods such as
+supporting other findings from the literature comparing LSS and LSA using related analyses such as
 multivariate pattern analysis, representational similarity analysis, and precision of correlations~\cite{Mumford2012,Mumford2014a,Abdulrahman2016,Turner2012a}.
 While we cannot control AVNR and CNR in our experiments, we can control the experimental design.
 Thus we can offer several suggestions for designing your next experiment based on our simulations.
-1) Increasing the average IEI up to six seconds improves detection power between conditions substantially,
-but increasing the average IEI above six seconds only offers modest improvement in detection power.
+1) Increasing the average IEI up to 6 seconds improves detection power between conditions substantially,
+but increasing the average IEI above 6 seconds only offers modest improvement in detection power.
 2) Increasing the number of events per condition to 30 offers the largest benefit in detection power.
 It is important to note these recommendations are based on optimized designs made with neurodesign,
 and may not generalize to completely random designs.
 
-Abdulrahman \& Henson's (2016) work has also measured various IEIs and varied AVNR and noise coherency between voxels
+Abdulrahman \& Henson's (2016) work also varied IEIs, AVNRs, and noise coherency between voxels
 revealing several key intersections with the present paper.
-Increasing the IEI beyond 6 seconds does not appear to help their measure, precision of sample correlation.
+Increasing the IEI beyond 6 seconds does not help their measure, precision of sample correlation.
 Precision of sample correlation measures how accurate the estimated correlation is to the true
 simulated correlation.
 If the error of the observed correlation is evenly distributed around the
-true correlation, then precision of sample correlations would closely mirror our measure of observing
-a significant correlation difference between event conditions.
+true correlation, then precision of sample correlations would closely mirror our measure of
+significant correlation differences between event conditions (e.g., $repeat - single$).
 However, if there was a systematic bias in the observed correlations, then precision of sample correlation
 would be low, but the correlation difference between event conditions could still be high.
 For example, if the true correlations were 0.2 for condition $A$ and 0.3 for condition $B$, but
@@ -1310,8 +1310,8 @@ would heavily impact the degrees of freedom in the model.
 Finally, a more complex but potentially fruitful option is to use the finite impulse response model.
 Finite impulse responses allow the researcher to observe both the spatial and temporal pattern of
 condition specific correlation without imposing an expected shape of the hemodynamic response ~\cite{Turner2012a}.
-For example, the researcher could be able to determine the relationship between two event conditions
-two, four, six, and eight seconds post stimulus, and identify how that relationship changes across
+For example, the researcher could be able to determine the relationship between 2 event conditions
+2, 4, 6, and 8 seconds post stimulus, and identify how that relationship changes across
 that time frame.
 The finite impulse response model can only be estimated using LSS, giving LSS the advantage if researchers
 want to perform this type of analysis.
