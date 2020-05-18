@@ -258,7 +258,9 @@ We compared LSA and LSS by simulating responses across a variety of
 experimental designs and using real data.
 Our simulations show LSS outperforms LSA across a variety of inter-event
 intervals and numbers of total events.
-In contrast, real data does not show a clear advantage of one method over the other.
+Real data does not show a clear advantage of LSS over LSA.
+In fact, LSS may be less able to detect condition differences in
+event related designs if condition differences are presumed to exist.
 This research shows the importance of validation using both simulations
 and real data and impacts how future studies should design their tasks
 to improve detectability of conditional organization of brain networks.
@@ -406,7 +408,7 @@ One, simulations have not taken into account realistic noise structure of fMRI d
 Two, simulations have not used optimized fast event related designs, only randomly selected designs. 
 Three, empirical selections of signal to noise ratios have not been considered,
 ratios were chosen without justification in previous work ~\cite{Abdulrahman2016,Mumford2012}.
-Four, a quantitative comparison/validation of LSA and LSS condition contrasts for BSC has not been done.
+Four, a quantitative comparison of LSA and LSS condition contrasts for BSC has not been done.
 The present work fills these gaps and provides recommendations for further research
 using LSA and LSS.
 Important terms used used throughout the paper are presented \ref{table0}.
@@ -653,8 +655,7 @@ false discovery rate error control \ref{fig:stat_maps}.
   \includegraphics[width=\textwidth,height=0.8\paperheight,keepaspectratio]{contrast_summary}
   \caption{
     Univariate statistical maps of second level results representing
-    each condition relative to baseline, an F-test over all conditions,
-    and the contrast "switch - repeat"}
+    all contrasts of interest, $switch - single$, $repeat - single$, $switch - repeat$}
   \label{fig:stat_maps}
 \end{figure}
 
@@ -1193,7 +1194,7 @@ Based on the number of statistically significantly different ROI-ROI pair correl
 LSS and LSA cannot be easily distinguished.
 Overall, we have evidence LSA and LSS are able to detect differences between
 blocks of events ($task - null$ and $repeat - single$), but not within blocks of events ($switch - repeat$).
-The latter contrast would be a common contrast seen in fast event-related designs suggesting
+The last contrast is what's seen in fast event-related designs suggesting
 great care should be taken to determine if you have enough power to detect differences
 between conditions.
 
@@ -1348,14 +1349,13 @@ in their network measures as well.
 
 \section*{Conclusion}
 
-In conclusion, while our simulations suggested LSS has more power than LSA to
-detect differences between conditions, the real data suggests LSA and LSS perform similarly.
-LSA may be better suited 
-LSS may be worse at detecting differences between conditions when they are interspersed
-with each other and not separated by blocks.
-The null data also suggest inflated positives when the data are between blocks,
-suggesting the differences between blocks are likely partially driven by something other than
-task evoked BOLD response variability.
+Our work has four main conclusions:
+1) simulations suggest increasing average IEI to 6 seconds and number of events to 30 per condition will detect a difference between conditions, 
+2) simulations suggest LSS has more power than LSA to detect differences between conditions,
+3) real data suggests LSS and LSA perform comparably but results are dependent on which atlas is selected,
+4) It is difficult for both LSS and LSA to detect condition differences when events are interleaved instead of occuring in separate blocks.
+This work guides and cautions cognitive neuroscience researchers as they design their tasks and decide
+which analysis path they should take amid the forking paths of researcher degrees of freedom.
 
 
 % CO\textsubscript{2} Maecenas convallis mauris sit amet sem ultrices gravida. Etiam eget sapien nibh. Sed ac ipsum eget enim egestas ullamcorper nec euismod ligula. Curabitur fringilla pulvinar lectus consectetur pellentesque. Quisque augue sem, tincidunt sit amet feugiat eget, ullamcorper sed velit. 
