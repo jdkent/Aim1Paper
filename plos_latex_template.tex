@@ -241,10 +241,10 @@ Michelle Voss\textsuperscript{1},
 % Please keep the abstract below 300 words
 \section*{Abstract}
 Cognitive tasks drive discovery in cognitive neuroscience by connecting cognition and the brain.
-On the same token taking a network perspective is undeniably important to identify the
-representations of cognition in the brain.
 These cognitive tasks often have multiple conditions interleaved with each other,
 and the cognitive process of interest is seen through the difference between conditions.
+The most common approach for tasks completed during functional magnetic resonance imaging (fMRI) examines how much activation occurs in different brain regions.
+More recently, it has become clear that it is just as important to examine how brain regions act together as networks.
 Beta series correlations are an increasingly popular measure to estimate which brain regions correlate with
 each other during different conditions within an MRI scanner.
 The region to region correlations serve as a marker for the brain network representation
@@ -261,7 +261,7 @@ intervals and numbers of total events.
 Real data does not show a clear advantage of LSS over LSA.
 In fact, LSS may be less able to detect condition differences in
 event related designs if condition differences are presumed to exist.
-This research shows the importance of validation using both simulations
+Overall, results show the importance of validation using both simulations
 and real data and impacts how future studies should design their tasks
 to improve detectability of conditional organization of brain networks.
 
@@ -275,7 +275,7 @@ The field of human neuroimaging has moved towards interrogating networks of brai
 Broadly defined, a brain network is a collection of brain regions who share information ~\cite{Uddin2019}.
 Brain networks have primarily been investigated while participants do not complete an explicit task, but there
 is rising popularity to observe brain networks while participants perform tasks ~\cite{Cole2014a}.
-There is also rising popularity to measure dynamic features of brain networks over time ~\cite{Sakoglu2008,Hindriks2016}.
+There is also rising popularity to measure dynamically changing correlations within and between brain networks over time ~\cite{Sakoglu2008,Hindriks2016}.
 However, There has not been significant validation and investigation of brain networks
 when participants engage in tasks with interleaved conditions that could induce
 different brain networks dynamically ~\cite{Di2019a}.
@@ -291,7 +291,8 @@ An event is defined as "a stimulus or participant response recorded during a tas
 Where task is defined as "a set of structured activities performed by the participant." ~\cite{Gorgolewski2016}
 The single event estimates become difficult to estimate when events occur close together,
 in other words, less than the time it takes for the Blood Oxygen Level Dependent (BOLD) response to return to baseline.
-Such designs are called fast event related designs which are commonly used in cognitive neuroscience \ref{fig:introhrf}.
+Such designs are called fast event related designs and are the most commonly
+used task design with the fMRI approach in cognitive neuroscience \ref{fig:introhrf}.
 
 \begin{figure}[H]
   \centering
@@ -445,8 +446,11 @@ Third, beta series correlations were validated in real task data collected from
 participants.
 Resting state data collected from the same participants were used as a null
 control for beta series correlations.
+The null control measures the number of spurious results found
+with BSC since there is no expectation of BSC to change
+during resting state
 Since there is no expectation of beta series correlations to change
-during resting state, we got a measure of expected spurious results found
+during resting state, expected spurious results found
 in beta series correlations.
 
 \subsection*{Beta Series Correlation Simulations}
@@ -468,6 +472,7 @@ Noise features were all weighted equally in the simulations.
     Example of predicted BOLD from a task design (thick grey line), real BOLD
     from a participant (see \nameref{methods:task-switch}), and simulated BOLD
     from fmrisim\cite{Ellis2020}.
+    The simulated BOLD appears similar to real BOLD.
   }
   \label{fig:simulation_example}
 \end{figure}
@@ -524,8 +529,8 @@ variance for bias, unlike LSA, which retains a high variance and a low bias.
 \end{adjustwidth}
 \end{table}
 
-We derived CNRs of 1 and 2 as and AVNRs of 1 and 2 as reasonable simulation values from the dataset \ref{table1}.
-We can manipulate CNR and AVNR independently to determine whether simulated BOLD response variation
+We derived CNRs of 1 and 2 and AVNRs of 1 and 2 as reasonable simulation values from the dataset \ref{table1}.
+We manipulated CNR and AVNR independently to determine whether simulated BOLD response variation
 impact beta series correlation's ability to recapture the true correlation or if the simulated BOLD
 response magnitude is more important.
 The choice of onset times was varied based on average inter-event-interval (IEIs).
@@ -846,7 +851,7 @@ We created an activation atlas representing regions that were
 consistently activated across event conditions (see \nameref{methods:task-switch}).
 This atlas has coverage across several cortical and subcortical regions.
 The second atlas, Schaefer Atlas (400 parcels, 17 networks)\cite{Schaefer2017}, was
-used to comprehensively cover the cortex and demonstrate robustness of results.
+used to comprehensively cover the cortex and test robustness of results.
 
 Outlier beta estimate volumes were identified and discarded using a
 modified Nipype function for outlier detection
@@ -992,7 +997,7 @@ difference of 0.1.
 \subsection*{Task Switching Beta Series Correlations}
 \label{results:bsc-taskswitch}
 
-We simulated data using the taskswitching design and found comparable
+We simulated data using the task switching design and found comparable
 results to the simulations, with LSS outperforming LSA.
 We looked at task switching data from the most lenient
 contrast ($real - null$) to the most conserative contrast ($switch - repeat$)
@@ -1096,7 +1101,7 @@ the significant ROI-ROI pairs found with LSS are largely non-overlapping with LS
 \section*{Discussion}
 \label{discussion}
 
-We provided the first in depth comparison between LSS and LSA to detect condition differences.
+We provided the first in depth comparison between LSS and LSA to detect differences between conditions.
 We compared LSA and LSS through realistic simulations and a real dataset.
 While the simulations suggested LSS is a more powerful method,
 the results from the real data do not show a clear winner.
@@ -1112,15 +1117,15 @@ supporting other findings from the literature comparing LSS and LSA using relate
 multivariate pattern analysis, representational similarity analysis, and precision of correlations~\cite{Mumford2012,Mumford2014a,Abdulrahman2016,Turner2012a}.
 While we cannot control AVNR and CNR in our experiments, we can control the experimental design.
 Thus we can offer several suggestions for designing your next experiment based on our simulations.
-1) Increasing the average IEI up to 6 seconds improves detection power between conditions substantially,
+Increasing the average IEI up to 6 seconds improves detection power between conditions substantially,
 but increasing the average IEI above 6 seconds only offers modest improvement in detection power.
-2) Increasing the number of events per condition to 30 offers the largest benefit in detection power.
+Increasing the number of events per condition to 30 offers the largest benefit in detection power.
 It is important to note these recommendations are based on optimized designs made with neurodesign,
 and may not generalize to completely random designs.
 
 Abdulrahman \& Henson's (2016) work also varied IEIs, AVNRs, and noise coherency between voxels
 revealing several key intersections with the present paper.
-Increasing the IEI beyond 6 seconds does not help their measure, precision of sample correlation.
+Increasing the IEI beyond 6 seconds did not improve their measure, precision of sample correlation.
 Precision of sample correlation measures how accurate the estimated correlation is to the true
 simulated correlation.
 If the error of the observed correlation is evenly distributed around the
@@ -1158,7 +1163,7 @@ However, the simulations we performed differ from real data in several key areas
 variation in BOLD response onset, and preprocessing of the signal.
 As mentioned in \nameref{methods:bsc-simulations}, each simulation represents
 either a different participant or separate runs from the same participant.
-The $real$ and $null$ conditions come from the taskswitching task and resting state,
+The $real$ and $null$ conditions come from the task switching task and resting state,
 respectively, representing two runs.
 The contrasts in the simulations are therefore most analogous to the $real - null$
 contrast in \ref{fig:significant-contrasts}.
@@ -1204,16 +1209,17 @@ Contrary to the simulations where LSS was found to be more powerful,
 there is some evidence of LSS having fewer statistically significant ROI-ROI pairs than expected through chance alone
 for the contrast $switch - repeat$.
 This result either suggests there are not many ROI-ROI pairs that do change their correlation
-between the two conditions, or that LSS has poor sensitivity to detect those differences.
+between two conditions, or that LSS has poor sensitivity to detect those differences.
 Since there is not a strong theoretical backing to say the pattern of results
 in LSS is closer to the ground truth than LSA, we cannot say which
 explanation above is more likely.
 
-A surprising result is the lack of overlap between LSS and LSA significant ROI-ROI pair correlation differences.
+Surprisingly, LSA and LSS results did not have much overlap between significant
+ROI-ROI pair correlation differences between conditions.
 The lack of overlap is suprising because both LSS and LSA are purported to
 measure the same underlying process of task related connectivity.
-We correlated the beta series from LSA to LSS and plotted that relationship with
-average framewise displacement and temporal signal to noise (TSNR) for all participants ($N$=61) to investigate this surprising result. \ref{fig:lss_lsa_correlation}.
+To investigate their differences further, we correlated the beta series of LSA with LSS and plotted their relationship with
+average framewise displacement and temporal signal to noise (TSNR) for all participants ($N$=61) \ref{fig:lss_lsa_correlation}.
 As the average framewise displacement increases and temporal signal to noise (TSNR)
 decreases, the agreement between LSS and LSA decreases.
 In other words, as noise in the data increases, the more divergent LSS and LSA become.
@@ -1281,7 +1287,7 @@ did not show a statistically significant difference between null and real data \
 The table suggests model misfit may be a driving factor for spurious results in the Schaefer atlas.
 We protected against extreme beta estimates by detecting and removing outliers, but model misfit
 could still drive spurious results.
-A proper null model would have bold responses at the onset times, but the bold responses
+A proper null model would have BOLD responses at the onset times, but the bold responses
 would be the same amplitude at every event such that the only deviance in the simulated
 BOLD responses would come from the underlying resting state fluctuations.
 
@@ -1297,7 +1303,7 @@ Furthermore, there are several analytical choices that could be varied using NiB
 using a t-statistic instead of a raw beta estimate, including derivatives of the hemodynamic response function,
 and performing a spatial-temporal analysis using finite impulse responses.
 The benefit of using a t-statistic is the added stability of the estimates.
-The t-tstatistic will scale outlier beta estimates with large uncertainty giving more stability
+The t-tstatistic will divide outlier beta estimates by their uncertainty giving more stability
 towards the beta series estimates.
 Since LSA is more likely to produce high variance beta estimates, using a t-statistic would likely impact
 how well LSA performs.
@@ -1320,7 +1326,7 @@ The finite impulse response model can only be estimated using LSS, giving LSS th
 want to perform this type of analysis.
 
 Network measures of brain organization are becoming widely adopted ~\cite{Rubinov2010}.
-Network measures offer a perspective on the total organization of ROI-ROI pairs, instead of
+Network measures offer a perspective on the multidimensional organization of ROI-ROI pairs, instead of
 interrogating individual ROI-ROI pairs as we did in the present work.
 Previous work has found greater global efficiency, smaller mean clustering coefficients, and lower modularity in
 task relative to rest ~\cite{Di2013}.
@@ -1351,7 +1357,7 @@ in their network measures as well.
 
 \section*{Conclusion}
 
-Our work has four main conclusions:
+Overall, our work leads to four main conclusions:
 1) simulations suggest increasing average IEI to 6 seconds and number of events to 30 per condition will detect a difference between conditions, 
 2) simulations suggest LSS has more power than LSA to detect differences between conditions,
 3) real data suggests LSS and LSA perform comparably but results are dependent on which atlas is selected,
@@ -1394,12 +1400,13 @@ which analysis path they should take amid the forking paths of researcher degree
 \section*{Acknowledgments}
 This work could not have been completed without the support of several persons/resources.
 First, the simulation analyses were supported in part through computational resources provided by The University of Iowa, Iowa City, Iowa.
-Second, the design and support of the study providing the real data was given by Hyku Lee, funded by grant INSERT GRANT NUMBER.
-Third, Chris Oeler and Adriana-Rivera Dompencial collected the real data used in the data analysis.
+Second, providing the real data was supported by Dr's. Hyun Kyu Lee (PI),
+Michelle Voss (site-PI), and Chandramallika Basak (site-PI)funded by grant NIH AG047722.
+Third, we thank Chris Oehler and Adriana-Rivera Dompencial collected the real data used in the data analysis.
 
 \section*{Author Contributions}
 JK and MV conceptualized this work, CB and MV funded the study collecting the real data,
-JK performed the analyses, and JK wrote the manuscript.
+JK performed the analyses. JK wrote the manuscript. JK, MV, and CB revised the manuscript.
 
 \nolinenumbers
 
