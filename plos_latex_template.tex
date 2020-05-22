@@ -203,7 +203,7 @@ Michelle Voss\textsuperscript{1},
 %with the Lorem Ipsum Consortium\textsuperscript{\textpilcrow}
 \\
 \bigskip
-\textbf{1} Psychology Department, University of Iowa, Iowa City, Iowa, United States
+\textbf{1} Psychology Department, University of Iowa, Iowa City, Iowa, United States \\
 \textbf{2} School of Behavioral and Brain Science, University of Texas at Dallas, Dallas, Texas, United States
 %\\
 %\textbf{2} Affiliation Dept/Program/Center, Institution Name, City, State, Country
@@ -242,7 +242,7 @@ Michelle Voss\textsuperscript{1},
 \section*{Abstract}
 Cognitive tasks drive discovery in cognitive neuroscience by connecting cognition and the brain.
 These cognitive tasks often have multiple conditions interleaved with each other,
-and the cognitive process of interest is seen through the difference between conditions.
+and the cognitive process of interest is seen through the difference between those conditions.
 The most common approach for tasks completed during functional magnetic resonance imaging (fMRI) examines how much activation occurs in different brain regions.
 More recently, it has become clear that it is just as important to examine how brain regions act together as networks.
 Beta series correlations are an increasingly popular measure to estimate which brain regions correlate with
@@ -272,33 +272,33 @@ to improve detectability of conditional organization of brain networks.
 \label{intro}
 
 The field of human neuroimaging has moved towards interrogating networks of brain regions.
-Broadly defined, a brain network is a collection of brain regions who share information ~\cite{Uddin2019}.
+Broadly defined, a brain network is a collection of brain regions who share information~\cite{Uddin2019}.
 Brain networks have primarily been investigated while participants do not complete an explicit task, but there
-is rising popularity to observe brain networks while participants perform tasks ~\cite{Cole2014a}.
-There is also rising popularity to measure dynamically changing correlations within and between brain networks over time ~\cite{Sakoglu2008,Hindriks2016}.
+is rising popularity to observe brain networks while participants perform tasks~\cite{Cole2014a}.
+There is also rising popularity to measure dynamically changing correlations within and between brain networks over time~\cite{Sakoglu2008,Hindriks2016}.
 However, There has not been significant validation and investigation of brain networks
 when participants engage in tasks with interleaved conditions that could induce
-different brain networks dynamically ~\cite{Di2019a}.
-In other words measuring brain networks have not been validated within fast event-related designs ~\cite{Buckner1998}.
+different brain networks dynamically~\cite{Di2019a}.
+In other words measuring brain networks have not been validated within fast event-related designs~\cite{Buckner1998}.
 We seek to validate and compare two methods that can measure brain responses to events that occur
 close in time.
 
-The overarching method being investigated is beta series correlations (BSC) ~\cite{Rissman2004,Mumford2012,Turner2012a,Abdulrahman2016}
-There are two main approaches to estimate the Beta Series for BSC: Least Squares All (LSA) and Least Squares Separate (LSS) ~\cite{Mumford2012}.
+The overarching method being investigated is beta series correlations (BSC)~\cite{Rissman2004,Mumford2012,Turner2012a,Abdulrahman2016}
+There are two main approaches to estimate the Beta Series for BSC: Least Squares All (LSA) and Least Squares Separate (LSS)~\cite{Mumford2012}.
 Both approaches of beta series estimation seek to derive single event estimates that represent a brain region's
 (or voxel's) activity at each individual event.
-An event is defined as "a stimulus or participant response recorded during a task." ~\cite{Gorgolewski2016}
-Where task is defined as "a set of structured activities performed by the participant." ~\cite{Gorgolewski2016}
+An event is defined as "a stimulus or participant response recorded during a task."~\cite{Gorgolewski2016}
+Where task is defined as "a set of structured activities performed by the participant."~\cite{Gorgolewski2016}
 The single event estimates become difficult to estimate when events occur close together,
-in other words, less than the time it takes for the Blood Oxygen Level Dependent (BOLD) response to return to baseline.
-Such designs are called fast event related designs and are the most commonly
-used task design with the fMRI approach in cognitive neuroscience \ref{fig:introhrf}.
+in other words, less than the time it takes for the Blood Oxygen Level Dependent (BOLD) response to return to baseline~\ref{fig:introhrf}.
+Such designs are called fast event related designs and are most commonly
+used in cognitive neuroscience.
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{introduction-hrf}
   \caption{
-    Model of the Hemodynamic Response Function (HRF) ~\cite{Glover1999} at a
+    Model of the Hemodynamic Response Function (HRF)~\cite{Glover1999} at a
     typical resolution of an fMRI scan (2 seconds).
     The x-axis represents time in seconds and the y-axis is arbitrary units.
     Fast event related designs with inter event intervals (IEIs) at or faster than time to peak
@@ -308,19 +308,20 @@ used task design with the fMRI approach in cognitive neuroscience \ref{fig:intro
 \end{figure}
 
 The BOLD response is an indirect measure of neuronal activity that takes approximately 6 seconds to
-peak and around 16-32 seconds to effectively return to baseline ~\cite{Glover1999}.
+peak and around 16-32 seconds to effectively return to baseline~\cite{Glover1999}.
 If events are occurring (on average) 4 seconds apart, the difficulty of single event estimation
 becomes apparent.
 One does not know whether BOLD activity should be attributed to a target event or an
 adjacent event.
 LSA and LSS approach this problem differently.
-LSA ignores this problem by calculating a high variance, but low bias measure;
-whereas LSS calculates a lower variance; but more biased measure.
+LSA ignores this problem by calculating a high variance, but low bias measure by ensuring orthogonality
+between events;
+whereas LSS calculates a lower variance; but more biased measure, relaxing the orthogonality restriction.
 To understand how LSA and LSS approach single event estimation, it is necessary to introduce
 the General Linear Model (GLM).
 GLMs are a mainstay in the neuroimaging literature, allowing researchers to model
 a curve that approximates the BOLD response shape and linearly scale the curve
-to best match the data ~\cite{Friston1995}.
+to best match the data~\cite{Friston1995}.
 The multiplicative that linearly scales the model BOLD response is known as a beta.
 The beta in the GLM is where the "beta" in beta series comes from.
 This beta is often interpreted as the amplitude of the response, which is true when the
@@ -328,13 +329,13 @@ model approximates the shape of the BOLD response well, and becomes less clear w
 the model does not match the shape of the BOLD response.
 In a traditional GLM, events of the same type will be grouped together
 to provide a robust estimate of whether a particular region or set of regions are
-active relative to some baseline or another condition ~\ref{fig:introGLM}.
+active relative to some baseline or another condition~\ref{fig:introGLM}.
 
 \begin{figure}[H]
   \centering
   \includegraphics{introduction-normalGLM}
   \caption{
-    An example of a design matrix seen in a traditional GLM used in fMRI ~\cite{Friston1995}.
+    An example of a design matrix seen in a traditional GLM used in fMRI~\cite{Friston1995}.
     There is a single column for each condition, resulting in two columns (intercept column ignored for clarity).
     With this design you can answer questions about which voxels are more or less active in one condition
     versus another, but you cannot see which voxels vary together over stimulus presentations.
@@ -351,7 +352,7 @@ and for the other half, another 2 regions are active.
 The traditional GLM will not be able differentiate the different pairs of regions.
 LSS and LSA, on the other hand, propose to be able to separate the different pairs of regions.
 LSA takes a variant of the traditional GLM whereby instead of providing a beta
-estimate for a group of events, each event gets its own beta estimate in a single GLM ~\ref{fig:introlsa}.
+estimate for a group of events, each event gets its own beta estimate in a single GLM~\ref{fig:introlsa}.
 
 \begin{figure}[H]
   \centering
@@ -363,7 +364,7 @@ estimate for a group of events, each event gets its own beta estimate in a singl
     We can combine those beta estimates to create a beta series (Right) for each condition.
     In this example we measured beta series for 2 voxels, allowing us to
     correlate the betaseries from one voxel to another.
-    We can perform the correlation for the 2 conditions.
+    We can perform the correlation for the 2 conditions (Condition 0 and Condition 1).
     The arrows on the design matrix (left) correspond to the beta estimates of those events
     on the shaded regions (right).
   }
@@ -371,9 +372,9 @@ estimate for a group of events, each event gets its own beta estimate in a singl
 \end{figure}
 
 LSS differs from LSA by fitting a separate GLM for each event, where in each model a target
-event is fit and the rest of the events are grouped together and given separate beta estimates ~\ref{fig:introlss}.
-Placing all other events into a single regressor is how LSS was introduced, but as shown in \ref{fig:introlss},
-each event type has its own regressor, which is referred to as LSS-N in other papers ~\cite{Abdulrahman2016,Mumford2012}.
+event is fit and the rest of the events are grouped together and given separate beta estimates~\ref{fig:introlss}.
+Placing all other events into a single regressor is how LSS was introduced, but as shown in~\ref{fig:introlss},
+each event type has its own regressor, which is referred to as LSS-N in other papers~\cite{Abdulrahman2016,Mumford2012}.
 We will refer to LSS-N as LSS for the remainder of the manuscript.
 
 \begin{figure}[H]
@@ -384,11 +385,11 @@ We will refer to LSS-N as LSS for the remainder of the manuscript.
     (intercept excluded for clarity).
     The target event (outlined in red) comes from either condition 0 or 1.
     For example, if the target event is from condition 1, the remaining condition 1 events
-    get their own column, and all of the condition 0 events get their own column
+    get their own column, and all of the condition 0 events get their own column.
     Since we receive a beta estimate per model, we end up with as many beta estimates as there
     are events.
     We can combine those beta estimates to create a beta series (Right) for each condition.
-    In this example we measured beta series for 2 voxels, allowing us to
+    In this example we measured a beta series for 2 voxels, allowing us to
     correlate the betaseries from one voxel to another.
     We can perform the correlation for the 2 conditions.
     The arrows on the design matrix (left) correspond to the beta estimates of those events
@@ -399,20 +400,20 @@ We will refer to LSS-N as LSS for the remainder of the manuscript.
 
 The target event estimate from each GLM is taken to form a beta series.
 Harkening back to the sluggish BOLD response, LSA suffers when the events are close together,
-since the GLM cannot reliably attribute which BOLD response should correspond to which event ~\ref{fig:introGLM}.
+since the GLM cannot reliably attribute which BOLD response should correspond to which event~\ref{fig:introGLM}.
 LSS attempts to reduce the model confusion by only having one single event estimate per model,
-so the non-target events have their beta influenced by multiple observations, loosening the
+so the non-target events have their beta estimate influenced by multiple observations, loosening the
 constraint that adjacent events to the target event need to be orthogonal (i.e., independent) from each other.
 While previous work has simulated beta series and evaluated beta series on real data,
-several key gaps remain ~\cite{Mumford2014a,Mumford2012,Turner2012a,Abdulrahman2016,Cisler2012,Arco2018}.
+several key gaps remain~\cite{Mumford2014a,Mumford2012,Turner2012a,Abdulrahman2016,Cisler2012,Arco2018}.
 One, simulations have not taken into account realistic noise structure of fMRI data such as autocorrelations, movement, and phsyiological noise.
 Two, simulations have not used optimized fast event related designs, only randomly selected designs. 
 Three, empirical selections of signal to noise ratios have not been considered,
-ratios were chosen without justification in previous work ~\cite{Abdulrahman2016,Mumford2012}.
+ratios were chosen without justification in previous work~\cite{Abdulrahman2016,Mumford2012}.
 Four, a quantitative comparison of LSA and LSS condition contrasts for BSC has not been done.
 The present work fills these gaps and provides recommendations for further research
 using LSA and LSS.
-Important terms used used throughout the paper are presented \ref{table0}.
+Important terms used used throughout the paper are presented~\ref{table0}.
 
 \begin{table}[H]
   \begin{adjustwidth}{0in}{0in} % Comment out/remove adjustwidth environment if table fits in text column.
@@ -429,7 +430,7 @@ Important terms used used throughout the paper are presented \ref{table0}.
   \end{tabular}
 
   Definitions of the main acronyms use in this paper.
-  $CNR$ and $AVNR$ definitions are found in Welvaert (2013)~\cite{Welvaert2013a}.
+  $CNR$ and $AVNR$ definitions are found in Welvaert (2013)\cite{Welvaert2013a}.
   \label{table0}
   \end{adjustwidth}
   \end{table}
@@ -445,20 +446,17 @@ design that was used to collect real data.
 Third, beta series correlations were validated in real task data collected from
 participants.
 Resting state data collected from the same participants were used as a null
-control for beta series correlations.
+control for beta series correlations in stage three.
 The null control measures the number of spurious results found
 with BSC since there is no expectation of BSC to change
-during resting state
-Since there is no expectation of beta series correlations to change
-during resting state, expected spurious results found
-in beta series correlations.
+during resting state.
 
 \subsection*{Beta Series Correlation Simulations}
 \label{methods:bsc-simulations}
 
 To assess the validity and power of beta series correlations,
 we simulated 2 voxels of fMRI time-series data and convolved short (0.2 second)
-task onsets with double gamma functions
+task onsets with a double gamma function
 and added the responses to the time-series~\cite{Glover1999,Welvaert2011}.
 We used fmrisim from the brainiak toolbox\cite{Ellis2020} to generate a
 2 voxel fMRI time-series containing drift, autocorrelation ($\rho$ = 0.5), physiological noise,
@@ -471,7 +469,7 @@ Noise features were all weighted equally in the simulations.
   \caption{
     Example of predicted BOLD from a task design (thick grey line), real BOLD
     from a participant (see \nameref{methods:task-switch}), and simulated BOLD
-    from fmrisim\cite{Ellis2020}.
+    from fmrisim~\cite{Ellis2020}.
     The simulated BOLD appears similar to real BOLD.
   }
   \label{fig:simulation_example}
@@ -480,8 +478,6 @@ Noise features were all weighted equally in the simulations.
 For all simulations the time of repetition was set to 2 seconds.
 We varied the contrast-to-noise ratio (CNR) using the amplitude of the activation
 divided by the standard deviation of the noise~\cite{Welvaert2013a}.
-In other words, we used the average of the beta estimates and divided by the standard
-deviation of the residuals output by the LSA model.
 Another parameter deemed critical by previous work is the standard deviation
 of the raw beta estimates relative to the standard deviation of the noise~\cite{Abdulrahman2016},
 so we varied that measure as well.
@@ -494,7 +490,9 @@ we used an unpublished dataset on task switching in older adults (N=40).
 We ran LSS/LSA to get both event estimates of activation (i.e., betas)
 as well as residuals from the model.
 To calculate CNR, several steps were taken.
-First, we masked the beta series using the Schaefer or Activation atlases (see \nameref{methods:atlas-corr-analysis}).
+First, we masked the beta series using two different atlases:
+an "Activation" atlas based on peak BOLD responses seen in the data,
+and the Schaefer Atlas\cite{Schaefer2017}(see \nameref{methods:atlas-corr-analysis}).
 Second, we took the absolute value of all masked beta estimates for a participant.
 Third, we took the median beta estimates over all events resulting
 in a median beta estimate amplitude for all ROIs.
@@ -529,17 +527,17 @@ variance for bias, unlike LSA, which retains a high variance and a low bias.
 \end{adjustwidth}
 \end{table}
 
-We derived CNRs of 1 and 2 and AVNRs of 1 and 2 as reasonable simulation values from the dataset \ref{table1}.
+We derived CNRs of 1 and 2 and AVNRs of 1 and 2 as reasonable simulation values from the dataset~\ref{table1}.
 We manipulated CNR and AVNR independently to determine whether simulated BOLD response variation
 impact beta series correlation's ability to recapture the true correlation or if the simulated BOLD
 response magnitude is more important.
 The choice of onset times was varied based on average inter-event-interval (IEIs).
 The IEI is the time from the previous event onset to the next event onset.
 We chose average IEIs at 2, 4, 6, and 8 seconds to reflect a common range of IEIs
-for fast event related design experiments ~\cite{Hennigan2015,Dichter2007,Goghari2009}.
+for fast event related design experiments~\cite{Hennigan2015,Dichter2007,Goghari2009}.
 We also varied the number of events, choosing 15, 30, 45, and 60 events per condition,
 which also appears to be common selections for fast event-related design experiments.
-The optimization of event onsets was done with neurodesign ~\cite{Durnez2018}.
+The optimization of event onsets was done with neurodesign~\cite{Durnez2018}.
 We chose to optimize A-Optimality for onset selection using the genetic algorithm implemented
 in neurodesign, selecting onsets with an exponential distribution.
 The top 20 designs were chosen from neurodesign to reduce the likelihood
@@ -581,13 +579,13 @@ Once the false positive rate was established, we established power with the same
 but with samples containing different ground truth correlations.
 We selected 2 samples where there was 0.1 (Pearson's r) difference between the samples.
 0.1 difference was chosen based on reported differences found in other published
-reports as well as the task used in this report ~\cite{Katsura2014,Lee2017,Turner2017,Lin2019,Huang2019}.
+reports as well as the task used in this report~\cite{Katsura2014,Lee2017,Turner2017,Lin2019,Huang2019}.
 This process was also repeated 10,000 times to establish power.
 Thus we detected how well correlation differences could be detected
 with different task design and noise parameters.
 
 Simulating data using the same task design as the real data followed the same
-procedure as above, varying CNR (1, 2), AVNR (1, 2), condition (switch, repeat, single),
+procedure as above, varying CNR (1, 2), AVNR (1, 2), condition,
 and ground truth correlation (0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9).
 IEI and event number were not varied since those parameters are fixed by the
 task design.
@@ -599,7 +597,7 @@ False positive rate and power were evaluated using the same procedure as the oth
 
 To validate the betaseries simulations we used an unpublished dataset
 of older adults ($N$=61, 31 female, age=71.75$\pm$4.77, education=17.07$\pm$2.66)
-performing a mixed task switching task.
+performing a mixed design task switching task.
 Numbers reported are mean$\pm$standard deviation.
 Prior to any experimentation, participants provided verbal and written consent
 to participate in the research presented in this manuscript, which was approved
@@ -640,15 +638,11 @@ was analyzed with \emph{Nistats} for first and second level analyses.
 we used mean white matter signal, mean cerebrospinal fluid signal,
 discrete cosine basis filter (high pass filter), framewise displacement, the first four non-steady volumes, and
 all identified motion outliers as regressors in the first level model for each participant
-in addition to event onsets convolved with a double gamma function ~\cite{Glover1999}.
+in addition to event onsets convolved with a double gamma function~\cite{Glover1999}.
 Each image was smoothed with a 6mm full-wide half-max kernel.
-We derived all condition versus baseline contrasts: first-trial, single, repeat, switch, as well as
-additional contrasts for $switch - repeat$ and an F-test of single, repeat, and switch conditions.
+We derived 3 contrasts of interest: $switch - repeat$, $switch - single$, and $repeat - single$.
 We ignored correctness of the participant's response since this was not important to
 separate condition and error processing to validate BSC.
-First-trial events were also ignored in subsequent analyses since they did not represent
-a cognitive process of interest, and they only occurred for the first event of
-each block.
 
 Second level analysis were a summary of the first level results presenting which
 regions were robustly activated among participants.
@@ -664,9 +658,9 @@ false discovery rate error control \ref{fig:stat_maps}.
   \label{fig:stat_maps}
 \end{figure}
 
-An activation atlas was generated based on an F-test across conditions
+An activation atlas was generated based on an F-test across the switch, repeat, and single conditions
 to identify regions that were reliably activated for all participants \ref{table:clusters}.
-5mm spheres were drawn around each statistical peak (20 peaks total)
+5mm spheres were drawn around each statistical peak (21 peaks total)
 to form the activation atlas \ref{fig:methroimap}.
 
 \begin{table}[H]
@@ -702,7 +696,7 @@ In order to match the length of the resting state data with the task data, we co
 the two resting state runs while cutting off the first 10 volumes of the second run
 and interpolating 1 volume between the two runs, resulting in 471 volumes.
 The interpolation helps transition the bold series from one run to the next,
-analogous to interpolation performed when scrubbing high motion volumes \cite{Power2014a}. 
+analogous to interpolation performed when scrubbing high motion volumes~\cite{Power2014a}. 
 This null task data was treated equivalently to the task switching data for the
 beta series correlation analysis.
 (\href{https://github.com/jdkent/validateBetaSeries/tree/195ad5b4201971038dbbf8f73a3c537caf032743}{see relevant code here})
@@ -802,7 +796,7 @@ configured with Lanczos interpolation to minimize the smoothing effects of other
 \label{methods:bsc_model}
 
 The LSS models were generated for each event in
-the task following the method described in \cite{Turner2012a}, using
+the task following the method described in \cite[Turner (2012)]{Turner2012a}, using
 Nistats 0.0.1b2.\\
 Prior to modeling, preprocessed data were masked, and mean-scaled over
 time.
@@ -822,7 +816,7 @@ Each event was given its own regressor in a single GLM, such that
 if the experiment had 100 events, there would be 100 regressors in the GLM.
 
 Each event regressor was convolved with a glover hemodynamic response
-function\cite{Glover1999}.
+function~\cite{Glover1999}.
 In addition to event regressors, average white matter signal, average csf signal,
 cosine basis set high pass regressors, the initial four non steady-state volumes, 
 and motion outliers were included
@@ -855,12 +849,11 @@ used to comprehensively cover the cortex and test robustness of results.
 
 Outlier beta estimate volumes were identified and discarded using a
 modified Nipype function for outlier detection
-(\href{https://github.com/HBClab/NiBetaSeries/blob/a45c0a1f/src/nibetaseries/interfaces/nilearn.py#L153}{see here}) ~\cite{Crosby1994}.
+(\href{https://github.com/HBClab/NiBetaSeries/blob/a45c0a1f/src/nibetaseries/interfaces/nilearn.py#L153}{see here}) \cite{Crosby1994}.
 The correlation coefficient estimator used for generating correlation matrices
-was empirical covariance, as implemented in Nilearn 0.4.2
-\cite{Abraham2014}.
+was empirical covariance, as implemented in Nilearn 0.4.2~\cite{Abraham2014}.
 Correlation coefficients were converted to normally-distributed z-values using
-Fisher's r-to-z conversion \cite{Fisher1915}.
+Fisher's r-to-z conversion~\cite{Fisher1915}.
 
 In the participant data, BSC generated correlation matrices for each condition ,
 each method, (LSA and LSS), each data type (real and null), and each participant (N=40).
@@ -898,7 +891,7 @@ Since we are using 1000 iterations, our p-values will provide a more exact estim
 The results in this manuscript are dependent on many open source
 libraries, while we have inevitably missed providing all due credit,
 we would like to acknowledge some of the main libraries used in 
-\emph{fMRIPrep} 1.5.7 \cite{fmriprep1} and \emph{NiBetaSeries} 0.6.0 \cite{Kent2018}.
+\emph{fMRIPrep} 1.5.7\cite{fmriprep1} and \emph{NiBetaSeries} 0.6.0\cite{Kent2018}.
 
 Many internal operations of \emph{fMRIPrep} use \emph{Nilearn} 0.6.1
 \cite[RRID:SCR\_001362]{nilearn}, mostly within the functional
@@ -912,8 +905,8 @@ Additional libraries used in the \emph{NiBetaSeries} workflow include
 \emph{Numpy} 1.18.1 \cite{VanDerWalt2011, Oliphant2006}.
 
 In addition to the data analysis, visualization of results depended
-on matplotlib \cite{Hunter2007}, seaborn \cite{Waskom2020}, nilearn,
-jupyter notebooks \cite{Kluyver2016a}, and the packages they depend on.
+on matplotlib\cite{Hunter2007}, seaborn\cite{Waskom2020}, nilearn,
+jupyter notebooks\cite{Kluyver2016a}, and the packages they depend on.
 
 % For figure citations, please use "Fig" instead of "Figure".
 % Nulla mi mi, Fig~\ref{fig1} venenatis sed ipsum varius, volutpat euismod diam. Proin rutrum vel massa non gravida. Quisque tempor sem et dignissim rutrum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi at justo vitae nulla elementum commodo eu id massa. In vitae diam ac augue semper tincidunt eu ut eros. Fusce fringilla erat porttitor lectus cursus, \nameref{S1_Video} vel sagittis arcu lobortis. Aliquam in enim semper, aliquam massa id, cursus neque. Praesent faucibus semper libero.
@@ -991,10 +984,11 @@ For LSS, the 8 second IEI does not appear to boost detection power beyond a 6 se
 whereas LSA has a boost when AVNR and CNR are higher.
 
 
-\subsection*{Task Switching Beta Series Correlations}
+\subsection*{Real Data Beta Series Correlations}
 \label{results:bsc-taskswitch}
 
-We simulated data using the task switching design and found comparable
+We simulated data using the task switching design for stage two of beta series
+validation and found comparable
 results to the simulations, with LSS outperforming LSA.
 To achieve 80\% power assuming a CNR of 2 and AVNR of 2, 50 participants were enough for LSS, but LSA
 did not get close to 80\% looking at the range of 5-60 participants.
@@ -1151,7 +1145,7 @@ For example, if the true correlations were 0.2 for condition $A$ and 0.3 for con
 the observed correlations were 0.1 and 0.2, respectively, then precision of sample correlations would
 decrease, but the difference between conditions remains the same.
 
-Another conclusion from Abdulrahman \& Henson's (2016)\cite{Abdulrahman2016} paper suggested to
+Another conclusion from \cite[Abdulrahman \& Henson's (2016)]{Abdulrahman2016} paper suggested to
 use LSA when event variability is greater than scan noise (AVNR $>$ 1) for short IEIs (2-5 seconds).
 All of our simulations had AVNR greater than or equal to scan noise (AVNR $>=$ 1) and we saw
 LSS significantly outperformed LSA for our measure of detection power for IEIs greater than 2 seconds.
@@ -1160,7 +1154,7 @@ LSS still had more power to detect a difference between conditions.
 The difference in conclusions could be due to our different measures (i.e., precision of sample correlations versus condition difference)
 or from our simulation methods (i.e., guassian noise with random designs versus autocorrelated noise with optimized designs).
 
-Signal and noise coherency did not impact results as they did in the work of Abdulrahman \& Henson (2016)\cite{Abdulrahman2016}.
+Signal and noise coherency did not impact results as they did in the work of \cite[Abdulrahman \& Henson (2016)]{Abdulrahman2016}.
 When scan noise is more coherent across voxels than event variability,
 their work states LSA should perform better than LSS.
 However, their paper only investigated perfect coherency or no coherency.
@@ -1185,12 +1179,12 @@ Additionally, each simulation contains two conditions whose BOLD responses
 are independent of each other, that is, the BOLD response for one event
 does not influence the BOLD response for a subsequent event.
 There is likely temporal autocorrelation of BOLD responses across events,
-which is not represented in our simulations ~\cite{Abdulrahman2016}.
+which is not represented in our simulations~\cite{Abdulrahman2016}.
 
 We also did not simulate variations in BOLD response onset, which is likely to occur
-as all BOLD responses to a stimulus do not occur at the time the stimulus onset ~\cite{DEsposito2003}.
+as all BOLD responses to a stimulus do not occur at the time the stimulus onset~\cite{DEsposito2003}.
 Model mismatch through variations has been found detrimental to beta estimation, 
-but there is no reason to believe that LSA would be differentially impacted relative to LSS ~\cite{Turner2012a}.
+but there is no reason to believe that LSA would be differentially impacted relative to LSS~\cite{Turner2012a}.
 Future work could investigate variable BOLD responses and include derivatives for each regressor to account for
 the variable BOLD responses.
 Including derivatives could make LSA unsolvable since every event would have at least two regressors, meaning
@@ -1324,7 +1318,7 @@ how well LSA performs.
 No other tool has the option to calculate the t-statistic instead of the raw beta estimate to the knowlege
 of the authors.
 Another straight-forward addition would be adding temporal and/or dispersion derivatives to each beta
-estimate to account for potential BOLD response delays ~\cite{Calhoun2004,Gottlich2015}.
+estimate to account for potential BOLD response delays~\cite{Calhoun2004,Gottlich2015}.
 This strategy may work well for populations with variable BOLD responses or when the onset of the BOLD
 response is not precisely known.
 Including derivates would also likely impact LSA more than LSS since there would be either twice or
@@ -1332,20 +1326,20 @@ three times the number of regressors included in the LSA model, which in a fast 
 would heavily impact the degrees of freedom in the model.
 Finally, a more complex but potentially fruitful option is to use the finite impulse response model.
 Finite impulse responses allow the researcher to observe both the spatial and temporal pattern of
-condition specific correlation without imposing an expected shape of the hemodynamic response ~\cite{Turner2012a}.
+condition specific correlation without imposing an expected shape of the hemodynamic response~\cite{Turner2012a}.
 For example, the researcher could be able to determine the relationship between 2 event conditions
 2, 4, 6, and 8 seconds post stimulus, and identify how that relationship changes across
 that time frame.
 The finite impulse response model can only be estimated using LSS, giving LSS the advantage if researchers
 want to perform this type of analysis.
 
-Network measures of brain organization are becoming widely adopted ~\cite{Rubinov2010}.
+Network measures of brain organization are becoming widely adopted~\cite{Rubinov2010}.
 Network measures offer a perspective on the multidimensional organization of ROI-ROI pairs, instead of
 interrogating individual ROI-ROI pairs as we did in the present work.
 Previous work has found greater global efficiency, smaller mean clustering coefficients, and lower modularity in
-task relative to rest ~\cite{Di2013}.
+task relative to rest~\cite{Di2013}.
 However, this finding has not been replicated using beta series correlations and has just begun
-to be investigated between tasks and event conditions within a task ~\cite{Di2019a}.
+to be investigated between tasks and event conditions within a task~\cite{Di2019a}.
 The largely non-overlapping results from LSS and LSA suggest that LSS and LSA may differ
 in their network measures as well.
 % \begin{itemize}
