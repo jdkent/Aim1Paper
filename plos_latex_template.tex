@@ -989,9 +989,6 @@ Increasing the CNR improves detection power more than increasing the AVNR, altho
 CNR or AVNR provides a marked boost in detection power.
 For LSS, the 8 second IEI does not appear to boost detection power beyond a 6 second IEI,
 whereas LSA has a boost when AVNR and CNR are higher.
-It's worth noting that even for 50 participants; not one power analysis showed
-a power of 80\%, suggesting that larger sample sizes are required to detect a Pearson's R
-difference of 0.1.
 
 
 \subsection*{Task Switching Beta Series Correlations}
@@ -999,6 +996,23 @@ difference of 0.1.
 
 We simulated data using the task switching design and found comparable
 results to the simulations, with LSS outperforming LSA.
+To achieve 80\% power assuming a CNR of 2 and AVNR of 2, 50 participants were enough for LSS, but LSA
+did not get close to 80\% looking at the range of 5-60 participants.
+However, the present analysis only has 40 participants with adequate data, meaning
+all subsequent analyses will be moderately underpowered to detect an effect.
+
+\begin{figure}[H]
+  \includegraphics[width=\textwidth]{taskswitch-switchXrepeat_smalldiffparticipants}
+  \caption{
+    Simulations from the task design used to collect the real data.
+    LSS achieves 80\% power when N=50, but LSA does not get close to 80\%
+    power in the range of participants observed (5-60).
+    CNR and AVNR were set to 2, meaning this is an optimistic power analysis
+    for a correlation difference of 0.1.
+  }
+  \label{fig:taskswitch-simulation}
+\end{figure}
+
 We looked at task switching data from the most lenient
 contrast ($real - null$) to the most conserative contrast ($switch - repeat$)
 to assess how well LSS and LSA detect ROI-ROI correlation differences between conditions.
