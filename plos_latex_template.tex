@@ -1022,7 +1022,7 @@ Those two contrasts indicate the success of LSS and LSA to measure
 condition specific difference in ROI-ROI correlations.
 The Schaefer atlas has qualitatively similar results, with the exception of
 the $switch - repeat$ contrast where LSA found more statistically significant
-ROI-ROI pair correlation differences between conditions relative to chance, but LSS did not.
+ROI-ROI pair correlation differences between conditions relative to chance, but LSS did not \ref{fig:schaefer-result}.
 
 
 \begin{figure}[H]
@@ -1037,6 +1037,52 @@ ROI-ROI pair correlation differences between conditions relative to chance, but 
     The red dashed line represents the expected 5\% false positive rate.
   }
   \label{fig:main-result}
+\end{figure}
+
+\fcolorbox{red}{yellow}{%
+    \minipage[t]{\dimexpr0.96\linewidth\fboxsep\fboxrule\relax}
+        \textbf{Problem:} An analysis method that gives reasonable results for the
+        small Activation atlas (21 parcels) does not give reasonable result for the
+        large Schaefer atlas (400 parcels).
+
+        \textbf{Question:} How do can I compare two methods (LSA and LSS) to see which one is more "sensitive"
+        to detect differences?
+        
+        \textbf{Analysis Options:}
+
+        1) Permutation Analysis (as done in this paper currently).
+        I permute the data for 1000 iterations to see how many significant ROI-ROI
+        pairs are observed for each iteration to get an idea of the average and spread
+        of a "null" distribution.
+        This method appears to work better when the number of ROI-ROI pairs being compared is
+        relatively small (e.g., 210 ROI-ROI pairs in the activation atlas).
+        With a large number of ROI-ROI pairs (79,800 in the Schaefer atlas),
+        the null distribution is very dense around \%5 false positive rate, and it appears very easy
+        for the observed data to fall outside the null distribution by a significant margin.
+
+        2) False Discovery Rate (FDR) Correction.
+        FDR correction reduces the number of "significant" results to zero for both LSA and LSS
+        when looking at the Activation atlas, making it difficult to compare LSS and LSA since neither
+        method was sensitive enough to detect any differences.
+        There is a little more variability with the Schaefer atlas, but outside of the contrast $task - null$
+        the number of significant results is close to zero.
+
+        3) Chi-Square Test. Compare of the number of positives with LSS and the number of
+        positives found with LSA? (appears to fall under the same limitations as permutations).
+    \endminipage}
+
+\begin{figure}[H]
+  \includegraphics[width=\textwidth]{data-real_atlas-schaefer_participants-filtered_permutation_summary}
+  \caption{
+    Percentage of statistically significant ROI-ROI pairs observed in the Schaefer atlas
+    plotted against a null distribution for the contrasts $task - null$, $switch - single$,
+    $repeat - single$, and $switch - repeat$.
+    The large dots represent the observed percentage of statistically significant ROI-ROI pairs.
+    The violin plots represent 1000 permutations of the data reflecting the null distribution
+    of observing statistically significant ROI-ROI pairs.
+    The red dashed line represents the expected 5\% false positive rate.
+  }
+  \label{fig:schaefer-result}
 \end{figure}
 
 Although both LSS and LSA detected condition specific correlation differences;
