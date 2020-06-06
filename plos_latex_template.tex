@@ -847,6 +847,13 @@ This atlas has coverage across several cortical and subcortical regions.
 The second atlas, Schaefer Atlas (400 parcels, 17 networks)\cite{Schaefer2017}, was
 used to comprehensively cover the cortex and test robustness of results.
 
+In order to increase the likelihood of being able to detect a real result using the Schaefer atlas,
+we selected the top 25 ROIs with the highest CNR using LSA and LSS separately
+(see \nameref{methods:bsc-simulations} for how we calculated CNR).
+We then took the intersection of the two ROI sets resulting in 20 ROIs that have a high CNR
+as measured by LSA and LSS
+(\href{https://github.com/jdkent/BetaSeriesRealDataAnalysis/blob/master/nibsAnalysis/cnr_trial_variability.ipynb}{see here for relevant code}).
+
 Outlier beta estimate volumes were identified and discarded using a
 modified Nipype function for outlier detection
 (\href{https://github.com/HBClab/NiBetaSeries/blob/a45c0a1f/src/nibetaseries/interfaces/nilearn.py#L153}{see here}) \cite{Crosby1994}.
