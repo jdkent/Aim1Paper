@@ -853,6 +853,7 @@ we selected the top 25 ROIs with the highest CNR using LSA and LSS separately
 We then took the intersection of the two ROI sets resulting in 20 ROIs that have a high CNR
 as measured by LSA and LSS
 (\href{https://github.com/jdkent/BetaSeriesRealDataAnalysis/blob/master/nibsAnalysis/cnr_trial_variability.ipynb}{see here for relevant code}).
+The results for the entire 400 ROI altas are shown in the supplementals.
 
 Outlier beta estimate volumes were identified and discarded using a
 modified Nipype function for outlier detection
@@ -1044,6 +1045,35 @@ ROI-ROI pair correlation differences between conditions relative to chance, but 
     The red dashed line represents the expected 5\% false positive rate.
   }
   \label{fig:main-result}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \begin{subfigure}[H]{0.45\textwidth}
+      \centering
+      \includegraphics[width=0.5\linewidth]{data-real_atlas-activation_participants-filtered_permutation_summary} 
+      \caption{Generic} \label{fig:timing1}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[H]{0.45\textwidth}
+      \centering
+      \includegraphics[width=0.5\linewidth]{data-null_atlas-activation_participants-filtered_permutation_summary} 
+      \caption{Competitors} \label{fig:timing2}
+  \end{subfigure}
+
+  \vspace{1cm}
+  \begin{subfigure}[H]{0.45\textwidth}
+      \centering
+      \includegraphics[width=0.5\linewidth]{data-real_atlas-schaeferbest_participants-filtered_permutation_summary} 
+      \caption{Price regulation} \label{fig:timing3}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[H]{0.45\textwidth}
+    \centering
+    \includegraphics[width=0.5\linewidth]{data-null_atlas-schaeferbest_participants-filtered_permutation_summary} 
+    \caption{Competitors} \label{fig:timing4}
+\end{subfigure}
+  \caption{Some general caption of all the figures. In (\subref{fig:timing1}) you can see a  green square....}
 \end{figure}
 
 \fcolorbox{red}{yellow}{%
