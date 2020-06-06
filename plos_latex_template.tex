@@ -165,6 +165,7 @@
 
 %% TEMPORARY FIGURES (REMOVE BEFORE SUBMISSION)
 % \usepackage[svgpath=./figs/]{svg}
+%\usepackage{subcaption}
 \usepackage{graphicx}
 \graphicspath{{./betaSeriesSimulations/outputs/}{./BetaSeriesRealDataAnalysis/nibsAnalysis/outputs/}{./BetaSeriesRealDataAnalysis/firstLevelAnalysis/outputs/}{./BetaSeriesRealDataAnalysis/introductionFigures/outputs/}}
 \usepackage{float}
@@ -1047,84 +1048,26 @@ ROI-ROI pair correlation differences between conditions relative to chance, but 
   \label{fig:main-result}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[H]
   \centering
-  \begin{subfigure}[H]{0.45\textwidth}
-      \centering
-      \includegraphics[width=0.5\linewidth]{data-real_atlas-activation_participants-filtered_permutation_summary} 
-      \caption{Generic} \label{fig:timing1}
-  \end{subfigure}
+  \subfloat[][a]{\includegraphics[width=0.49\linewidth]{
+    data-real_atlas-activation_participants-filtered_permutation_summary} 
+  \label{fig:timing1}}
   \hfill
-  \begin{subfigure}[H]{0.45\textwidth}
-      \centering
-      \includegraphics[width=0.5\linewidth]{data-null_atlas-activation_participants-filtered_permutation_summary} 
-      \caption{Competitors} \label{fig:timing2}
-  \end{subfigure}
-
-  \vspace{1cm}
-  \begin{subfigure}[H]{0.45\textwidth}
-      \centering
-      \includegraphics[width=0.5\linewidth]{data-real_atlas-schaeferbest_participants-filtered_permutation_summary} 
-      \caption{Price regulation} \label{fig:timing3}
-  \end{subfigure}
+  \subfloat[][a]{\includegraphics[width=0.49\linewidth]{
+    data-null_atlas-activation_participants-filtered_permutation_summary} 
+  \label{fig:timing2}}
+  \vfill
+  \subfloat[][a]{\includegraphics[width=0.49\linewidth]{
+    data-real_atlas-schaeferbest_participants-filtered_permutation_summary} 
+  \label{fig:timing3}}
   \hfill
-  \begin{subfigure}[H]{0.45\textwidth}
-    \centering
-    \includegraphics[width=0.5\linewidth]{data-null_atlas-schaeferbest_participants-filtered_permutation_summary} 
-    \caption{Competitors} \label{fig:timing4}
-\end{subfigure}
-  \caption{Some general caption of all the figures. In (\subref{fig:timing1}) you can see a  green square....}
+  \subfloat[][a]{\includegraphics[width=0.49\linewidth]{
+    data-null_atlas-schaeferbest_participants-filtered_permutation_summary} 
+  \label{fig:timing4}}
+  \caption{this}
 \end{figure}
 
-\fcolorbox{red}{yellow}{%
-    \minipage[t]{\dimexpr0.96\linewidth\fboxsep\fboxrule\relax}
-        \textbf{Problem:} An analysis method that gives reasonable results for the
-        small Activation atlas (21 parcels) does not give reasonable result for the
-        large Schaefer atlas (400 parcels).
-
-        \textbf{Question:} How do can I compare two methods (LSA and LSS) to see which one is more "sensitive"
-        to detect differences?
-        
-        \textbf{Analysis Options:} (what I can think of)
-
-        1) Permutation Analysis (as done in this paper currently).
-        I permute the data for 1000 iterations to see how many significant ROI-ROI
-        pairs are observed for each iteration to get an idea of the average and spread
-        of a "null" distribution.
-        This method appears to work better when the number of ROI-ROI pairs being compared is
-        relatively small (e.g., 210 ROI-ROI pairs in the activation atlas).
-        With a large number of ROI-ROI pairs (79,800 in the Schaefer atlas),
-        the null distribution is very dense around \%5 false positive rate, and it appears very easy
-        for the observed data to fall outside the null distribution by a significant margin.
-        One thing I could do is select a small subset of the Schaefer parcels (20 parcels) and only use those parcels.
-        (I do have a method to select the parcels "most likely" to show an effect.)
-        That would place the Activation atlas and the Schaefer atlas at a similar number of ROI-ROI pairs.
-
-        2) False Discovery Rate (FDR) Correction.
-        FDR correction reduces the number of "significant" results to zero for both LSA and LSS
-        when looking at the Activation atlas, making it difficult to compare LSS and LSA since neither
-        method was sensitive enough to detect any differences.
-        There is a little more variability with the Schaefer atlas, but outside of the contrast $task - null$
-        the number of significant results is close to zero.
-
-        3) Chi-Square Test. Compare of the number of positives with LSS and the number of
-        positives found with LSA? (appears to fall under the same limitations as permutations).
-
-        4) Dice Coefficient. Divide the data into 2 (N=20) and compare how well the results overlap?
-        Should I run multiple iterations of this analysis, each time changing how I split the 40 participants
-        into two groups? How many iterations should I run?
-        The downside to this approach is that I do not have a lot of participants, and the simulations show this
-        analysis is already underpowered to detect an effect in the first place.
-
-        \textbf{Available Measures:}
-        1) number of statistically significant ROI-ROI pairs with real data
-
-        2) number of statistically significant ROI-ROI pairs with "null" data
-
-        3) 1000 permutations of the real data
-
-        4) 1000 permutations of the null data
-    \endminipage}
 
 \begin{figure}[H]
   \includegraphics[width=\textwidth]{data-real_atlas-schaefer_participants-filtered_permutation_summary}
