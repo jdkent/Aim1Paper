@@ -848,6 +848,16 @@ This atlas has coverage across several cortical and subcortical regions.
 The second atlas, Schaefer Atlas (400 parcels, 17 networks)\cite{Schaefer2017}, was
 used to comprehensively cover the cortex and test robustness of results.
 
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{schaefer_high_cnr_rois}
+  \caption{
+    20 ROIs selected from the Schaefer 400 parcels; 17 network atlas for having the
+    highest CNR for both LSS and LSA.
+  }
+  \label{fig:schaefertopmap}
+\end{figure}
+
 In order to increase the likelihood of being able to detect a real result using the Schaefer atlas,
 we selected the top 25 ROIs with the highest CNR using LSA and LSS separately
 (see \nameref{methods:bsc-simulations} for how we calculated CNR).
@@ -866,32 +876,19 @@ Fisher's r-to-z conversion~\cite{Fisher1915}.
 
 In the participant data, BSC generated correlation matrices for each condition ,
 each method, (LSA and LSS), each data type (real and null), and each participant (N=40).
-The first check performed was contrasting the real switch condition and null switch condition
+The first check performed was contrasting the real dual condition and null dual condition
 to ensure BSC from a task are different than BSC from null data.
 A paired t-test was run on each ROI-ROI pair for the activation atlas, totaling 210 comparisons
 between task and null.
-We next contrasted $switch - single$, $repeat - single$, and $switch - repeat$, for LSS/LSA in both
+We next contrasted $dual - single$, $repeat - single$, and $switch - repeat$, for LSS/LSA in both
 real and null data.
 
 Since we do not have a ground truth for which ROI-ROI pairs should be different between conditions,
-we used permutation tests on the correlation matrices to ascertain whether we observed a greater number
-of statistically significant ROI-ROI pairs than would be expected.
+we used a binomial test to discover if the number of observed significant ROI-ROI pairs was greater
+than 5\%.
 We did not use false discovery rate correction on the observed p-values since we were not interested in
 which specific ROI-ROI pair correlations were likely to be true positives, but rather if the number of positives
-observed would be expected by chance alone or if LSS/LSA likely detected an overall difference between event conditions
-We shuffled each ROI-ROI pair within each participant such that any ROI-ROI correlation would remain
-in their own condition, or be swapped.
-We shuffled every participants' ROI-ROI pairs for 1000 iterations and ran a paired t-test on every ROI-ROI pair
-for each iteration.
-We then summed the total number of statistically significant ROI-ROI pairs for each iteration and used
-to form the distribution of expected results.
-For example, if we observed 10 significant ROI-ROI pairs in our real data, we could permute the data
-with 5 iterations resulting in $[5, 3, 12, 7, 10]$.
-To determine our p-value, we would count the number of permuted results that at least as large as
-our observed number and divide that number by the total number of iterations.
-In this example, 2 values are at least as large as our observed result (10 and 12), so our
-p-value would be $2/5$ or 0.4.
-Since we are using 1000 iterations, our p-values will provide a more exact estimates than the example.
+observed would be expected by chance alone or if LSS/LSA likely detected an overall difference between event conditions.
 (\href{https://github.com/jdkent/BetaSeriesRealDataAnalysis/blob/90fafb5b83b2e1bfade61a9fb1a87f225efaa95f/nibsAnalysis/BetaSeriesAnalysis.ipynb}{see here for relevant code})
 
 \subsection*{Software Dependencies}
@@ -1033,138 +1030,44 @@ The Schaefer atlas has qualitatively similar results, with the exception of
 the $switch - repeat$ contrast where LSA found more statistically significant
 ROI-ROI pair correlation differences between conditions relative to chance, but LSS did not \ref{fig:schaefer-result}.
 
-
-\begin{figure}[H]
-  \includegraphics[width=\textwidth]{data-real_atlas-activation_participants-filtered_permutation_summary}
-  \caption{
-    Percentage of statistically significant ROI-ROI pairs observed in the activation atlas
-    plotted against a null distribution for the contrasts $task - null$, $switch - single$,
-    $repeat - single$, and $switch - repeat$.
-    The large dots represent the observed percentage of statistically significant ROI-ROI pairs.
-    The violin plots represent 1000 permutations of the data reflecting the null distribution
-    of observing statistically significant ROI-ROI pairs.
-    The red dashed line represents the expected 5\% false positive rate.
-  }
-  \label{fig:main-result}
-\end{figure}
-
 \begin{figure}[H]
   \centering
-  \subfloat[][a]{\includegraphics[width=0.49\linewidth]{
+  \subfloat[][]{\includegraphics[width=0.49\linewidth]{
     data-real_atlas-activation_participants-filtered_permutation_summary} 
-  \label{fig:timing1}}
+  \label{fig:real-activation}}
   \hfill
-  \subfloat[][a]{\includegraphics[width=0.49\linewidth]{
+  \subfloat[][]{\includegraphics[width=0.49\linewidth]{
     data-null_atlas-activation_participants-filtered_permutation_summary} 
-  \label{fig:timing2}}
+  \label{fig:null-activation}}
   \vfill
-  \subfloat[][a]{\includegraphics[width=0.49\linewidth]{
+  \subfloat[][]{\includegraphics[width=0.49\linewidth]{
     data-real_atlas-schaeferbest_participants-filtered_permutation_summary} 
-  \label{fig:timing3}}
+  \label{fig:real-schaeferbest}}
   \hfill
-  \subfloat[][a]{\includegraphics[width=0.49\linewidth]{
+  \subfloat[][]{\includegraphics[width=0.49\linewidth]{
     data-null_atlas-schaeferbest_participants-filtered_permutation_summary} 
-  \label{fig:timing4}}
-  \caption{this}
-\end{figure}
-
-
-\begin{figure}[H]
-  \includegraphics[width=\textwidth]{data-real_atlas-schaefer_participants-filtered_permutation_summary}
+  \label{fig:null-schaeferbest}}
   \caption{
-    Percentage of statistically significant ROI-ROI pairs observed in the Schaefer atlas
-    plotted against a null distribution for the contrasts $task - null$, $switch - single$,
-    $repeat - single$, and $switch - repeat$.
-    The large dots represent the observed percentage of statistically significant ROI-ROI pairs.
-    The violin plots represent 1000 permutations of the data reflecting the null distribution
-    of observing statistically significant ROI-ROI pairs.
-    The red dashed line represents the expected 5\% false positive rate.
+    Percentage of statistically significant ROI-ROI pairs found
+    in the contrasts $task - null$, $dual - single$, $repeat - single$, and
+    $switch - repeat$.
+    The red dotted line represents the expected 5\% false positive rate
+    and the shaded red region is the 95\% confidence interval.
+    Left panels \ref{fig:real-activation} and \ref{fig:real-schaeferbest}
+    are results from the real data with the contrast $task - null$ subtracting the
+    ROI-ROI correlation found in the null data from the ROI-ROI correlation found in the
+    real data for the $dual$ condition.
+    Right panels \ref{fig:null-activation} and \ref{fig:null-schaeferbest} are results
+    from the null data.
+    While in the Activation Atlas both LSS and LSA show similar performance;
+    in the Top CNR Schaefer Atlas, LSA has an increase in false positives
+    whereas LSS is closer to an expected number of false positives.
   }
-  \label{fig:schaefer-result}
+\label{fig:main-result}
 \end{figure}
-
-\begin{figure}[H]
-  \includegraphics[width=\textwidth]{data-real_atlas-schaeferbest_participants-filtered_permutation_summary}
-  \caption{
-    Percentage of statistically significant ROI-ROI pairs observed in the Schaefer atlas (top 20 regions)
-    plotted against a null distribution for the contrasts $task - null$, $switch - single$,
-    $repeat - single$, and $switch - repeat$.
-    The large dots represent the observed percentage of statistically significant ROI-ROI pairs.
-    The violin plots represent 1000 permutations of the data reflecting the null distribution
-    of observing statistically significant ROI-ROI pairs.
-    The red dashed line represents the expected 5\% false positive rate.
-  }
-  \label{fig:schaeferbest-result}
-\end{figure}
-
-\begin{figure}[H]
-  \includegraphics[width=\textwidth]{data-null_atlas-activation_participants-filtered_permutation_summary}
-  \caption{
-    NULL DATA. Percentage of statistically significant ROI-ROI pairs observed in the activation
-    plotted against a null distribution for the contrasts $task - null$, $switch - single$,
-    $repeat - single$, and $switch - repeat$.
-    The large dots represent the observed percentage of statistically significant ROI-ROI pairs.
-    The violin plots represent 1000 permutations of the data reflecting the null distribution
-    of observing statistically significant ROI-ROI pairs.
-    The red dashed line represents the expected 5\% false positive rate.
-  }
-  \label{fig:act-null-result}
-\end{figure}
-
-\begin{figure}[H]
-  \includegraphics[width=\textwidth]{data-null_atlas-schaefer_participants-filtered_permutation_summary}
-  \caption{
-    NULL DATA. Percentage of statistically significant ROI-ROI pairs observed in the Schaefer atlas
-    plotted against a null distribution for the contrasts $task - null$, $switch - single$,
-    $repeat - single$, and $switch - repeat$.
-    The large dots represent the observed percentage of statistically significant ROI-ROI pairs.
-    The violin plots represent 1000 permutations of the data reflecting the null distribution
-    of observing statistically significant ROI-ROI pairs.
-    The red dashed line represents the expected 5\% false positive rate.
-  }
-  \label{fig:sch-null-result}
-\end{figure}
-
-\begin{figure}[H]
-  \includegraphics[width=\textwidth]{data-null_atlas-schaeferbest_participants-filtered_permutation_summary}
-  \caption{
-    NULL DATA. Percentage of statistically significant ROI-ROI pairs observed in the Schaefer atlas (top 20 regions)
-    plotted against a null distribution for the contrasts $task - null$, $switch - single$,
-    $repeat - single$, and $switch - repeat$.
-    The large dots represent the observed percentage of statistically significant ROI-ROI pairs.
-    The violin plots represent 1000 permutations of the data reflecting the null distribution
-    of observing statistically significant ROI-ROI pairs.
-    The red dashed line represents the expected 5\% false positive rate.
-  }
-  \label{fig:schbest-null-result}
-\end{figure}
-
 
 Although both LSS and LSA detected condition specific correlation differences;
 the significant ROI-ROI pairs found with LSS are largely non-overlapping with LSA.
-
-\begin{figure}[H]
-  \centering
-  \subfloat{\includegraphics[width=\textwidth]{data-both_type-brain_atlas-activation_contrast-taskXnull}}
-
-  \subfloat{\includegraphics[width=\textwidth]{data-task_type-brain_atlas-activation_contrast-repeatXsingle}}
-
-  \caption{
-   The statistically significant contrasts $task - null$ and $repeat - single$
-   in the real data.
-   The glass brains show the anatomical locations of each ROI,
-   labelled with its identifying number.
-   The edges between ROIs represent significant correlation differences
-   between conditions for LSA (blue), LSS (green), or both (yellow).
-   The contrast $task - null$ has 22 statistically significant ROI-ROI
-   pairs for LSA, 27 statistically significant ROI-ROI pairs
-   for LSS with 9 overlapping ROI-ROI pairs for both LSS and LSA.
-   The contrast $repeat - single$ has 21 statistically significant ROI-ROI
-   pairs for LSA, 16 statistically significant ROI-ROI pairs
-   for LSS with 3 overlapping ROI-ROI pairs for both LSS and LSA. 
-  }
-  \label{fig:significant-contrasts}
-\end{figure}
 
 % \begin{table}[!ht]
 % \begin{adjustwidth}{-2.25in}{0in} % Comment out/remove adjustwidth environment if table fits in text column.
@@ -1309,14 +1212,22 @@ The real data suggests LSS and LSA perform similarly.
 Based on the number of statistically significantly different ROI-ROI pair correlations alone,
 LSS and LSA cannot be easily distinguished.
 Overall, we have evidence LSA and LSS are able to detect differences between
-blocks of events ($task - null$ and $repeat - single$), but not within blocks of events ($switch - repeat$).
-The last contrast is what's seen in fast event-related designs suggesting
-great care should be taken to determine if you have enough power to detect differences
-between conditions.
+blocks of events ($task - null$, $dual - single$, $repeat - single$), but not an event related contrast ($switch - repeat$).
+This suggests our sample of 40 older adults was not large enough to detect a reliable event related effect,
+which should caution researchers to test what their sample size should be to detect an effect.
 
 Contrary to the simulations where LSS was found to be more powerful,
-there is some evidence of LSS having fewer statistically significant ROI-ROI pairs than expected through chance alone
+for both the Activation Atlas and the high CNR ROIs from the Schaefer atlas LSS and LSA performed similarly.
+LSA was prone to a higher rate of false positives for the null data within the best Schaefer ROIs Atlas.
+However, LSS appeared to have a greater magnitude of false positives than LSA when using the entire schaefer atlas.
+There is some evidence of LSS having fewer statistically significant ROI-ROI pairs than expected through chance alone
 for the contrast $switch - repeat$.
+This pattern can be seen for both the real and null data, suggesting there is a property inherent to LSS
+leading to this pattern.
+Since the beta estimates for each event within LSS are not orthogonal with respect to each other,
+there is the possibility the subsequent correlations between beta series become related to each other.
+The influence of adjacent events was not captured in the simulations making adjacent events from
+different conditions a likely culprit.
 This result either suggests there are not many ROI-ROI pairs that do change their correlation
 between two conditions, or that LSS has poor sensitivity to detect those differences.
 Since there is not a strong theoretical backing to say the pattern of results
@@ -1567,3 +1478,4 @@ JK performed the analyses. JK wrote the manuscript. JK, MV, and CB revised the m
 % weighted average of switch+repeat
 % redo correlation analysis with switch+repeat as the same event type
 % other PLS multidimensional scaling
+% low CNR/activation regions included in the atlas tends to lead to greater false positives with LSS
