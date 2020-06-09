@@ -244,7 +244,8 @@ Michelle Voss\textsuperscript{1},
 Cognitive tasks drive discovery in cognitive neuroscience by connecting cognition and the brain.
 These cognitive tasks often have multiple conditions interleaved with each other,
 and the cognitive process of interest is seen through the difference between those conditions.
-The most common approach for tasks completed during functional magnetic resonance imaging (fMRI) examines how much activation occurs in different brain regions.
+The most common approach for tasks completed during functional magnetic resonance imaging (fMRI)
+examines how much activation occurs in different brain regions.
 More recently, it has become clear that it is just as important to examine how brain regions act together as networks.
 Beta series correlations are an increasingly popular measure to estimate which brain regions correlate with
 each other during different conditions within an MRI scanner.
@@ -260,8 +261,8 @@ experimental designs and using real data.
 Our simulations show LSS outperforms LSA across a variety of inter-event
 intervals and numbers of total events.
 Real data does not show a clear advantage of LSS over LSA.
-In fact, LSS may be less able to detect condition differences in
-event related designs if condition differences are presumed to exist.
+In fact, LSA may have a slight advantage over LSS for event
+related contrasts.
 Overall, results show the importance of validation using both simulations
 and real data and impacts how future studies should design their tasks
 to improve detectability of conditional organization of brain networks.
@@ -272,7 +273,12 @@ to improve detectability of conditional organization of brain networks.
 \section*{Introduction}
 \label{intro}
 
-The field of human neuroimaging has moved towards interrogating networks of brain regions.
+Cognitive neuroscience blends cognitive tasks with measures of the brain to drive discoveries.
+These cognitive tasks often have multiple conditions interleaved with each other,
+and the cognitive process of interest is seen through the difference between those conditions.
+The most common approach for tasks completed during functional magnetic resonance imaging (fMRI)
+examines how much activation occurs in different brain regions.
+More recently, it has become clear that it is just as important to examine how brain regions act together as networks.
 Broadly defined, a brain network is a collection of brain regions who share information~\cite{Uddin2019}.
 Brain networks have primarily been investigated while participants do not complete an explicit task, but there
 is rising popularity to observe brain networks while participants perform tasks~\cite{Cole2014a}.
@@ -285,14 +291,14 @@ We seek to validate and compare two methods that can measure brain responses to 
 close in time.
 
 The overarching method being investigated is beta series correlations (BSC)~\cite{Rissman2004,Mumford2012,Turner2012a,Abdulrahman2016}
-There are two main approaches to estimate the Beta Series for BSC: Least Squares All (LSA) and Least Squares Separate (LSS)~\cite{Mumford2012}.
+There are two main approaches to estimate the beta series for BSC: Least Squares All (LSA) and Least Squares Separate (LSS)~\cite{Mumford2012}.
 Both approaches of beta series estimation seek to derive single event estimates that represent a brain region's
 (or voxel's) activity at each individual event.
 An event is defined as "a stimulus or participant response recorded during a task."~\cite{Gorgolewski2016}
 Where task is defined as "a set of structured activities performed by the participant."~\cite{Gorgolewski2016}
 The single event estimates become difficult to estimate when events occur close together,
 in other words, less than the time it takes for the Blood Oxygen Level Dependent (BOLD) response to return to baseline~\ref{fig:introhrf}.
-Such designs are called fast event related designs and are most commonly
+Such designs are called fast event-related designs and are most commonly
 used in cognitive neuroscience.
 
 \begin{figure}[H]
@@ -302,7 +308,7 @@ used in cognitive neuroscience.
     Model of the Hemodynamic Response Function (HRF)~\cite{Glover1999} at a
     typical resolution of an fMRI scan (2 seconds).
     The x-axis represents time in seconds and the y-axis is arbitrary units.
-    Fast event related designs with inter event intervals (IEIs) at or faster than time to peak
+    Fast event-related designs with inter event intervals (IEIs) at or faster than time to peak
     response (e.g., 4-6 seconds), need to account for the overlapping signals.
   }
   \label{fig:introhrf}
@@ -318,8 +324,8 @@ LSA and LSS approach this problem differently.
 LSA ignores this problem by calculating a high variance, but low bias measure by ensuring orthogonality
 between events;
 whereas LSS calculates a lower variance; but more biased measure, relaxing the orthogonality restriction.
-To understand how LSA and LSS approach single event estimation, it is necessary to introduce
-the General Linear Model (GLM).
+To understand how LSA and LSS differ in their restrictions of orthagonality in single event estimation,
+it is necessary to introduce the General Linear Model (GLM).
 GLMs are a mainstay in the neuroimaging literature, allowing researchers to model
 a curve that approximates the BOLD response shape and linearly scale the curve
 to best match the data~\cite{Friston1995}.
@@ -346,7 +352,7 @@ active relative to some baseline or another condition~\ref{fig:introGLM}.
 
 Grouping together events of the same type, however, does not tell you which regions are acting in concert
 in response to the event type.
-The traditional GLM outputs a single beta estimate per event type, but to measure which regions
+The traditional GLM produces a single beta estimate per event type, but to measure which regions
 are acting in concert; you would need a beta estimate per event.
 For example, it could be the case that for half of the events of the same type 2 regions are active,
 and for the other half, another 2 regions are active.
@@ -374,8 +380,8 @@ estimate for a group of events, each event gets its own beta estimate in a singl
 
 LSS differs from LSA by fitting a separate GLM for each event, where in each model a target
 event is fit and the rest of the events are grouped together and given separate beta estimates~\ref{fig:introlss}.
-Placing all other events into a single regressor is how LSS was introduced, but as shown in~\ref{fig:introlss},
-each event type has its own regressor, which is referred to as LSS-N in other papers~\cite{Abdulrahman2016,Mumford2012}.
+LSS was introduced by placing all other events into a single regressor, but as shown in~\ref{fig:introlss},
+each event type has its own regressor, which is referred to as LSS-N in other papers~\cite{Rissman2004,Abdulrahman2016,Mumford2012}.
 We will refer to LSS-N as LSS for the remainder of the manuscript.
 
 \begin{figure}[H]
@@ -402,13 +408,13 @@ We will refer to LSS-N as LSS for the remainder of the manuscript.
 The target event estimate from each GLM is taken to form a beta series.
 Harkening back to the sluggish BOLD response, LSA suffers when the events are close together,
 since the GLM cannot reliably attribute which BOLD response should correspond to which event~\ref{fig:introGLM}.
-LSS attempts to reduce the model confusion by only having one single event estimate per model,
+LSS attempts to reduce the model confusion by having one event estimate per model,
 so the non-target events have their beta estimate influenced by multiple observations, loosening the
 constraint that adjacent events to the target event need to be orthogonal (i.e., independent) from each other.
 While previous work has simulated beta series and evaluated beta series on real data,
 several key gaps remain~\cite{Mumford2014a,Mumford2012,Turner2012a,Abdulrahman2016,Cisler2012,Arco2018}.
 One, simulations have not taken into account realistic noise structure of fMRI data such as autocorrelations, movement, and phsyiological noise.
-Two, simulations have not used optimized fast event related designs, only randomly selected designs. 
+Two, simulations have not used optimized fast event-related designs, only randomly selected designs. 
 Three, empirical selections of signal to noise ratios have not been considered,
 ratios were chosen without justification in previous work~\cite{Abdulrahman2016,Mumford2012}.
 Four, a quantitative comparison of LSA and LSS condition contrasts for BSC has not been done.
@@ -535,7 +541,7 @@ response magnitude is more important.
 The choice of onset times was varied based on average inter-event-interval (IEIs).
 The IEI is the time from the previous event onset to the next event onset.
 We chose average IEIs at 2, 4, 6, and 8 seconds to reflect a common range of IEIs
-for fast event related design experiments~\cite{Hennigan2015,Dichter2007,Goghari2009}.
+for fast event-related design experiments~\cite{Hennigan2015,Dichter2007,Goghari2009}.
 We also varied the number of events, choosing 15, 30, 45, and 60 events per condition,
 which also appears to be common selections for fast event-related design experiments.
 The optimization of event onsets was done with neurodesign~\cite{Durnez2018}.
@@ -610,7 +616,7 @@ We chose 100 volumes to keep the number of regressors in LSA
 (which already includes as many regressors as events) a reasonable size
 for single event beta estimation since we included each outlier volume
 as a regressor as well.
-The task switch task was a mixed block/event related design containing
+The task switch task was a mixed block/event-related design containing
 5 blocks (2 single task blocks and 3 mixed task blocks).
 There was a 30 second rest between each block.
 There were 30 events during each single event block,
@@ -641,7 +647,8 @@ discrete cosine basis filter (high pass filter), framewise displacement, the fir
 all identified motion outliers as regressors in the first level model for each participant
 in addition to event onsets convolved with a double gamma function~\cite{Glover1999}.
 Each image was smoothed with a 6mm full-wide half-max kernel.
-We derived 3 contrasts of interest: $switch - repeat$, $switch - single$, and $repeat - single$.
+We derived 3 contrasts of interest: $switch - repeat$, $dual- single$, and $repeat - single$.
+The $dual$ condition is the weighted average of $switch$ and $repeat$ to represent the global cost~\cite{Wylie2000}.
 We ignored correctness of the participant's response since this was not important to
 separate condition and error processing to validate BSC.
 
@@ -655,7 +662,7 @@ false discovery rate error control \ref{fig:stat_maps}.
   \includegraphics[width=\textwidth,height=0.8\paperheight,keepaspectratio]{contrast_summary}
   \caption{
     Univariate statistical maps of second level results representing
-    all contrasts of interest, $switch - single$, $repeat - single$, $switch - repeat$}
+    all contrasts of interest, $dual - single$, $repeat - single$, $switch - repeat$}
   \label{fig:stat_maps}
 \end{figure}
 
@@ -870,7 +877,7 @@ In order to increase the likelihood of being able to detect a real result using 
 we selected the top 25 ROIs with the highest CNR using LSA and LSS separately
 (see \nameref{methods:bsc-simulations} for how we calculated CNR).
 We then took the intersection of the two ROI sets resulting in 20 ROIs that have a high CNR
-as measured by LSA and LSS
+as measured by LSA and LSS \ref{table:parcels},\ref{fig:schaefertopmap}
 (\href{https://github.com/jdkent/BetaSeriesRealDataAnalysis/blob/master/nibsAnalysis/cnr_trial_variability.ipynb}{see here for relevant code}).
 The results for the entire 400 ROI altas are shown in the supplementals.
 
@@ -1022,21 +1029,42 @@ all subsequent analyses will be moderately underpowered to detect an effect.
 \end{figure}
 
 We looked at task switching data from the most lenient
-contrast ($real - null$) to the most conserative contrast ($switch - repeat$)
+contrast ($task - null$) to several block contrasts ($dual - single$ and $repeat - single$)
+to an event-related contrast ($switch - repeat$)
 to assess how well LSS and LSA detect ROI-ROI correlation differences between conditions.
-For the contrasts $switch - single$, $repeat - single$, and $switch - repeat$ we also
+For the contrasts $dual - single$, $repeat - single$, and $switch - repeat$ we also
 performed the same contrast in the null data to measure the specificity of each method.
-The activation atlas is visualized using a glass brain to provide the reader a better sense
-of the anatomy.
 
 We found both LSS and LSA had a larger number of statistically significant ROI-ROI pairs
-for the contrasts $task - null$ (LSS: 12.86\%; p $<$ 0.001, LSA: 10.48\%; p = 0.001)
-and $repeat - single$ (LSS: 7.62\%; p = 0.047, LSA: 10.00\%; p = 0.005) \ref{fig:main-result}.
+for the contrasts in the activation atlas $task - null$ (LSS: 12.86\%; p $<$ 0.001, LSA: 11.90\%; p = 0.001).
+LSS had a larger number of statistically significiant ROI-ROI pairs within the 
+$dual - single$ contrast (LSS: 9.05\%; p = 0.010, LSA: 4.29\%; p = 0.727).
+LSA had a larger number of statisically significant ROI-ROI pairs for the
+$repeat - single$ contrast (LSS: 7.62\%; p = 0.063, LSA: 10.00\%, p = 0.002) \ref{fig:main-result}.
+Surprisingly, LSS found a fewer number of significant ROI-ROI pairs than expected
+for the contrast $switch - repeat$ in both the real data and null data. 
+
+The top 20 CNR ROIs in the Schaefer Atlas show qualitatively similar results,
+with LSS and LSA achieving a greater number of significant ROI-ROI pairs
+than expected for the contrasts
+$task - null$ (LSS: 14.74\%, p $<$ 0.001; LSA: 21.05\%, p $<$ 0.001) and
+$repeat - single$ (LSS: 11.05\%, p $<$ 0.001; LSA: 12.63\% p $<$ 0.001).
+LSS alone showed a greater number of significant ROI-ROI pairs than expected
+for the contrast
+$dual - single$ (LSS: 10.53\%, p = 0.001; LSA: 7.90\%, p = 0.055).
+Both LSS and LSA were around the expected false positive rate for the contrast
+$switch - repeat$.
+The null data for the Top 20 CNR ROIs in the schaefer atlas demonstrate
+the possibility that LSA detects a greater number of significant ROI-ROI
+pairs when there is no response to model, but since this finding did not
+replicate in the Activation Atlas, there may be some property specific
+to this collection of ROIs.
 Those two contrasts indicate the success of LSS and LSA to measure
-condition specific difference in ROI-ROI correlations.
+condition specific difference in ROI-ROI correlations when the events are in different blocks.
 The Schaefer atlas has qualitatively similar results, with the exception of
 the $switch - repeat$ contrast where LSA found more statistically significant
-ROI-ROI pair correlation differences between conditions relative to chance, but LSS did not (see supplementary figures).
+ROI-ROI pair correlation differences between conditions relative to chance,
+but LSS did not (see supplementary figures).
 
 \begin{figure}[H]
   \centering
@@ -1220,7 +1248,7 @@ The real data suggests LSS and LSA perform similarly.
 Based on the number of statistically significantly different ROI-ROI pair correlations alone,
 LSS and LSA cannot be easily distinguished.
 Overall, we have evidence LSA and LSS are able to detect differences between
-blocks of events ($task - null$, $dual - single$, $repeat - single$), but not an event related contrast ($switch - repeat$).
+blocks of events ($task - null$, $dual - single$, $repeat - single$), but not an event-related contrast ($switch - repeat$).
 This suggests our sample of 40 older adults was not large enough to detect a reliable event related effect,
 which should caution researchers to test what their sample size should be to detect an effect.
 
@@ -1228,19 +1256,14 @@ Contrary to the simulations where LSS was found to be more powerful,
 for both the Activation Atlas and the high CNR ROIs from the Schaefer atlas LSS and LSA performed similarly.
 LSA was prone to a higher rate of false positives for the null data within the best Schaefer ROIs Atlas.
 However, LSS appeared to have a greater magnitude of false positives than LSA when using the entire schaefer atlas.
-There is some evidence of LSS having fewer statistically significant ROI-ROI pairs than expected through chance alone
+Furthermore, there is some evidence of LSS having fewer statistically significant ROI-ROI pairs than expected through chance alone
 for the contrast $switch - repeat$.
 This pattern can be seen for both the real and null data, suggesting there is a property inherent to LSS
 leading to this pattern.
-Since the beta estimates for each event within LSS are not orthogonal with respect to each other,
-there is the possibility the subsequent correlations between beta series become related to each other.
-The influence of adjacent events was not captured in the simulations making adjacent events from
-different conditions a likely culprit.
-This result either suggests there are not many ROI-ROI pairs that do change their correlation
-between two conditions, or that LSS has poor sensitivity to detect those differences.
-Since there is not a strong theoretical backing to say the pattern of results
-in LSS is closer to the ground truth than LSA, we cannot say which
-explanation above is more likely.
+Since the beta estimates calculated by LSS are not orthogonal to adjacent events,
+the ROI-ROI beta series correlation for one condition is influenced by the other interleaved condition,
+resulting in a greater difficulty to detect differences between conditions.
+That is likely the source of the poor performance of LSS in event-related contrasts.
 
 Surprisingly, LSA and LSS results did not have much overlap between significant
 ROI-ROI pair correlation differences between conditions.
@@ -1278,6 +1301,9 @@ LSS and LSA, it is difficult to say whether LSA or LSS would be "correct".
 
 Another interesting aspect of our analysis of the real data was the inclusion of
 null (resting state) data where the participants simply stared at a fixation cross.
+Using the null data we were able to dissociate the performance of LSS and LSA using the
+Top 20 CNR ROIs from the Schaefer Atlas because LSA showed many more false positives
+relative to LSS \ref{fig:null-schaeferbest}.
 It could be argued the resting state data does not provide an adequate null model
 to compare to the real task data because there is presumably no BOLD response at any
 of the onset times.
@@ -1387,9 +1413,10 @@ in their network measures as well.
 
 Overall, our work leads to four main conclusions:
 1) simulations suggest increasing average IEI to 6 seconds and number of events to 30 per condition will detect a difference between conditions, 
-2) simulations suggest LSS has more power than LSA to detect differences between conditions,
+2) simulations suggest LSS has more power than LSA to detect differences between conditions (between blocks),
 3) real data suggests LSS and LSA perform comparably but results are dependent on which atlas is selected,
-4) It is difficult for both LSS and LSA to detect condition differences when events are interleaved instead of occuring in separate blocks.
+4) LSA may have a slight advantage for event-related contrasts,
+but it is difficult for both LSS and LSA to detect condition differences when events are interleaved instead of occuring in separate blocks.
 This work guides and cautions cognitive neuroscience researchers as they design their tasks and decide
 which analysis path they should take amid the forking paths of researcher degrees of freedom.
 
