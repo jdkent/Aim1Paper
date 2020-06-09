@@ -297,7 +297,7 @@ used in cognitive neuroscience.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{introduction-hrf}
+  \includegraphics[width=0.6\textwidth]{introduction-hrf}
   \caption{
     Model of the Hemodynamic Response Function (HRF)~\cite{Glover1999} at a
     typical resolution of an fMRI scan (2 seconds).
@@ -334,7 +334,7 @@ active relative to some baseline or another condition~\ref{fig:introGLM}.
 
 \begin{figure}[H]
   \centering
-  \includegraphics{introduction-normalGLM}
+  \includegraphics[width=0.2\textwidth]{introduction-normalGLM}
   \caption{
     An example of a design matrix seen in a traditional GLM used in fMRI~\cite{Friston1995}.
     There is a single column for each condition, resulting in two columns (intercept column ignored for clarity).
@@ -659,35 +659,6 @@ false discovery rate error control \ref{fig:stat_maps}.
   \label{fig:stat_maps}
 \end{figure}
 
-An activation atlas was generated based on an F-test across the switch, repeat, and single conditions
-to identify regions that were reliably activated for all participants \ref{table:clusters}.
-5mm spheres were drawn around each statistical peak (21 peaks total)
-to form the activation atlas \ref{fig:methroimap}.
-
-\begin{table}[H]
-  \csvautotabular[separator=tab, no check column count]{./data/cluster_table.tsv}
-  \caption{
-    The peak MNI coordinates/Z-statistic identifying clusters/sub-clusters from the overall
-    response contrast.
-    These peaks were used to create regions of interest (ROIs) to form an atlas representative
-    of the most consistently activated regions across conditions.
-  }
-  \label{table:clusters}
-\end{table}
-
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=\textwidth]{stat-map-overall_resp_with_rois}
-  \caption{
-    ROIs drawn from the peak Z-score table, placing a sphere with a 5mm radius
-    at each peak coordinate.
-    The clusters are identified in their approximate locations
-    with their ID.
-  }
-  \label{fig:methroimap}
-\end{figure}
-
 In addition to the task switching task, participants also completed
 two 8 minute resting state runs.
 We used the resting state runs as a null model for task switching.
@@ -847,6 +818,43 @@ consistently activated across event conditions (see \nameref{methods:task-switch
 This atlas has coverage across several cortical and subcortical regions.
 The second atlas, Schaefer Atlas (400 parcels, 17 networks)\cite{Schaefer2017}, was
 used to comprehensively cover the cortex and test robustness of results.
+
+An activation atlas was generated based on an F-test across the switch, repeat, and single conditions
+to identify regions that were reliably activated for all participants \ref{table:clusters}.
+5mm spheres were drawn around each statistical peak (21 peaks total)
+to form the activation atlas \ref{fig:methroimap}.
+
+\begin{table}[H]
+  \csvautotabular[separator=tab, no check column count]{./data/cluster_table.tsv}
+  \caption{
+    The peak MNI coordinates/Z-statistic identifying clusters/sub-clusters from the overall
+    response contrast.
+    These peaks were used to create regions of interest (ROIs) to form an atlas representative
+    of the most consistently activated regions across conditions.
+  }
+  \label{table:clusters}
+\end{table}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{stat-map-overall_resp_with_rois}
+  \caption{
+    ROIs drawn from the peak Z-score table, placing a sphere with a 5mm radius
+    at each peak coordinate.
+    The clusters are identified in their approximate locations
+    with their ID.
+  }
+  \label{fig:methroimap}
+\end{figure}
+
+\begin{table}[H]
+  \csvautotabular[separator=tab]{./data/schaeferbest_rois.tsv}
+  \caption{
+    The top 20 ROIs from the Schaefer 400 (17 Network) identified with a highest CNR as measured by
+    both LSS and LSA.
+  }
+  \label{table:parcels}
+\end{table}
 
 \begin{figure}[H]
   \centering
@@ -1028,7 +1036,7 @@ Those two contrasts indicate the success of LSS and LSA to measure
 condition specific difference in ROI-ROI correlations.
 The Schaefer atlas has qualitatively similar results, with the exception of
 the $switch - repeat$ contrast where LSA found more statistically significant
-ROI-ROI pair correlation differences between conditions relative to chance, but LSS did not \ref{fig:schaefer-result}.
+ROI-ROI pair correlation differences between conditions relative to chance, but LSS did not (see supplementary figures).
 
 \begin{figure}[H]
   \centering
@@ -1178,7 +1186,7 @@ either a different participant or separate runs from the same participant.
 The $real$ and $null$ conditions come from the task switching task and resting state,
 respectively, representing two runs.
 The contrasts in the simulations are therefore most analogous to the $real - null$
-contrast in \ref{fig:significant-contrasts}.
+contrast in \ref{fig:main-result}.
 Additionally, each simulation contains two conditions whose BOLD responses
 are independent of each other, that is, the BOLD response for one event
 does not influence the BOLD response for a subsequent event.
