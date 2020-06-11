@@ -277,11 +277,11 @@ Broadly defined, a brain network is a collection of brain regions who share info
 Brain networks have primarily been investigated while participants at rest, but there
 is rising popularity to observe brain networks while participants perform tasks~\cite{Cole2014a}.
 There is also rising popularity to measure dynamically changing correlations within and between brain networks over time~\cite{Sakoglu2008,Hindriks2016}.
-However, There has not been significant validation and investigation of brain networks
+However, There has not been investigation and validation of brain networks
 when participants engage in tasks with interleaved conditions that could induce
 different brain networks dynamically~\cite{Di2019a}.
-In other words measuring brain networks have not been validated within fast event-related designs~\cite{Buckner1998}.
-We seek to validate and compare two methods that can measure brain responses to events that occur
+In other words measuring contextual brain networks has not been validated within fast event-related designs~\cite{Buckner1998}.
+We seek to validate and compare two methods that may measure brain responses to events that occur
 close in time.
 
 The overarching method being investigated is beta series correlations (BSC)~\cite{Rissman2004,Mumford2012,Turner2012a,Abdulrahman2016}
@@ -290,8 +290,7 @@ Both approaches of beta series estimation seek to derive single event estimates 
 (or voxel's) activity at each individual event.
 An event is defined as "a stimulus or participant response recorded during a task."~\cite{Gorgolewski2016}
 Where task is defined as "a set of structured activities performed by the participant."~\cite{Gorgolewski2016}
-The single event estimates become difficult to estimate when events occur close together,
-in other words, less than the time it takes for the Blood Oxygen Level Dependent (BOLD) response to return to baseline~\ref{fig:introhrf}.
+The single event estimates become difficult to estimate when events occur close together~\ref{fig:introhrf}.
 Such designs are called fast event-related designs and are most commonly
 used in cognitive neuroscience.
 
@@ -315,7 +314,7 @@ becomes apparent.
 One does not know whether BOLD activity should be attributed to a target event or an
 adjacent event.
 LSA and LSS approach this problem differently.
-LSA ignores this problem by calculating a high variance, but low bias measure by ensuring orthogonality
+LSA ignores this problem by calculating a high variance, but low bias measure by enforcing orthogonality
 between events;
 whereas LSS calculates a lower variance; but more biased measure, relaxing the orthogonality restriction.
 To understand how LSA and LSS differ in their restrictions of orthagonality in single event estimation,
@@ -348,10 +347,10 @@ Grouping together events of the same type, however, does not tell you which regi
 in response to the event type.
 The traditional GLM produces a single beta estimate per event type, but to measure which regions
 are acting in concert; you would need a beta estimate per event.
-For example, it could be the case that for half of the events of the same type 2 regions are active,
-and for the other half, another 2 regions are active.
+For example, it could be the case that for half of the events of the same type regions $A$ and $B$ are active,
+and for the other half, regions $A$ and $C$ are active.
 The traditional GLM will not be able differentiate the different pairs of regions.
-LSS and LSA, on the other hand, propose to be able to separate the different pairs of regions.
+LSS and LSA, on the other hand, propose to be able to identify region $A+B$ and $A+C$.
 LSA takes a variant of the traditional GLM whereby instead of providing a beta
 estimate for a group of events, each event gets its own beta estimate in a single GLM~\ref{fig:introlsa}.
 
@@ -1151,7 +1150,6 @@ the results from the real data do not show a clear winner.
 We detail the conclusions from the simulations and the real data, and provide
 suggestions for future avenues of research.
 
-% Nulla mi mi, venenatis sed ipsum varius, Table~\ref{table1} volutpat euismod diam. Proin rutrum vel massa non gravida. Quisque tempor sem et dignissim rutrum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi at justo vitae nulla elementum commodo eu id massa. In vitae diam ac augue semper tincidunt eu ut eros. Fusce fringilla erat porttitor lectus cursus, vel sagittis arcu lobortis. Aliquam in enim semper, aliquam massa id, cursus neque. Praesent faucibus semper libero~\cite{bib3}.
 \subsection*{Simulation Conclusions}
 \label{discussion:simulation-conclusions}
 
@@ -1313,7 +1311,7 @@ CNR/AVNR in the null data relative to the real data, whereas the activation atla
 did not show a statistically significant difference between null and real data \ref{table2}.
 
 \begin{table}[H]
-  \begin{adjustwidth}{0in}{0in} % Comment out/remove adjustwidth environment if table fits in text column.
+  \begin{adjustwidth}{0in}{0in}
   \centering
   \caption{
   {\bf Differences in CNR/AVNR between real and null data}}
@@ -1383,26 +1381,6 @@ However, this finding has not been replicated using beta series correlations and
 to be investigated between tasks and event conditions within a task~\cite{Di2019a}.
 The largely non-overlapping results from LSS and LSA suggest that LSS and LSA may differ
 in their network measures as well.
-% \begin{itemize}
-%   \item Run beta series correlations on larger dataset with enough power to reliably detect an effect
-%   \item Add ability to estimate CNR/AVNR in NiBetaSeries
-%   \item use t-statistic as opposed to raw beta estimates
-%   \item temporal/spatial analysis with Finite Impulse Responses \cite{Turner2012a}
-%   \item Add ability to simulate possible condition relationships in NiBetaSeries
-%   \item need to add "fake" mean hemodynamic response to normalize the data
-%   \item extend Cole's work (compare residual correlations with LSA/LSS)
-%   \item investigate graph theoretical measures to validate between task conditions and task/null.
-%   \item simulate variable onset of BOLD responses
-%   \item use ds00030 to validate results on publically available dataset already analyzed with BSC ~\cite{Di2019a}
-% \end{itemize}
-% \subsection{Limitations}
-
-% \begin{itemize}
-%   \item Mixing of noise parameters may not be representative of real data
-%   \item The contrasts in the simulated data do not represent a true mixing of different event types
-%   \item Did not have enough participants to measure a robust effect (other studies had fewer participants)
-%   \item The preprocessing of the MRI data was minimal, (data could potentially be made less noisy)
-% \end{itemize}
 
 \section*{Conclusion}
 
