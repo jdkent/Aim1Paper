@@ -250,15 +250,15 @@ each other during different conditions within a task.
 The region to region correlations represent brain networks for the conditions.
 Two common ways to generate beta series are Least Squares All (LSA) and
 Least Squares Separate (LSS).
-However, LSS and LSA have not been compared with simulations and real data
+However, LSS and LSA have not been compared with simulations and participant data
 to identify which method is more sensitive to detect region to region correlation differences
 between conditions.
 We compared LSA and LSS by simulating responses across a variety of
-experimental designs and using real data.
-Our simulations show LSS outperforms LSA, but real data
+experimental designs and using participant data.
+Our simulations show LSS outperforms LSA, but participant data
 does not show an advantage using LSS.
 Overall, results show the importance of validation using both simulations
-and real data and impacts how future studies should design their tasks
+and participant data and impacts how future studies should design their tasks
 to improve detectability of conditional organization of brain networks.
 
 \linenumbers
@@ -404,7 +404,7 @@ since the GLM cannot reliably attribute which BOLD response should correspond to
 LSS attempts to reduce the model confusion by having one event estimate per model,
 so the non-target events have their beta estimate influenced by multiple observations, loosening the
 constraint that adjacent events to the target event need to be orthogonal (i.e., independent) from each other.
-While previous work has simulated beta series and evaluated beta series on real data,
+While previous work has simulated beta series and evaluated beta series on participant data,
 several key gaps remain~\cite{Mumford2014a,Mumford2012,Turner2012a,Abdulrahman2016,Cisler2012,Arco2018}.
 One, simulations have not taken into account realistic noise structure of fMRI data such as autocorrelations, movement, and phsyiological noise.
 Two, simulations have not used optimized fast event-related designs, only randomly selected designs. 
@@ -442,8 +442,8 @@ Testing and validation of beta series correlations followed three stages.
 First, beta series correlations were tested in simulations across different
 optimized experimental designs.
 Second, beta series correlations were tested in simulations using an experimental
-design that was used to collect real data.
-Third, beta series correlations were validated in real task data collected from
+design that was used to collect participant data.
+Third, beta series correlations were validated in participant task data collected from
 participants.
 Resting state data collected from the same participants were used as a null
 control for beta series correlations in stage three.
@@ -510,7 +510,7 @@ on the standard deviation of the beta estimates (as opposed to the amplitude).
 \begin{adjustwidth}{0in}{0in} % Comment out/remove adjustwidth environment if table fits in text column.
 \centering
 \caption{
-{\bf Summary of AVNR and CNR measures in Real Data}}
+{\bf Summary of AVNR and CNR measures in Participant Data}}
 \begin{tabular}{|l+l+l|l|l|l|}
 \hline
 Atlas & Method & CNR (mean) & CNR (max) & AVNR (mean) & AVNR (max)\\ \thickhline
@@ -584,7 +584,7 @@ This process was also repeated 10,000 times to establish power.
 Thus we detected how well correlation differences could be detected
 with different task design and noise parameters.
 
-Simulating data using the same task design as the real data followed the same
+Simulating data using the same task design as the participant data followed the same
 procedure as above, varying CNR (1, 2), AVNR (1, 2), condition,
 and ground truth correlation (0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9).
 IEI and event number were not varied since those parameters are fixed by the
@@ -592,7 +592,7 @@ task design.
 Each parameter combination was simulated 1000 times resulting in a total of 240,000 simulations.
 False positive rate and power were evaluated using the same procedure as the other simulated data.
 
-\subsection*{Real Data Validation}
+\subsection*{Participant Data Validation}
 \label{methods:task-switch}
 
 To validate the betaseries simulations we used an unpublished dataset
@@ -813,7 +813,7 @@ an region of interest to region of interest (ROI-to-ROI) correlation analysis
 to produce condition-specific correlation matrices.
 For the simulation data, ROI-to-ROI correlations were calculated by
 treating each voxel as an ROI.
-In the real data; two atlases were used to generate ROI-to-ROI correlation matrices.
+In the participant data; two atlases were used to generate ROI-to-ROI correlation matrices.
 We created an activation atlas representing regions that were
 consistently activated across event conditions (see \nameref{methods:task-switch}).
 This atlas has coverage across several cortical and subcortical regions.
@@ -821,9 +821,8 @@ The second atlas, Schaefer Atlas (400 parcels, 17 networks)\cite{Schaefer2017}, 
 used to comprehensively cover the cortex and test robustness of results.
 
 An activation atlas was generated based on an F-test across the switch, repeat, and single conditions
-to identify regions that were reliably activated for all participants \ref{table:clusters}.
-5mm spheres were drawn around each statistical peak (21 peaks total)
-to form the activation atlas \ref{fig:methroimap}.
+to identify regions that were reliably activated for all participants~\ref{table:clusters}.
+5mm spheres were drawn around each statistical peak (21 peaks total)~\ref{fig:methroimap}.
 
 \begin{table}[H]
   \csvautotabular[separator=tab, no check column count]{./data/cluster_table.tsv}
@@ -883,7 +882,7 @@ was empirical covariance, as implemented in Nilearn 0.4.2~\cite{Abraham2014}.
 Correlation coefficients were converted to normally-distributed z-values using
 Fisher's r-to-z conversion~\cite{Fisher1915}.
 
-In the participant data, BSC generated correlation matrices for each condition ,
+In the participant data, BSC generated correlation matrices for each condition (dual, switch, repeat, single),
 each method, (LSA and LSS), each data type (real and null), and each participant (N=40).
 The first check performed was contrasting the real dual condition and null dual condition
 to ensure BSC from a task are different than BSC from null data.
@@ -893,7 +892,7 @@ We next contrasted $dual - single$, $repeat - single$, and $switch - repeat$, fo
 real and null data.
 
 Since we do not have a ground truth for which ROI-ROI pairs should be different between conditions,
-we used a binomial test to discover if the number of observed significant ROI-ROI pairs was greater
+we used a binomial test across all ROI-ROI pairs to discover if the number of observed significant ROI-ROI pairs was greater
 than 5\%.
 We did not use false discovery rate correction on the observed p-values since we were not interested in
 which specific ROI-ROI pair correlations were likely to be true positives, but rather if the number of positives
@@ -988,7 +987,7 @@ correlation difference of 0.1 was across all parameters.
 
 While the IEI is 2, there is no discernable difference between LSS and LSA.
 Since the simulated data were sampled at 2 second intervals, the result
-corresponds to effectively presenting a stimulus during each sample.
+corresponds to effectively presenting a stimulus during each frame.
 With such overlapping simulated BOLD responses detecting a difference between conditions
 is unlikely.
 From an IEI of 4 seconds and upwards, LSS has an advantage over LSA.
@@ -999,7 +998,7 @@ For LSS, the 8 second IEI does not appear to boost detection power beyond a 6 se
 whereas LSA has a boost when AVNR and CNR are higher.
 
 
-\subsection*{Real Data Beta Series Correlations}
+\subsection*{Participant Data Beta Series Correlations}
 \label{results:bsc-taskswitch}
 
 We simulated data using the task switching design for stage two of beta series
@@ -1026,8 +1025,8 @@ We looked at task switching data from the most lenient
 contrast ($task - null$) to several block contrasts ($dual - single$ and $repeat - single$)
 to an event-related contrast ($switch - repeat$)
 to assess how well LSS and LSA detect ROI-ROI correlation differences between conditions.
-For the contrasts $dual - single$, $repeat - single$, and $switch - repeat$ we also
-performed the same contrast in the null data to measure the specificity of each method.
+performed the same contrasts (excluding $task - null$)
+in the null data to measure the specificity of each method.
 
 We found both LSS and LSA had a larger number of statistically significant ROI-ROI pairs
 for the contrasts in the activation atlas $task - null$ (LSS: 12.86\%; p $<$ 0.001, LSA: 11.90\%; p = 0.001).
@@ -1143,11 +1142,12 @@ the significant ROI-ROI pairs found with LSS are largely non-overlapping with LS
 \section*{Discussion}
 \label{discussion}
 
-We provided the first in depth comparison between LSS and LSA to detect differences between conditions.
-We compared LSA and LSS through realistic simulations and a real dataset.
+We provided the first in depth comparison between LSS and LSA to detect 
+ROI-ROI correlation differences between conditions.
+We compared LSA and LSS through realistic simulations and a participant dataset.
 While the simulations suggested LSS is a more powerful method,
-the results from the real data do not show a clear winner.
-We detail the conclusions from the simulations and the real data, and provide
+the results from the participant data do not show a clear winner.
+We detail the conclusions from the simulations and the participant data, and provide
 suggestions for future avenues of research.
 
 \subsection*{Simulation Conclusions}
@@ -1160,7 +1160,8 @@ While we cannot control AVNR and CNR in our experiments, we can control the expe
 Thus we can offer several suggestions for designing your next experiment based on our simulations.
 Increasing the average IEI up to 6 seconds improves detection power between conditions substantially,
 but increasing the average IEI above 6 seconds only offers modest improvement in detection power.
-Increasing the number of events per condition to 30 offers the largest benefit in detection power.
+Increasing the number of events per condition to 30 offers the largest benefit in detection power,
+mirroring the suggestion on the number of trials needed to detect activation~\cite{Huettel2001}.
 It is important to note these recommendations are based on optimized designs made with neurodesign,
 and may not generalize to completely random designs.
 
@@ -1178,7 +1179,7 @@ For example, if the true correlations were 0.2 for condition $A$ and 0.3 for con
 the observed correlations were 0.1 and 0.2, respectively, then precision of sample correlations would
 decrease, but the difference between conditions remains the same.
 
-Another conclusion from \cite[Abdulrahman \& Henson's (2016)]{Abdulrahman2016} paper suggested to
+Another conclusion from Abdulrahman \& Henson's (2016) paper suggested to
 use LSA when event variability is greater than scan noise (AVNR $>$ 1) for short IEIs (2-5 seconds).
 All of our simulations had AVNR greater than or equal to scan noise (AVNR $>=$ 1) and we saw
 LSS significantly outperformed LSA for our measure of detection power for IEIs greater than 2 seconds.
@@ -1199,15 +1200,16 @@ It may be the case scan noise must be identical or near identical between voxels
 for LSA to perform better than LSS.
 
 The current simulations have improved on previous work by incorporating a more
-realistic noise structure using fmrisim and used CNR/AVNR values calculated with real data.
-However, the simulations we performed differ from real data in several key areas: the contrasts between event conditions,
+realistic noise structure using fmrisim and used CNR/AVNR values calculated with participant data.
+However, the simulations we performed differ from participant data in several key areas:
+the contrasts between event conditions,
 variation in BOLD response onset, and preprocessing of the signal.
 As mentioned in \nameref{methods:bsc-simulations}, each simulation represents
 either a different participant or separate runs from the same participant.
-The $real$ and $null$ conditions come from the task switching task and resting state,
+The $task$ and $null$ conditions come from the task switching task and resting state,
 respectively, representing two runs.
-The contrasts in the simulations are therefore most analogous to the $real - null$
-contrast in \ref{fig:main-result}.
+The contrasts in the simulations are therefore most analogous to the $task - null$
+contrast illustrated in the main result\ref{fig:main-result}.
 Additionally, each simulation contains two conditions whose BOLD responses
 are independent of each other, that is, the BOLD response for one event
 does not influence the BOLD response for a subsequent event.
@@ -1225,19 +1227,19 @@ there must be more than twice the volumes than events collected during the BOLD 
 for the GLM to be solvable.
 
 While the simulations represented data without any preprocessing applied,
-the real data had several variables included in the model: motion outliers, non-steady state volumes,
+the participant data had several variables included in the model: motion outliers, non-steady state volumes,
 CSF, and white matter signals.
 The additional regressors in the model reduce the degrees of freedom
 and could impact the ability of the model to fit the data.
 This would likely impact LSA more than LSS, since LSA already contains
 a large number of regressors representing each event.
 Future work could use fmrisim to simulate entire brains and preprocess them with fmriprep,
-which would make the processing pipeline between simulated and real data closer.
+which would make the processing pipeline between simulated and participant data closer.
 
-\subsection*{Real Data Conclusions}
+\subsection*{Participant Data Conclusions}
 \label{discussion:taskswitching-conclusions}
 
-The real data suggests LSS and LSA perform similarly.
+The participant data suggests LSS and LSA perform similarly.
 Based on the number of statistically significantly different ROI-ROI pair correlations alone,
 LSS and LSA cannot be easily distinguished.
 Overall, we have evidence LSA and LSS are able to detect differences between
@@ -1292,7 +1294,7 @@ LSS and LSA, it is difficult to say whether LSA or LSS would be "correct".
   \label{fig:lss_lsa_correlation}
 \end{figure}
 
-Another interesting aspect of our analysis of the real data was the inclusion of
+Another interesting aspect of our analysis of the participant data was the inclusion of
 null (resting state) data where the participants simply stared at a fixation cross.
 Using the null data we were able to dissociate the performance of LSS and LSA using the
 Top 20 CNR ROIs from the Schaefer Atlas because LSA showed many more false positives
@@ -1331,7 +1333,7 @@ did not show a statistically significant difference between null and real data \
   \end{adjustwidth}
   \end{table}
 
-The table suggests model misfit may be a driving factor for spurious results in the Schaefer atlas.
+The table suggests model misfit may be a driving factor for spurious results in the Schaefer atlas~\ref{table2}.
 We protected against extreme beta estimates by detecting and removing outliers, but model misfit
 could still drive spurious results.
 A proper null model would have BOLD responses at the onset times, but the bold responses
@@ -1387,7 +1389,7 @@ in their network measures as well.
 Overall, our work leads to four main conclusions:
 1) simulations suggest increasing average IEI to 6 seconds and number of events to 30 per condition will detect a difference between conditions, 
 2) simulations suggest LSS has more power than LSA to detect differences between conditions (between blocks),
-3) real data suggests LSS and LSA perform comparably but results are dependent on which atlas is selected,
+3) participant data suggests LSS and LSA perform comparably but results are dependent on which atlas is selected,
 4) LSA may have a slight advantage for event-related contrasts,
 but it is difficult for both LSS and LSA to detect condition differences when events are interleaved instead of occuring in separate blocks.
 This work guides and cautions cognitive neuroscience researchers as they design their tasks and decide
@@ -1428,12 +1430,12 @@ which analysis path they should take amid the forking paths of researcher degree
 \section*{Acknowledgments}
 This work could not have been completed without the support of several persons/resources.
 First, the simulation analyses were supported in part through computational resources provided by The University of Iowa, Iowa City, Iowa.
-Second, providing the real data was supported by Dr's. Hyun Kyu Lee (PI),
+Second, providing the participant data was supported by Dr's. Hyun Kyu Lee (PI),
 Michelle Voss (site-PI), and Chandramallika Basak (site-PI)funded by grant NIH AG047722.
-Third, we thank Chris Oehler and Adriana-Rivera Dompencial for collecting the real data used in the data analysis.
+Third, we thank Chris Oehler and Adriana-Rivera Dompencial for collecting the participant data used in the data analysis.
 
 \section*{Author Contributions}
-JK and MV conceptualized this work, CB and MV funded the study collecting the real data,
+JK and MV conceptualized this work, CB and MV funded the study collecting the participant data,
 JK performed the analyses. JK wrote the manuscript. JK, MV, and CB revised the manuscript.
 
 \nolinenumbers
