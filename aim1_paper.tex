@@ -991,10 +991,11 @@ Since the simulated data were sampled at 2 second intervals, the result
 corresponds to effectively presenting a stimulus during each frame.
 With such overlapping simulated BOLD responses detecting a difference between conditions
 is unlikely.
-From an IEI of 4 seconds and upwards, LSS has an advantage over LSA.
-Adding additional events above 30 appears to help only if the CNR is greater than 1.
+From an IEI of 4 seconds and upwards, LSS has greater detection power than LSA.
+Increasing the number of events beyond 30 appears to increase detection power only if the CNR is greater than 1.
 Increasing the CNR improves detection power more than increasing the AVNR, although increasing either
 CNR or AVNR provides a marked boost in detection power.
+% add the numbers to say what the difference between CNR and AVNR
 For LSS, the 8 second IEI does not appear to boost detection power beyond a 6 second IEI,
 whereas LSA has a boost when AVNR and CNR are higher.
 
@@ -1004,11 +1005,12 @@ whereas LSA has a boost when AVNR and CNR are higher.
 
 We simulated data using the task switching design for stage two of beta series
 validation and found comparable
-results to the simulations, with LSS outperforming LSA.
-To achieve 80\% power assuming a CNR of 2 and AVNR of 2, 50 participants were enough for LSS, but LSA
-did not get close to 80\% looking at the range of 5-60 participants.
-However, the present analysis only has 40 participants with adequate data, meaning
-all subsequent analyses will be moderately underpowered to detect an effect.
+results to the previous simulations, with LSS outperforming LSA.
+To achieve 80\% power assuming a CNR of 2 and AVNR of 2, 50 participants were sufficient for LSS, but LSA
+% say what percent power 
+did not approach 80\% power within our tested range of 5-60 participants.
+However, it is important to note that the present analysis only included 40 participants with adequate data,
+indicating all subsequent analyses will be moderately underpowered.
 
 \begin{figure}[H]
   \includegraphics[width=\textwidth]{taskswitch-switchXrepeat_smalldiffparticipants}
@@ -1022,37 +1024,39 @@ all subsequent analyses will be moderately underpowered to detect an effect.
   \label{fig:taskswitch-simulation}
 \end{figure}
 
+% reword this sentence
 We looked at task switching data from the most lenient
 contrast ($task - null$) to several block contrasts ($dual - single$ and $repeat - single$)
 to an event-related contrast ($switch - repeat$)
 to assess how well LSS and LSA detect ROI-ROI correlation differences between conditions.
-performed the same contrasts (excluding $task - null$)
+We performed the same contrasts (excluding $task - null$)
 in the null data to measure the specificity of each method.
 
-We found both LSS and LSA had a larger number of statistically significant ROI-ROI pairs
+We found both LSS and LSA had a greater number of statistically significant ROI-ROI pairs than expected by chance
 for the contrasts in the activation atlas $task - null$ (LSS: 12.86\%; p $<$ 0.001, LSA: 11.90\%; p = 0.001).
-LSS had a larger number of statistically significiant ROI-ROI pairs within the 
+LSS had a greater number of statistically significiant ROI-ROI pairs than expected by chance within the 
 $dual - single$ contrast (LSS: 9.05\%; p = 0.010, LSA: 4.29\%; p = 0.727).
-LSA had a larger number of statisically significant ROI-ROI pairs for the
+LSA had a greater number of statisically significant ROI-ROI pairs than expected by chance for the
 $repeat - single$ contrast (LSS: 7.62\%; p = 0.063, LSA: 10.00\%, p = 0.002) \ref{fig:main-result}.
-Surprisingly, LSS found a fewer number of significant ROI-ROI pairs than expected
+Surprisingly, LSS found fewer significant ROI-ROI pairs than expected by chance
 for the contrast $switch - repeat$ in both the real data and null data. 
 
-The top 20 CNR ROIs in the Schaefer Atlas show qualitatively similar results,
+The contrasts performed on the top 20 CNR ROIs in the Schaefer Atlas show qualitatively similar results,
 with LSS and LSA achieving a greater number of significant ROI-ROI pairs
-than expected for the contrasts
+than expected by chance for the contrasts
 $task - null$ (LSS: 14.74\%, p $<$ 0.001; LSA: 21.05\%, p $<$ 0.001) and
 $repeat - single$ (LSS: 11.05\%, p $<$ 0.001; LSA: 12.63\% p $<$ 0.001).
 LSS alone showed a greater number of significant ROI-ROI pairs than expected
 for the contrast
 $dual - single$ (LSS: 10.53\%, p = 0.001; LSA: 7.90\%, p = 0.055).
-Both LSS and LSA were around the expected false positive rate for the contrast
+Both LSS and LSA did not deviate from the expected false positive rate for the contrast
 $switch - repeat$.
-The null data for the Top 20 CNR ROIs in the schaefer atlas demonstrate
+% create a consistent name for the top 20 CNR ROIs
+The results with respect to the null data for the Top 20 CNR ROIs in the schaefer atlas demonstrate
 the possibility that LSA detects a greater number of significant ROI-ROI
-pairs when there is no response to model, but since this finding did not
-replicate in the Activation Atlas, there may be some property specific
-to this collection of ROIs.
+pairs than expected by chance when there is no response to the model, but since this finding did not
+replicate in the Activation Atlas, there may be an interaction between using the LSA method with
+high CNR ROIs.
 Those two contrasts indicate the success of LSS and LSA to measure
 condition specific difference in ROI-ROI correlations when the events are in different blocks.
 The Schaefer atlas has qualitatively similar results, with the exception of
