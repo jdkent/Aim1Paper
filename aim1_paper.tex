@@ -292,7 +292,7 @@ Both approaches of beta series estimation seek to derive single event estimates 
 (or voxel's) activity at each individual event.
 An event is defined as "a stimulus or participant response recorded during a task."~\cite{Gorgolewski2016}
 Where task is defined as "a set of structured activities performed by the participant."~\cite{Gorgolewski2016}
-The single event estimates become difficult to estimate when events occur close together~\ref{fig:introhrf}.
+The single event estimates become difficult to estimate when events occur close together (Figure~\ref{fig:introhrf}).
 Such designs are called fast event-related designs and are commonly
 used in cognitive neuroscience.
 
@@ -354,7 +354,7 @@ and for the other half, regions $A$ and $C$ are active.
 The traditional GLM will not be able differentiate the different pairs of regions.
 LSS and LSA, on the other hand, propose to be able to identify region $A+B$ and $A+C$.
 LSA takes a variant of the traditional GLM whereby instead of providing a beta
-estimate for a group of events, each event gets its own beta estimate in a single GLM~\ref{fig:introlsa}.
+estimate for a group of events, each event gets its own beta estimate in a single GLM (Figure~\ref{fig:introlsa}).
 
 \begin{figure}[H]
   \centering
@@ -374,8 +374,8 @@ estimate for a group of events, each event gets its own beta estimate in a singl
 \end{figure}
 
 LSS differs from LSA by fitting a separate GLM for each event, where in each model a target
-event is fit and the rest of the events are grouped together and given separate beta estimates~\ref{fig:introlss}.
-LSS was introduced by placing all other events into a single regressor, but as shown in~\ref{fig:introlss},
+event is fit and the rest of the events are grouped together and given separate beta estimates (Figure~\ref{fig:introlss}).
+LSS was introduced by placing all other events into a single regressor, but as shown in Figure~\ref{fig:introlss},
 each event type has its own regressor, which is referred to as LSS-N in other papers~\cite{Rissman2004,Abdulrahman2016,Mumford2012}.
 We will refer to LSS-N as LSS for the remainder of the manuscript.
 
@@ -402,7 +402,7 @@ We will refer to LSS-N as LSS for the remainder of the manuscript.
 
 The target event estimate from each GLM is taken to form a beta series.
 Harkening back to the sluggish BOLD response, LSA suffers when the events are close together,
-since the GLM cannot reliably attribute which BOLD response should correspond to which event~\ref{fig:introGLM}.
+since the GLM cannot reliably attribute which BOLD response should correspond to which event (Figure~\ref{fig:introGLM}).
 LSS attempts to reduce the model confusion by having one event estimate per model,
 so the non-target events have their beta estimate influenced by multiple observations, loosening the
 constraint that adjacent events to the target event need to be orthogonal (i.e., independent) from each other.
@@ -415,7 +415,7 @@ ratios were chosen without justification in previous work~\cite{Abdulrahman2016,
 Four, a quantitative comparison of LSA and LSS condition contrasts for BSC has not been done.
 The present work fills these gaps and provides recommendations for further research
 using LSA and LSS.
-Important terms used used throughout the paper are presented~\ref{table0}.
+Important terms used used throughout the paper are presented in Table \ref{table0}.
 
 \begin{table}[H]
   \begin{adjustwidth}{0in}{0in} % Comment out/remove adjustwidth environment if table fits in text column.
@@ -462,7 +462,7 @@ task onsets with a double gamma function
 and added the responses to the time-series~\cite{Glover1999,Welvaert2011}.
 We used fmrisim from the brainiak toolbox\cite{Ellis2020} to generate a
 2 voxel fMRI time-series containing drift, autocorrelation ($\rho$ = 0.5), physiological noise,
-task related movement, and scanner noise \ref{fig:simulation_example}.
+task related movement, and scanner noise (Figure~\ref{fig:simulation_example}).
 Noise features were all weighted equally in the simulations.
 
 \begin{figure}[H]
@@ -506,7 +506,7 @@ Calculating AVNR followed the same procedure as CNR with the exception of the fi
 First, we calculated the standard deviation of the beta estimates, then we followed steps three through six above
 on the standard deviation of the beta estimates (as opposed to the amplitude).
 Based on these calculations used on participant data, we chose to move forward using CNR and
-AVNR values of 1 and 2 as reasonable representative values (Table ~\ref{table1}).
+AVNR values of 1 and 2 as reasonable representative values (Table~\ref{table1}).
 We performed subsequent analyses in parallel using all combinations of these representive values to probe the relative importance of AVNR and CNR
 in influencing the power of beta series correlations.
 (\href{https://github.com/jdkent/BetaSeriesRealDataAnalysis/blob/90fafb5b83b2e1bfade61a9fb1a87f225efaa95f/nibsAnalysis/cnr_trial_variability.ipynb}{see here for the relevant code})
@@ -649,7 +649,7 @@ separate condition and error processing to validate BSC.
 Second level analyses were a summary of the first level results presenting which
 regions were robustly activated among participants.
 For each contrast, the alpha was set to 0.01 with a cluster threshold of 10 voxels using
-false discovery rate error control \ref{fig:stat_maps}.
+false discovery rate error control (Figure~\ref{fig:stat_maps}).
 
 \begin{figure}[H]
   \centering
@@ -822,8 +822,8 @@ The second atlas, Schaefer Atlas (400 parcels, 17 networks)\cite{Schaefer2017}, 
 used to comprehensively cover the cortex and test robustness of results.
 
 An activation atlas was generated based on an F-test across the switch, repeat, and single conditions
-to identify regions that were reliably activated for all participants~\ref{table:clusters}.
-5mm spheres were drawn around each statistical peak (21 peaks total)~\ref{fig:methroimap}.
+to identify regions that were reliably activated for all participants (Table~\ref{table:clusters}).
+5mm spheres were drawn around each statistical peak (21 peaks total) (Figure~\ref{fig:methroimap}).
 
 \begin{table}[H]
   \csvautotabular[separator=tab, no check column count]{./data/cluster_table.tsv}
@@ -871,7 +871,7 @@ In order to increase the likelihood of being able to detect a real result using 
 we selected the top 25 ROIs with the highest CNR using LSA and LSS separately
 (see \nameref{methods:bsc-simulations} for how we calculated CNR).
 We then took the intersection of the two ROI sets resulting in 20 ROIs that have a high CNR
-as measured by LSA and LSS \ref{table:parcels},\ref{fig:schaefertopmap}
+as measured by LSA and LSS (Table~\ref{table:parcels},Figure~\ref{fig:schaefertopmap}).
 (\href{https://github.com/jdkent/BetaSeriesRealDataAnalysis/blob/master/nibsAnalysis/cnr_trial_variability.ipynb}{see here for relevant code}).
 The results for the entire 400 ROI altas are shown in the supplementals.
 
@@ -948,7 +948,7 @@ For proper interpretation of the power analyses, we first established whether
 a 5\% false positive rate was found across all combinations of
 event numbers, IEIs, CNRs, AVNRs, and estimation method.
 We found a nominal \%5 false positive rate held across all combinations
-of parameters \ref{fig:res_sim_fpr}.
+of parameters (Figure~\ref{fig:res_sim_fpr}).
 
 \begin{figure}[H]
   \centering
@@ -1037,7 +1037,7 @@ for the contrasts in the activation atlas $task - null$ (LSS: 12.86\%; p $<$ 0.0
 LSS had a greater number of statistically significiant ROI-ROI pairs than expected by chance within the 
 $dual - single$ contrast (LSS: 9.05\%; p = 0.010, LSA: 4.29\%; p = 0.727).
 LSA had a greater number of statisically significant ROI-ROI pairs than expected by chance for the
-$repeat - single$ contrast (LSS: 7.62\%; p = 0.063, LSA: 10.00\%, p = 0.002) \ref{fig:main-result}.
+$repeat - single$ contrast (LSS: 7.62\%; p = 0.063, LSA: 10.00\%, p = 0.002) (Figure~\ref{fig:main-result}).
 Surprisingly, LSS found fewer significant ROI-ROI pairs than expected by chance
 for the contrast $switch - repeat$ in both the real data and null data. 
 
@@ -1105,7 +1105,7 @@ but LSS did not (see supplementary figures).
   \includegraphics[width=\linewidth]{
     data-real_type-brain_atlas-schaeferbest_contrast-repeatXsingle}
   \caption{
-    Visualization of the significant ROI-ROI pairs detected in \ref{fig:real-schaeferbest}
+    Visualization of the significant ROI-ROI pairs detected in Figure \ref{fig:real-schaeferbest}
     for the contrast $repeat - single$.
     While LSA detected 21 significant ROI-ROI pairs and LSS detected 18 significant
     ROI-ROI pairs, the two methods only had 3 overlapping results.
@@ -1114,7 +1114,7 @@ but LSS did not (see supplementary figures).
 \end{figure}
 
 Although both LSS and LSA detected condition specific correlation differences;
-the significant ROI-ROI pairs found with LSS are largely non-overlapping with LSA~\ref{fig:non-overlap}.
+the significant ROI-ROI pairs found with LSS are largely non-overlapping with LSA (Figure~\ref{fig:non-overlap}).
 
 % \begin{table}[!ht]
 % \begin{adjustwidth}{-2.25in}{0in} % Comment out/remove adjustwidth environment if table fits in text column.
@@ -1227,7 +1227,7 @@ either a different participant or separate runs from the same participant.
 The $task$ and $null$ conditions come from the task switching task and resting state,
 respectively, representing two runs.
 The contrasts in the simulations are therefore most analogous to the $task - null$
-contrast illustrated in Figure \ref{fig:main-result}.
+contrast illustrated in Figure~\ref{fig:main-result}.
 Additionally, each simulation contains two conditions whose BOLD responses
 are independent of each other, that is, the BOLD response for one event
 does not influence the BOLD response for a subsequent event.
@@ -1277,14 +1277,14 @@ leading to this pattern.
 Since the beta estimates calculated by LSS are not orthogonal to adjacent events,
 the ROI-ROI beta series correlation for one condition is influenced by the other interleaved condition,
 resulting in a greater difficulty to detect differences between conditions.
-That is likely the source of the poor performance of LSS in event-related contrasts.
+This is likely the source of the poor performance of LSS in event-related contrasts.
 
 Surprisingly, LSA and LSS results did not have much overlap between significant
 ROI-ROI pair correlation differences between conditions.
 The lack of overlap is suprising because both LSS and LSA are purported to
 measure the same underlying process of task related connectivity.
 To investigate their differences further, we correlated the beta series of LSA with LSS and plotted their relationship with
-average framewise displacement and temporal signal to noise (TSNR) for all participants ($N$=61) \ref{fig:lss_lsa_correlation}.
+average framewise displacement and temporal signal to noise (TSNR) for all participants ($N$=61) (Figure~\ref{fig:lss_lsa_correlation}).
 As the average framewise displacement increases and temporal signal to noise (TSNR)
 decreases, the agreement between LSS and LSA decreases.
 In other words, as noise in the data increases, the more divergent LSS and LSA become.
@@ -1317,7 +1317,7 @@ Another interesting aspect of our analysis of the participant data was the inclu
 null (resting state) data where the participants simply stared at a fixation cross.
 Using the null data we were able to dissociate the performance of LSS and LSA using the
 Top 20 CNR ROIs from the Schaefer Atlas because LSA showed many more false positives
-relative to LSS \ref{fig:null-schaeferbest}.
+relative to LSS (Figure~\ref{fig:null-schaeferbest}).
 It could be argued the resting state data does not provide an adequate null model
 to compare to the real task data because there is presumably no BOLD response at any
 of the onset times.
@@ -1329,7 +1329,7 @@ If the null data had much larger deviations in beta estimates, CNR and AVNR woul
 in the null data relative to the real data.
 For both LSS and LSA, the Schaefer atlas had statistically significantly higher
 CNR/AVNR in the null data relative to the real data, whereas the activation atlas
-did not show a statistically significant difference between null and real data \ref{table2}.
+did not show a statistically significant difference between null and real data (Table~\ref{table2}).
 
 \begin{table}[H]
   \begin{adjustwidth}{0in}{0in}
@@ -1352,7 +1352,7 @@ did not show a statistically significant difference between null and real data \
   \end{adjustwidth}
   \end{table}
 
-The table suggests model misfit may be a driving factor for spurious results in the Schaefer atlas~\ref{table2}.
+The table suggests model misfit may be a driving factor for spurious results in the Schaefer atlas(Table~\ref{table2}).
 We protected against extreme beta estimates by detecting and removing outliers, but model misfit
 could still drive spurious results.
 A proper null model would have BOLD responses at the onset times, but the bold responses
