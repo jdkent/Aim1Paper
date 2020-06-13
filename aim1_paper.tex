@@ -1160,11 +1160,11 @@ the significant ROI-ROI pairs found with LSS are largely non-overlapping with LS
 \section*{Discussion}
 \label{discussion}
 
-We provided the first in depth comparison between LSS and LSA to detect 
+We provide here the first in-depth comparison between LSS and LSA to detect 
 ROI-ROI correlation differences between conditions.
 We compared LSA and LSS through realistic simulations and a participant dataset.
 While the simulations suggested LSS is a more powerful method,
-the results from the participant data do not show a clear winner.
+the results from the participant data do not show whether LSS or LSA is the more powerful method.
 We detail the conclusions from the simulations and the participant data, and provide
 suggestions for future avenues of research.
 
@@ -1175,11 +1175,11 @@ The main finding from the simulations is that LSS has greater detection power th
 supporting other findings from the literature comparing LSS and LSA using related analyses such as
 multivariate pattern analysis, representational similarity analysis, and precision of correlations~\cite{Mumford2012,Mumford2014a,Abdulrahman2016,Turner2012a}.
 While we cannot control AVNR and CNR in our experiments, we can control the experimental design.
-Thus we can offer several suggestions for designing your next experiment based on our simulations.
+Thus we can offer several suggestions with respect to experimental design based on our simulations.
 Increasing the average IEI up to 6 seconds improves detection power between conditions substantially,
-but increasing the average IEI above 6 seconds only offers modest improvement in detection power.
+but increasing the average IEI beyond 6 seconds offers only a modest improvement in detection power.
 Increasing the number of events per condition to 30 offers the largest benefit in detection power,
-mirroring the suggestion on the number of trials needed to detect activation~\cite{Huettel2001}.
+mirroring previous findings regarding the number of trials needed to detect brain activation~\cite{Huettel2001}.
 It is important to note these recommendations are based on optimized designs made with neurodesign,
 and may not generalize to completely random designs.
 
@@ -1199,12 +1199,12 @@ decrease, but the difference between conditions remains the same.
 
 Another conclusion from Abdulrahman \& Henson's (2016) paper suggested to
 use LSA when event variability is greater than scan noise (AVNR $>$ 1) for short IEIs (2-5 seconds).
-All of our simulations had AVNR greater than or equal to scan noise (AVNR $>=$ 1) and we saw
-LSS significantly outperformed LSA for our measure of detection power for IEIs greater than 2 seconds.
+All of our simulations set AVNR greater than or equal to scan noise (AVNR $>=$ 1) and we saw
+LSS significantly outperformed LSA for our measure of detection power with IEIs greater than 2 seconds.
 Theoretically when AVNR is 1, LSS and LSA would perform similarly, but in our simulations,
 LSS still had more power to detect a difference between conditions.
-The difference in conclusions could be due to our different measures (i.e., precision of sample correlations versus condition difference)
-or from our simulation methods (i.e., guassian noise with random designs versus autocorrelated noise with optimized designs).
+The difference in conclusions may be due to our different measures (i.e., precision of sample correlations versus condition difference)
+or simulation methods (i.e., guassian noise with random designs versus autocorrelated noise with optimized designs).
 
 Signal and noise coherency did not impact results as they did in the work of \cite[Abdulrahman \& Henson (2016)]{Abdulrahman2016}.
 When scan noise is more coherent across voxels than event variability,
@@ -1227,7 +1227,7 @@ either a different participant or separate runs from the same participant.
 The $task$ and $null$ conditions come from the task switching task and resting state,
 respectively, representing two runs.
 The contrasts in the simulations are therefore most analogous to the $task - null$
-contrast illustrated in the main result\ref{fig:main-result}.
+contrast illustrated in Figure \ref{fig:main-result}.
 Additionally, each simulation contains two conditions whose BOLD responses
 are independent of each other, that is, the BOLD response for one event
 does not influence the BOLD response for a subsequent event.
@@ -1235,13 +1235,13 @@ There is likely temporal autocorrelation of BOLD responses across events,
 which is not represented in our simulations~\cite{Abdulrahman2016}.
 
 We also did not simulate variations in BOLD response onset, which is likely to occur
-as all BOLD responses to a stimulus do not occur at the time the stimulus onset~\cite{DEsposito2003}.
-Model mismatch through variations has been found detrimental to beta estimation, 
+as all BOLD responses to a stimulus do not occur at the time of stimulus onset~\cite{DEsposito2003}.
+Model mismatch through variations has been found to be detrimental to beta estimation, 
 but there is no reason to believe that LSA would be differentially impacted relative to LSS~\cite{Turner2012a}.
 Future work could investigate variable BOLD responses and include derivatives for each regressor to account for
 the variable BOLD responses.
-Including derivatives could make LSA unsolvable since every event would have at least two regressors, meaning
-there must be more than twice the volumes than events collected during the BOLD run
+Including derivatives could make LSA unsolvable as every event would have at least two regressors, necessitating
+more than twice the volumes than events collected during the BOLD run
 for the GLM to be solvable.
 
 While the simulations represented data without any preprocessing applied,
@@ -1251,23 +1251,24 @@ The additional regressors in the model reduce the degrees of freedom
 and could impact the ability of the model to fit the data.
 This would likely impact LSA more than LSS, since LSA already contains
 a large number of regressors representing each event.
-Future work could use fmrisim to simulate entire brains and preprocess them with fmriprep,
-which would make the processing pipeline between simulated and participant data closer.
+
+Future work could use fmrisim to simulate entire brains which could be preprocessed using fmriprep,
+making the processing pipeline more similar between participant data and simulations.
 
 \subsection*{Participant Data Conclusions}
 \label{discussion:taskswitching-conclusions}
 
-The participant data suggests LSS and LSA perform similarly.
+The analysis of the participant data suggests LSS and LSA perform similarly.
 Based on the number of statistically significantly different ROI-ROI pair correlations alone,
 LSS and LSA cannot be easily distinguished.
-Overall, we have evidence LSA and LSS are able to detect differences between
+Overall, we have evidence that LSA and LSS are able to detect differences between
 blocks of events ($task - null$, $dual - single$, $repeat - single$), but not an event-related contrast ($switch - repeat$).
-This suggests our sample of 40 older adults was not large enough to detect a reliable event related effect,
-which should caution researchers to test what their sample size should be to detect an effect.
-
+This suggests our sample of 40 older adults may not have been large enough to detect a reliable event related effect,
+which should caution researchers to perform power analyses to determine an adequate sample size.
+% false positives?
 Contrary to the simulations where LSS was found to be more powerful,
 for both the Activation Atlas and the high CNR ROIs from the Schaefer atlas LSS and LSA performed similarly.
-LSA was prone to a higher rate of false positives for the null data within the best Schaefer ROIs Atlas.
+LSA was prone to a higher rate of false positives as determined by the analyses performed on the null data within the best Schaefer ROIs Atlas.
 However, LSS appeared to have a greater magnitude of false positives than LSA when using the entire schaefer atlas.
 Furthermore, there is some evidence of LSS having fewer statistically significant ROI-ROI pairs than expected through chance alone
 for the contrast $switch - repeat$.
