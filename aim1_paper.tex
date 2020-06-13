@@ -241,24 +241,25 @@ Michelle Voss\textsuperscript{1},
 \end{flushleft}
 % Please keep the abstract below 300 words
 \section*{Abstract}
-Cognitive tasks drive discovery in neuroscience by connecting cognition and the brain.
-The most common approach for tasks completed during functional magnetic resonance imaging (fMRI)
-examines activity of brain regions.
+Research utilizing cognitive tasks drive discovery in neuroscience by connecting specific cognitive functions
+with patterns of brain activity.
+The most common application for tasks completed during functional magnetic resonance imaging (fMRI)
+examines activity of individual brain regions.
 Recently, it has become clear that it is just as important to examine how brain regions act together as networks.
 Beta series correlations are a popular measure to estimate which brain regions correlate with
-each other during different conditions within a task.
-The region to region correlations represent brain networks for the conditions.
-Two common ways to generate beta series are Least Squares All (LSA) and
+each other during different task-dependent conditions.
+These region to region correlations represent brain networks for the conditions.
+Two common methods to generate beta series are Least Squares All (LSA) and
 Least Squares Separate (LSS).
 However, LSS and LSA have not been compared with simulations and participant data
 to identify which method is more sensitive to detect region to region correlation differences
 between conditions.
 We compared LSA and LSS by simulating responses across a variety of
 experimental designs and using participant data.
-Our simulations show LSS outperforms LSA, but participant data
+Our simulations suggest LSS outperforms LSA, but participant data
 does not show an advantage using LSS.
-Overall, results show the importance of validation using both simulations
-and participant data and impacts how future studies should design their tasks
+Overall, results demonstrate the importance of validation using both simulations
+and participant data and impacts how future studies should design tasks
 to improve detectability of conditional organization of brain networks.
 
 \linenumbers
@@ -267,21 +268,22 @@ to improve detectability of conditional organization of brain networks.
 \section*{Introduction}
 \label{intro}
 
-Cognitive neuroscience blends cognitive tasks with measures of the brain to drive discoveries.
-These cognitive tasks often have multiple conditions interleaved with each other,
-and the cognitive process of interest is seen through the difference between those conditions.
-The most common approach for tasks completed during functional magnetic resonance imaging (fMRI)
+Cognitive neuroscience blends cognitive tasks with measures of brain activity to drive discoveries.
+These cognitive tasks often incorporate multiple conditions interleaved with each other,
+and the cognitive process of interest is manifested as the difference between those conditions.
+The most common analysis of tasks completed during functional magnetic resonance imaging (fMRI)
 examines the magnitude of brain activity.
-More recently, it has become clear that it is just as important to examine how brain regions act together as networks.
-Broadly defined, a brain network is a collection of brain regions who share information~\cite{Uddin2019}.
-Brain networks have primarily been investigated while participants at rest, but there
-is rising popularity to observe brain networks while participants perform tasks~\cite{Cole2014a}.
-There is also rising popularity to measure dynamically changing correlations within and between brain networks over time~\cite{Sakoglu2008,Hindriks2016}.
-However, There has not been investigation and validation of brain networks
+More recently, the importance of examining how brain regions act together as networks has become increasingly evident.
+Broadly defined, a brain network is a collection of brain regions that share information~\cite{Uddin2019}.
+Brain networks have primarily been investigated while participants are at rest, but there
+is rising interest in observing brain networks while participants perform tasks~\cite{Cole2014a}.
+There is also increasingly popular to measure dynamically changing correlations
+within and between brain networks over time~\cite{Sakoglu2008,Hindriks2016}.
+However, there has not been investigation and validation of brain networks
 when participants engage in tasks with interleaved conditions that could induce
 different brain networks dynamically~\cite{Di2019a}.
-In other words measuring contextual brain networks has not been validated within fast event-related designs~\cite{Buckner1998}.
-We seek to validate and compare two methods that may measure brain responses to events that occur
+In other words, measuring contextual brain networks has not been validated within fast event-related designs~\cite{Buckner1998}.
+We seek here to validate and compare two methods that may measure brain responses to events that occur
 close in time.
 
 The overarching method being investigated is beta series correlations (BSC)~\cite{Rissman2004,Mumford2012,Turner2012a,Abdulrahman2016}
@@ -291,7 +293,7 @@ Both approaches of beta series estimation seek to derive single event estimates 
 An event is defined as "a stimulus or participant response recorded during a task."~\cite{Gorgolewski2016}
 Where task is defined as "a set of structured activities performed by the participant."~\cite{Gorgolewski2016}
 The single event estimates become difficult to estimate when events occur close together~\ref{fig:introhrf}.
-Such designs are called fast event-related designs and are most commonly
+Such designs are called fast event-related designs and are commonly
 used in cognitive neuroscience.
 
 \begin{figure}[H]
@@ -309,27 +311,27 @@ used in cognitive neuroscience.
 
 The BOLD response is an indirect measure of neuronal activity that takes approximately 6 seconds to
 peak and around 16-32 seconds to effectively return to baseline~\cite{Glover1999}.
-If events are occurring (on average) 4 seconds apart, the difficulty of single event estimation
+If events occur (on average) 4 seconds apart, the difficulty of single event estimation
 becomes apparent.
-One does not know whether BOLD activity should be attributed to a target event or an
+In this situation, it is difficult to ascertain whether BOLD activity should be attributed to a target event or an
 adjacent event.
 LSA and LSS approach this problem differently.
 LSA ignores this problem by calculating a high variance, but low bias measure by enforcing orthogonality
-between events;
-whereas LSS calculates a lower variance; but more biased measure, relaxing the orthogonality restriction.
+between events,
+whereas LSS calculates a lower variance, but more biased measure, relaxing the orthogonality restriction.
 To understand how LSA and LSS differ in their restrictions of orthagonality in single event estimation,
 it is necessary to introduce the General Linear Model (GLM).
 GLMs are a mainstay in the neuroimaging literature, allowing researchers to model
 a curve that approximates the BOLD response shape and linearly scale the curve
 to best match the data~\cite{Friston1995}.
-The multiplicative that linearly scales the model BOLD response is known as a beta.
-The beta in the GLM is where the "beta" in beta series comes from.
+The multiplicative that linearly scales the model BOLD response is known as a beta,
+and provides the namesake for beta series.
 This beta is often interpreted as the amplitude of the response, which is true when the
 model approximates the shape of the BOLD response well, and becomes less clear when
 the model does not match the shape of the BOLD response.
 In a traditional GLM, events of the same type will be grouped together
 to provide a robust estimate of whether a particular region or set of regions are
-active relative to some baseline or another condition~\ref{fig:introGLM}.
+active relative to some baseline or another condition (Figure~\ref{fig:introGLM}).
 
 \begin{figure}[H]
   \centering
