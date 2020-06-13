@@ -872,6 +872,7 @@ we selected the top 25 ROIs with the highest CNR using LSA and LSS separately
 (see \nameref{methods:bsc-simulations} for how we calculated CNR).
 We then took the intersection of the two ROI sets resulting in 20 ROIs that have a high CNR
 as measured by LSA and LSS (Table~\ref{table:parcels},Figure~\ref{fig:schaefertopmap}).
+We refer this subset of ROIs as the SchaeferTop20 Atlas for the rest of the manuscript.
 (\href{https://github.com/jdkent/BetaSeriesRealDataAnalysis/blob/master/nibsAnalysis/cnr_trial_variability.ipynb}{see here for relevant code}).
 The results for the entire 400 ROI altas are shown in the supplementals.
 
@@ -1032,7 +1033,7 @@ $repeat - single$ contrast (LSS: 7.62\%; p = 0.063, LSA: 10.00\%, p = 0.002) (Fi
 Surprisingly, LSS found fewer significant ROI-ROI pairs than expected by chance
 for the contrast $switch - repeat$ in both the real data and null data. 
 
-The contrasts performed on the top 20 CNR ROIs in the Schaefer Atlas show qualitatively similar results,
+The contrasts performed on the SchaeferTop20 atlas show qualitatively similar results,
 with LSS and LSA achieving a greater number of significant ROI-ROI pairs
 than expected by chance for the contrasts
 $task - null$ (LSS: 14.74\%, p $<$ 0.001; LSA: 21.05\%, p $<$ 0.001) and
@@ -1043,7 +1044,7 @@ $dual - single$ (LSS: 10.53\%, p = 0.001; LSA: 7.90\%, p = 0.055).
 Both LSS and LSA did not deviate from the expected false positive rate for the contrast
 $switch - repeat$.
 % create a consistent name for the top 20 CNR ROIs
-The results with respect to the null data for the Top 20 CNR ROIs in the schaefer atlas demonstrate
+The results with respect to the null data for the SchaeferTop20 atlas demonstrate
 the possibility that LSA detects a greater number of significant ROI-ROI
 pairs than expected by chance when there is no response to the model, but since this finding did not
 replicate in the Activation Atlas, there may be an interaction between using the LSA method with
@@ -1085,7 +1086,7 @@ but LSS did not (see supplementary figures).
     Right panels \ref{fig:null-activation} and \ref{fig:null-schaeferbest} are results
     from the null data.
     While in the Activation Atlas both LSS and LSA show similar performance;
-    in the Top CNR Schaefer Atlas, LSA has an increase in false positives
+    in the SchaeferTop20 atlas, LSA has an increase in false positives
     whereas LSS is closer to an expected number of false positives.
   }
 \label{fig:main-result}
@@ -1217,8 +1218,8 @@ This suggests our sample of 40 older adults may not have been large enough to de
 which should caution researchers to perform power analyses to determine an adequate sample size.
 % false positives?
 Contrary to the simulations where LSS was found to be more powerful,
-for both the Activation Atlas and the high CNR ROIs from the Schaefer atlas LSS and LSA performed similarly.
-LSA was prone to a higher rate of false positives as determined by the analyses performed on the null data within the best Schaefer ROIs Atlas.
+for both the Activation Atlas and the SchaeferTop20 atlas LSS and LSA performed similarly.
+LSA was prone to a higher rate of false positives as determined by the analyses performed on the null data within the SchaeferTop20 atlas.
 However, LSS appeared to have a greater magnitude of false positives than LSA when using the entire schaefer atlas.
 Furthermore, there is some evidence of LSS having fewer statistically significant ROI-ROI pairs than expected through chance alone
 for the contrast $switch - repeat$.
@@ -1266,7 +1267,7 @@ LSS and LSA, it is difficult to say whether LSA or LSS would be "correct".
 Another interesting aspect of our analysis of the participant data was the inclusion of
 null (resting state) data where the participants simply stared at a fixation cross.
 Using the null data we were able to dissociate the performance of LSS and LSA using the
-Top 20 CNR ROIs from the Schaefer Atlas because LSA showed many more false positives
+SchaeferTop20 atlas because LSA showed many more false positives
 relative to LSS (Figure~\ref{fig:null-schaeferbest}).
 It could be argued the resting state data does not provide an adequate null model
 to compare to the real task data because there is presumably no BOLD response at any
@@ -1431,7 +1432,7 @@ which analysis path they should take amid the forking paths of researcher degree
 
   \caption{
       The statistically significant ROI-ROI pairs in the activation atlas for the contrasts
-      $switch - repeat$ in the null data and the top 20 CNR ROIs Schaefer atlas
+      $switch - repeat$ in the null data and the SchaeferTop20 atlas
       contrasts $task - null$ and $dual - single$ in the real data.
       The contrast $switch - repeat$ has 12 statistically significant ROI-ROI
       pairs for LSA, 3 statistically significant ROI-ROI pairs
@@ -1456,7 +1457,7 @@ which analysis path they should take amid the forking paths of researcher degree
   \subfloat{\includegraphics[width=\textwidth]{data-null_type-brain_atlas-schaeferbest_contrast-dualxsingle}}
 
   \caption{
-      The statistically significant ROI-ROI pairs in the top 20 CNR ROIs Schaefer atlas
+      The statistically significant ROI-ROI pairs in the SchaeferTop20 atlas
       for the contrasts $repeat - single$ and $switch - repeat$ in the real data and
       the contrast $dual - single$ in the null data.
       The contrast $repeat - single$ has 24 statistically significant ROI-ROI
@@ -1480,7 +1481,7 @@ which analysis path they should take amid the forking paths of researcher degree
   \subfloat{\includegraphics[width=\textwidth]{data-null_type-brain_atlas-schaeferbest_contrast-switchxrepeat}}
 
   \caption{
-      The statistically significant ROI-ROI pairs in the top 20 CNR ROIs Schaefer atlas
+      The statistically significant ROI-ROI pairs in the top SchaeferTop20 atlas
       for the contrasts $repeat - single$ and $switch - repeat$ in the null data.
       The contrast $repeat - single$ has 24 statistically significant ROI-ROI
       pairs for LSA, 9 statistically significant ROI-ROI pairs
