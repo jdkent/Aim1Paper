@@ -445,7 +445,7 @@ First, beta series correlations were tested in simulations across different
 optimized experimental designs.
 Second, beta series correlations were tested in simulations using an experimental
 design that was used to collect participant data.
-Third, beta series correlations were validated in participant task data collected from
+Third, beta series correlations were validated in task data collected from
 participants.
 Resting state data collected from the same participants were used as a null
 control for beta series correlations in stage three.
@@ -482,10 +482,9 @@ We varied the contrast-to-noise ratio (CNR) using the amplitude of the activatio
 divided by the standard deviation of the noise~\cite{Welvaert2013a}.
 Another parameter deemed critical by previous work is the standard deviation
 of the raw beta estimates relative to the standard deviation of the noise~\cite{Abdulrahman2016},
-so we varied that measure as well.
-Since that measure was also called CNR in the previous work,
-we've decided to rename it as Activation Variance to Noise Ratio (AVNR), to
-contrast it with our definition of CNR.
+so this measure was also varied in our analysis.
+To distinguish the measure from our use of CNR,
+we've decided to rename it as Activation Variance to Noise Ratio (AVNR).
 
 To generate realistic numbers for simulating time-series at varying CNRs and AVNRs
 we used an unpublished dataset on task switching in older adults (N=40).
@@ -495,17 +494,21 @@ To calculate CNR, several steps were taken.
 First, we masked the beta series using two different atlases:
 an "Activation" atlas based on peak BOLD responses seen in the data,
 and the Schaefer Atlas\cite{Schaefer2017}(see \nameref{methods:atlas-corr-analysis}).
-Second, we took the absolute value of all masked beta estimates for a participant.
-Third, we took the median beta estimates over all events resulting
-in a median beta estimate amplitude for all ROIs.
-Fourth, we took the standard deviation of the residuals for each ROI.
+Second, we extracted the absolute value of all masked beta estimates for a participant.
+Third, we measured the median beta estimates over all events resulting
+in a median beta estimate amplitude for all regions of interest (ROIs).
+Fourth, we calculated the standard deviation of the residuals for each ROI.
 Fifth, we divided the median amplitude beta estimates by the standard deviation of the residuals
 for each ROI.
-Sixth, we took either the mean or max CNR across all ROIs to provide a reasonable estimate
+Sixth, we selected either the mean or max CNR across all ROIs to provide a reasonable estimate
 and upper bound of CNR.
 Calculating AVNR followed the same procedure as CNR with the exception of the first two steps.
-First, we took the standard deviation of the beta estimates, then we followed steps three through six above
+First, we calculated the standard deviation of the beta estimates, then we followed steps three through six above
 on the standard deviation of the beta estimates (as opposed to the amplitude).
+Based on these calculations used on participant data, we chose to move forward using CNR and
+AVNR values of 1 and 2 as reasonable representative values (Table ~\ref{table1}).
+We performed subsequent analyses in parallel using all combinations of these representive values to probe the relative importance of AVNR and CNR
+in influencing the power of beta series correlations.
 (\href{https://github.com/jdkent/BetaSeriesRealDataAnalysis/blob/90fafb5b83b2e1bfade61a9fb1a87f225efaa95f/nibsAnalysis/cnr_trial_variability.ipynb}{see here for the relevant code})
 
 \begin{table}[H]
@@ -529,10 +532,6 @@ variance for bias, unlike LSA, which retains a high variance and a low bias.
 \end{adjustwidth}
 \end{table}
 
-We derived CNRs of 1 and 2 and AVNRs of 1 and 2 as reasonable simulation values from the dataset~\ref{table1}.
-We manipulated CNR and AVNR independently to determine whether simulated BOLD response variation
-impact beta series correlation's ability to recapture the true correlation or if the simulated BOLD
-response magnitude is more important.
 The choice of onset times was varied based on average inter-event-interval (IEIs).
 The IEI is the time from the previous event onset to the next event onset.
 We chose average IEIs at 2, 4, 6, and 8 seconds to reflect a common range of IEIs
@@ -546,7 +545,7 @@ The top 20 designs were chosen from neurodesign to reduce the likelihood
 that the simulation results would be an artifact of idiosyncrasies
 of the optimized experimental design.
 
-The beta weights for each voxel were chosen from a multivariate normal distribution
+The beta weights for each voxel pair were chosen from a multivariate normal distribution
 with a mean of 1 and with a fixed ground truth correlation between the 2 voxels 
 (varying between 0.0-0.9) with AVNR of either 1 or 2.
 The ground truth correlation was varied to ensure the ground truth correlations were above
@@ -579,12 +578,12 @@ the number of statistically significant t-tests.
 
 Once the false positive rate was established, we established power with the same method as above,
 but with samples containing different ground truth correlations.
-We selected 2 samples where there was 0.1 (Pearson's r) difference between the samples.
-0.1 difference was chosen based on reported differences found in other published
+We selected 2 samples for which there was a 0.1 (Pearson's r) correlation difference.
+A 0.1 correlation difference was chosen based on reported differences found in other published
 reports as well as the task used in this report~\cite{Katsura2014,Lee2017,Turner2017,Lin2019,Huang2019}.
 This process was also repeated 10,000 times to establish power.
-Thus we detected how well correlation differences could be detected
-with different task design and noise parameters.
+Thus we detected efficacy with which correlation differences could be detected
+using different task design and noise parameters.
 
 Simulating data using the same task design as the participant data followed the same
 procedure as above, varying CNR (1, 2), AVNR (1, 2), condition,
@@ -611,7 +610,7 @@ We chose 100 volumes to keep the number of regressors in LSA
 (which already includes as many regressors as events) a reasonable size
 for single event beta estimation since we included each outlier volume
 as a regressor as well.
-The task switch task was a mixed block/event-related design containing
+Task switching was performed in a mixed block/event-related design containing
 5 blocks (2 single task blocks and 3 dual task blocks).
 There was a 30 second rest between each block.
 There were 30 events during each single event block,
@@ -637,17 +636,17 @@ Due to data collection error, behavioral data were not collected for 3 participa
 
 The task switch bold \emph{fmriprep} output in MNI152NLin2009cAsym space
 was analyzed with \emph{Nistats} for first and second level analyses.
-we used mean white matter signal, mean cerebrospinal fluid signal,
+We used mean white matter signal, mean cerebrospinal fluid signal,
 discrete cosine basis filter (high pass filter), framewise displacement, the first four non-steady volumes, and
 all identified motion outliers as regressors in the first level model for each participant
 in addition to event onsets convolved with a double gamma function~\cite{Glover1999}.
 Each image was smoothed with a 6mm full-wide half-max kernel.
 We derived 3 contrasts of interest: $switch - repeat$, $dual- single$, and $repeat - single$.
 The $dual$ condition is the weighted average of $switch$ and $repeat$ to represent the global cost~\cite{Wylie2000}.
-We ignored correctness of the participant's response since this was not important to
+We ignored correctness of the participant's response since it was not essential to
 separate condition and error processing to validate BSC.
 
-Second level analysis were a summary of the first level results presenting which
+Second level analyses were a summary of the first level results presenting which
 regions were robustly activated among participants.
 For each contrast, the alpha was set to 0.01 with a cluster threshold of 10 voxels using
 false discovery rate error control \ref{fig:stat_maps}.
@@ -726,7 +725,7 @@ RRID:SCR\_008796; TemplateFlow ID: MNI152NLin2009cAsym{]}.
 \subsubsection*{Functional data preprocessing}
 \label{methods:func}
 
-For each of the two BOLD runs (task switch and null data) found per subject,
+For each of the two BOLD runs (task switch and null data) per subject,
 the following preprocessing was performed.
 First, a reference volume and its skull-stripped version were generated
 using a custom methodology of \emph{fMRIPrep}.
@@ -811,7 +810,7 @@ represents the number of events in that condition.
 \label{methods:atlas-corr-analysis}
 
 The 4D beta series image for each condition in the task was subjected to
-an region of interest to region of interest (ROI-to-ROI) correlation analysis
+an ROI-to-ROI correlation analysis
 to produce condition-specific correlation matrices.
 For the simulation data, ROI-to-ROI correlations were calculated by
 treating each voxel as an ROI.
@@ -987,7 +986,7 @@ correlation difference of 0.1 was across all parameters.
   \label{fig:res_sim_smalldiff}
 \end{figure}
 
-While the IEI is 2, there is no discernable difference between LSS and LSA.
+At an IEI of 2 seconds, there is no discernable difference between LSS and LSA.
 Since the simulated data were sampled at 2 second intervals, the result
 corresponds to effectively presenting a stimulus during each frame.
 With such overlapping simulated BOLD responses detecting a difference between conditions
