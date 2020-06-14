@@ -941,21 +941,6 @@ a 5\% false positive rate was found across all combinations of
 event numbers, IEIs, CNRs, AVNRs, and estimation method.
 We found a nominal \%5 false positive rate held across all combinations
 of parameters (Figure~\ref{fig:res_sim_fpr}).
-
-\begin{figure}[H]
-  \centering
-  \subfloat{\includegraphics[width=\textwidth]{avnr-1_fpr}}
-
-  \subfloat{\includegraphics[width=\textwidth]{avnr-2_fpr}}
-
-  \caption{
-    LSA/LSS both show a \%5 false positive rate for all conditions.
-    Each bar represents a sample of 50 pairs of correlations (with no true difference)
-    randomly pulled from a distribution of correlations 10,000 times.
-  }
-  \label{fig:res_sim_fpr}
-\end{figure}
-
 With the false positive rate established, we next observed how detectable a
 correlation difference of 0.1 was across all parameters.
 
@@ -986,10 +971,10 @@ is unlikely.
 From an IEI of 4 seconds and upwards, LSS has greater detection power than LSA.
 Increasing the number of events beyond 30 appears to increase detection power only if the CNR is greater than 1.
 Increasing the CNR improves detection power more than increasing the AVNR, although increasing either
-CNR or AVNR provides a marked boost in detection power.
+CNR or AVNR improve detection power.
 % add the numbers to say what the difference between CNR and AVNR
-For LSS, the 8 second IEI does not appear to boost detection power beyond a 6 second IEI,
-whereas LSA has a boost when AVNR and CNR are higher.
+For LSS, the 8 second IEI does not appear to greatly increase detection power beyond a 6 second IEI.
+
 
 
 \subsection*{Participant Data Beta Series Correlations}
@@ -1368,6 +1353,20 @@ which analysis path they should take amid the forking paths of researcher degree
 
 \begin{figure}[H]
   \centering
+  \subfloat{\includegraphics[width=\textwidth]{avnr-1_fpr}}
+
+  \subfloat{\includegraphics[width=\textwidth]{avnr-2_fpr}}
+
+  \caption{
+    LSA/LSS both show a \%5 false positive rate for all conditions.
+    Each bar represents a sample of 50 pairs of correlations (with no true difference)
+    randomly pulled from a distribution of correlations 10,000 times.
+  }
+  \label{fig:res_sim_fpr}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
   \subfloat{\includegraphics[width=\textwidth]{data-both_type-brain_atlas-activation_contrast-taskXnull}}
 
   \subfloat{\includegraphics[width=\textwidth]{data-task_type-brain_atlas-activation_contrast-dualXsingle}}
@@ -1391,7 +1390,7 @@ which analysis path they should take amid the forking paths of researcher degree
    pairs for LSA, 16 statistically significant ROI-ROI pairs
    for LSS with 3 overlapping ROI-ROI pairs for both LSS and LSA.
   }
-  \label{fig:significant-contrasts}
+  \label{fig:significant-contrasts1}
 \end{figure}
 
 \begin{figure}[H]
@@ -1417,7 +1416,7 @@ which analysis path they should take amid the forking paths of researcher degree
       pairs for LSA, 12 statistically significant ROI-ROI pairs
       for LSS with 1 overlapping ROI-ROI pair for both LSS and LSA.
   }
-  \label{fig:significant-contrasts}
+  \label{fig:significant-contrasts2}
 \end{figure}
 
 \begin{figure}[H]
@@ -1443,7 +1442,7 @@ which analysis path they should take amid the forking paths of researcher degree
       pairs for LSA, 16 statistically significant ROI-ROI pairs
       for LSS with 1 overlapping ROI-ROI pair for both LSS and LSA.
   }
-  \label{fig:significant-contrasts}
+  \label{fig:significant-contrasts3}
 \end{figure}
 
 \begin{figure}[H]
@@ -1469,7 +1468,7 @@ which analysis path they should take amid the forking paths of researcher degree
       pairs for LSA, 7 statistically significant ROI-ROI pairs
       for LSS with 0 overlapping ROI-ROI pairs for both LSS and LSA.
   }
-  \label{fig:significant-contrasts}
+  \label{fig:significant-contrasts4}
 \end{figure}
 
 \begin{figure}[H]
@@ -1489,7 +1488,7 @@ which analysis path they should take amid the forking paths of researcher degree
       pairs for LSA, 6 statistically significant ROI-ROI pairs
       for LSS with 0 overlapping ROI-ROI pairs for both LSS and LSA.
   }
-  \label{fig:significant-contrasts}
+  \label{fig:significant-contrasts5}
 \end{figure}
 
 \begin{figure}[H]
@@ -1507,7 +1506,7 @@ which analysis path they should take amid the forking paths of researcher degree
       LSA has a slight sensitivity advantage in the real data, 
       with the expection of the $task - null$ contrast.
   }
-  \label{fig:significant-contrasts}
+  \label{fig:significant-contrasts6}
 \end{figure}
 
 \section*{Acknowledgments}
