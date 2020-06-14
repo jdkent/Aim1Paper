@@ -509,7 +509,7 @@ Based on these calculations used on participant data, we chose to move forward u
 AVNR values of 1 and 2 as reasonable representative values (Table~\ref{table1}).
 We performed subsequent analyses in parallel using all combinations of these representive values to probe the relative importance of AVNR and CNR
 in influencing the power of beta series correlations.
-(\href{https://github.com/jdkent/BetaSeriesRealDataAnalysis/blob/90fafb5b83b2e1bfade61a9fb1a87f225efaa95f/nibsAnalysis/cnr_trial_variability.ipynb}{see here for the relevant code})
+(\href{https://github.com/jdkent/BetaSeriesRealDataAnalysis/blob/b18b44321edf7b662a1e5ea635f64452c8d3644c/nibsAnalysis/cnr_trial_variability.ipynb}{see here for the relevant code})
 
 \begin{table}[H]
 \begin{adjustwidth}{0in}{0in} % Comment out/remove adjustwidth environment if table fits in text column.
@@ -553,7 +553,7 @@ and below the correlations of the noise time-series between the 2 voxels,
 since both voxels had shared noise sources from simulated motion.
 The beta weights were convolved with a hemodynamic response function and scaled
 relative to the noise standard deviation to CNRs of 1 or 2.
-(\href{https://github.com/jdkent/betaSeriesSimulations/tree/38dfbf2d83a8ab742d134c490b850ad893c8b4c7/beta_sim}{see here for simulation code})
+(\href{https://github.com/jdkent/betaSeriesSimulations/tree/34bf1ff5b05c0eeae855f0e8e1267765bf14999a/beta_sim}{see here for simulation code})
 
 200 simulations were run for each combination of event number
 (15, 30, 45, 60) IEI (2, 4, 6, 8),  CNR (1, 2), AVNR (1, 2), condition (c0, c1),
@@ -632,7 +632,7 @@ Participants' average accuracy and reaction time were:
 single, (92\%$\pm$27\%, 792ms$\pm$225ms); repeat, (89\%$\pm$31\%, 1001ms$\pm$278ms);
 and switch, (83\%$\pm$36.8\%, 1108ms$\pm$289ms).
 Due to data collection error, behavioral data were not collected for 3 participants
-(\href{https://github.com/jdkent/BetaSeriesRealDataAnalysis/blob/90fafb5b83b2e1bfade61a9fb1a87f225efaa95f/summarizeBehavior/summarize_behavior.ipynb}{see here for relevent code})
+(\href{https://github.com/jdkent/BetaSeriesRealDataAnalysis/blob/b18b44321edf7b662a1e5ea635f64452c8d3644c/summarizeBehavior/summarize_behavior.ipynb}{see here for relevent code})
 
 The task switch bold \emph{fmriprep} output in MNI152NLin2009cAsym space
 was analyzed with \emph{Nistats} for first and second level analyses.
@@ -873,7 +873,7 @@ we selected the top 25 ROIs with the highest CNR using LSA and LSS separately
 We then took the intersection of the two ROI sets resulting in 20 ROIs that have a high CNR
 as measured by LSA and LSS (Table~\ref{table:parcels},Figure~\ref{fig:schaefertopmap}).
 We refer this subset of ROIs as the SchaeferTop20 Atlas for the rest of the manuscript.
-(\href{https://github.com/jdkent/BetaSeriesRealDataAnalysis/blob/master/nibsAnalysis/cnr_trial_variability.ipynb}{see here for relevant code}).
+(\href{https://github.com/jdkent/BetaSeriesRealDataAnalysis/blob/b18b44321edf7b662a1e5ea635f64452c8d3644c/nibsAnalysis/cnr_trial_variability.ipynb}{see here for relevant code}).
 The results for the entire 400 ROI altas are shown in the supplementals.
 
 Outlier beta estimate volumes were identified and discarded using a
@@ -899,7 +899,7 @@ than 5\%.
 We did not use false discovery rate correction on the observed p-values since we were not interested in
 which specific ROI-ROI pair correlations were likely to be true positives, but rather if the number of positives
 observed would be expected by chance alone or if LSS/LSA likely detected an overall difference between event conditions.
-(\href{https://github.com/jdkent/BetaSeriesRealDataAnalysis/blob/90fafb5b83b2e1bfade61a9fb1a87f225efaa95f/nibsAnalysis/BetaSeriesAnalysis.ipynb}{see here for relevant code})
+(\href{https://github.com/jdkent/BetaSeriesRealDataAnalysis/blob/b18b44321edf7b662a1e5ea635f64452c8d3644c/nibsAnalysis/beta_series_analysis.ipynb}{see here for relevant code})
 
 \subsection*{Software Dependencies}
 \label{methods:software-dependencies}
